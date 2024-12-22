@@ -1,0 +1,18 @@
+name: Deploy
+
+on:
+  workflow_call:
+
+jobs:
+  update-deployment:
+    name: Update Deployment
+    runs-on: self-hosted
+
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.GH_PAT }}
+          repository: H1ghBre4k3r/lome-dev-deploy
+          event-type: lome-dev-deploy-trigger
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'

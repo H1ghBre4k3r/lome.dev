@@ -32,3 +32,9 @@ jobs:
     needs: build
     uses: ./.github/workflows/image.yml
     secrets: inherit
+
+  deploy:
+    if: ${{ github.ref_name == 'main' }}
+    needs: image
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
