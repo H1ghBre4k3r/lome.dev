@@ -6,7 +6,7 @@ on:
 jobs:
   update-deployment:
     name: Update Deployment
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Repository Dispatch
