@@ -13,6 +13,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.GH_PAT }}
-          repository: H1ghBre4k3r/lome-dev-deploy
+          repository: H1ghBre4k3r/lome.dev-deploy
           event-type: lome-dev-deploy-trigger
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
