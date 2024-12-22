@@ -24,6 +24,6 @@ RUN npm run build
 
 FROM nginx:1.27 as final
 
-LABEL org.opencontainers.image.source="https://github.com/H1ghBre4k3r/lome.dev"
+LABEL org.opencontainers.image.source https://github.com/H1ghBre4k3r/lome.dev
 
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
