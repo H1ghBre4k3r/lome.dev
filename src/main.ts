@@ -2,6 +2,7 @@ import "./style.css";
 import typescriptLogo from "./typescript.svg";
 import viteLogo from "/vite.svg";
 import { setupCounter } from "./counter.ts";
+import "./test";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
@@ -18,6 +19,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     <p class="read-the-docs">
       Click on the Vite and TypeScript logos to learn more
     </p>
+      <my-test name="H1ghBre4k3r"></my-test>
   </div>
 `;
 
