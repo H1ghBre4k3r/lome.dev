@@ -1,0 +1,43 @@
+website-header {
+  display: contents;
+}
+
+header {
+  padding-inline-start: 25px;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  ul {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+
+    li {
+      &:not(:last-child)::after {
+        content: "-";
+        margin: 20px;
+      }
+
+      font-weight: 900;
+      font-size: 1.125em;
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  header {
+    padding-inline-start: 100px;
+
+    h1 {
+      font-size: 6em;
+    }
+
+    ul {
+      font-size: 2em;
+    }
+  }
+}

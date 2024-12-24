@@ -21,7 +21,9 @@
     "noUncheckedSideEffectImports": true,
 
     "jsx": "react", // or react-jsx, etc.
-    "jsxFactory": "a"
+    "jsxFactory": "a",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src"]
 }
