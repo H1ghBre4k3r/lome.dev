@@ -14,16 +14,19 @@ header {
     padding: 0;
     list-style: none;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 
     li {
-      &:not(:last-child)::after {
-        content: "-";
-        margin: 20px;
-      }
-
       font-weight: 900;
       font-size: 1.125em;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+
+      svg {
+        height: 1.125em;
+        margin-right: 10px;
+      }
     }
   }
 }
@@ -38,6 +41,14 @@ header {
 
     ul {
       font-size: 2em;
+      flex-direction: row;
+
+      li {
+        &:not(:last-child)::after {
+          content: "-";
+          margin: 20px;
+        }
+      }
     }
   }
 }
