@@ -1,5 +1,5 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./style.css";
+import "./main.css";
 import { Component } from "./component";
 
 @Component("website-main")

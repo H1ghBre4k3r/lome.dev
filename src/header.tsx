@@ -16,17 +16,19 @@ export class WebsiteHeader extends AbstractElement {
       <header>
         <h1>H1ghBre4k3r</h1>
         <ul>
-          <li>CS Student</li>
+          <li>
+            <h3>CS Student</h3>
+          </li>
           <li>
             {svg(siNeovim.svg)}
             <a href="https://github.com/H1ghBre4k3r" target="_blank">
-              Programmer
+              <h3>Programmer</h3>
             </a>
           </li>
           <li>
             {svg(siGithub.svg)}
             <a href="https://githubcampus.expert/H1ghBre4k3r/" target="_blank">
-              GitHub Campus Expert
+              <h3>GitHub Campus Expert</h3>
             </a>
           </li>
         </ul>
