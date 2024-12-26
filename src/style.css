@@ -14,6 +14,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 svg {
   fill: currentColor;
 }
@@ -27,4 +33,16 @@ svg {
 
 website-main {
   display: contents;
+}
+
+main {
+  width: 800px;
+  max-width: calc(100vw - 40px);
+}
+
+@media only screen and (min-width: 1420px) {
+  main {
+    width: 1400px;
+    max-width: calc(100vw - 20px);
+  }
 }

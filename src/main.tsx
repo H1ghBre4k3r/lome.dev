@@ -9,6 +9,10 @@ export class WebsiteMain extends AbstractElement {
   }
 
   render() {
-    return <website-header></website-header>;
+    return (
+      <main>
+        <website-header></website-header>
+      </main>
+    );
   }
 }

@@ -3,8 +3,6 @@ website-header {
 }
 
 header {
-  padding-inline-start: 25px;
-
   a {
     text-decoration: none;
     color: inherit;
@@ -31,10 +29,8 @@ header {
   }
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 1420px) {
   header {
-    padding-inline-start: 100px;
-
     h1 {
       font-size: 6em;
     }
