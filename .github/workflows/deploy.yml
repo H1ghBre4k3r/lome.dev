@@ -6,13 +6,32 @@ on:
 jobs:
   update-deployment:
     name: Update Deployment
-    runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
+    runs-on: ubuntu-latest
     steps:
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v1
+      - name: Check Out The Repository
+        uses: actions/checkout@v4
+      - name: Set lower case owner name
+        run: |
+          echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
+        env:
+          OWNER: "${{ github.repository_owner }}"
+      - name: Update Deploy Branch
+        run: |
+          git switch -C deploy
+      - name: Update Version In Checked-Out Code
+        run: |
+          sed -i "s@\(.*image:\).*@\1 ghcr.io/${{ env.OWNER_LC }}/lome-dev:${{ github.sha }}@" ${GITHUB_WORKSPACE}/manifests/deployment.yml
+      - name: Commit The New Image Reference
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          token: ${{ secrets.GH_PAT }}
-          repository: H1ghBre4k3r/lome.dev-deploy
-          event-type: lome-dev-deploy-trigger
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+          commit_message: Deploy new image ${{ github.sha }}
+          branch: deploy
+          commit_options: "--no-verify --signoff"
+          push_options: "--force"
+          repository: .
+          commit_user_name: PescaDev GitOps Bot
+          commit_user_email: gitops@pesca.dev
+          commit_author: PescaDev GitOps <gitops@pesca.dev>
