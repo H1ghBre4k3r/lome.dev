@@ -36,7 +36,6 @@ jobs:
   deploy:
     permissions:
       contents: write
-    if: ${{ github.ref_name == 'main' }}
     needs: image
     uses: ./.github/workflows/deploy.yml
     secrets: inherit

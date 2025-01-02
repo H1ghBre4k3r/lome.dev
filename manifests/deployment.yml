@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: lome-dev-deployment
+  name: lome-dev-deployment
+  namespace: lome-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: lome-dev-deployment
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: lome-dev-deployment
+    spec:
+      containers:
+        - image: ghcr.io/h1ghbre4k3r/lome-dev:latest
+          imagePullPolicy: Always
+          name: lome-dev-deployment
+          ports:
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: lome-dev-ingress
+  namespace: lome-dev
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`lome.dev`)
+      kind: Rule
+      services:
+        - name: lome-dev-service
+          port: 80
+  tls:
+    certResolver: le
