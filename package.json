@@ -15,7 +15,7 @@
     "globals": "^15.14.0",
     "typescript": "~5.7.3",
     "typescript-eslint": "^8.20.0",
-    "vite": "^6.0.7"
+    "vite": "^6.0.11"
   },
   "dependencies": {
     "@pesca-dev/atomicity": "^0.1.5",
