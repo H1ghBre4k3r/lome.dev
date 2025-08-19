@@ -19,6 +19,6 @@
   },
   "dependencies": {
     "@pesca-dev/atomicity": "^0.1.5",
-    "simple-icons": "^15.10.0"
+    "simple-icons": "^15.11.0"
   }
 }
