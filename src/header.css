@@ -3,7 +3,7 @@
     display: contents;
   }
 
-  header {
+  website-header > header {
     position: fixed;
     top: 0;
     left: 0;
@@ -16,7 +16,7 @@
   }
 
   @media (prefers-color-scheme: light) {
-    header {
+    website-header > header {
       background: rgba(255, 255, 255, 0.95);
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
