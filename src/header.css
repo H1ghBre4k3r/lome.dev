@@ -47,13 +47,13 @@
     opacity: 0.8;
   }
 
-  nav {
+  .header-content nav {
     display: flex;
     gap: 2rem;
     align-items: center;
   }
 
-  nav a {
+  .header-content nav a {
     text-decoration: none;
     color: inherit;
     font-weight: 500;
@@ -61,7 +61,7 @@
     position: relative;
   }
 
-  nav a:not(.github-link)::after {
+  .header-content nav a:not(.github-link)::after {
     content: '';
     position: absolute;
     bottom: -4px;
@@ -72,7 +72,7 @@
     transition: width 0.3s ease;
   }
 
-  nav a:not(.github-link):hover::after {
+  .header-content nav a:not(.github-link):hover::after {
     width: 100%;
   }
 
@@ -96,11 +96,11 @@
   }
 
   @media only screen and (max-width: 768px) {
-    nav {
+    .header-content nav {
       gap: 1rem;
     }
 
-    nav a:not(.github-link) {
+    .header-content nav a:not(.github-link) {
       font-size: 0.9rem;
     }
 

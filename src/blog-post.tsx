@@ -2,14 +2,17 @@ import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./blog-post.css";
 import { Component } from "./component";
 import { getBlogPost, markdownToHtml, formatDate, type BlogPost } from "./lib/blog";
+import { WebsiteBlogTOC } from "./blog-toc";
 
 @Component("website-blog-post")
 export class WebsiteBlogPost extends AbstractElement {
   private post: BlogPost | null = null;
   private contentElement: HTMLElement | null = null;
+  private tocComponent: WebsiteBlogTOC;
 
   constructor() {
     super();
+    this.tocComponent = new WebsiteBlogTOC();
   }
 
   async loadPost(slug: string): Promise<BlogPost | null> {
@@ -91,6 +94,11 @@ export class WebsiteBlogPost extends AbstractElement {
     this.contentElement.innerHTML = '';
     this.contentElement.appendChild(header);
     this.contentElement.appendChild(article);
+
+    // Generate TOC after content is rendered
+    setTimeout(() => {
+      this.tocComponent.generateTOC(article);
+    }, 0);
   }
 
   showError() {
@@ -120,8 +128,13 @@ export class WebsiteBlogPost extends AbstractElement {
   render() {
     const section = (
       <section className="blog-post" id="blog-post">
-        <div className="blog-post-content">
-          <div className="post-loading">Loading article...</div>
+        <div className="blog-post-container">
+          <div className="blog-post-content">
+            <div className="post-loading">Loading article...</div>
+          </div>
+          <aside className="blog-post-sidebar">
+            {this.tocComponent.render()}
+          </aside>
         </div>
       </section>
     ) as HTMLElement;

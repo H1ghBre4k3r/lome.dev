@@ -107,7 +107,7 @@ export class WebsiteBlogRouter extends AbstractElement {
     if (!this.blogList || !this.blogPost) return;
 
     this.blogList.style.display = 'none';
-    this.blogPost.style.display = 'contents';
+    this.blogPost.style.display = 'block';
 
     // Hide other sections
     this.hideOtherSections();

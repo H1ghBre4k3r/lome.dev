@@ -6,6 +6,7 @@ import "./hero";
 import "./about";
 import "./blog";
 import "./blog-post";
+import "./blog-toc";
 import "./blog-router";
 import "./projects";
 import "./contact";
