@@ -1,7 +1,6 @@
 @layer atom {
   :root {
-    /* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
-    font-family: Fliege Mono;
+    font-family: Fliege Mono, monospace;
     line-height: 1.5;
     font-weight: 400;
 
@@ -21,14 +20,23 @@
     --h5-size: 1em;
     --h6-size: 0.75em;
 
-    --content-width: 800px;
+    --content-width: 1200px;
     --content-max-width: calc(100vw - 40px);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
   }
 
   @media (prefers-color-scheme: light) {
     :root {
       color: #213547;
-      background-color: #ffffff;
+      background-color: #f8f9fa;
     }
   }
 
@@ -61,18 +69,23 @@
   }
 
   body {
+    margin: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    min-height: 100vh;
   }
 
   main {
-    width: var(--content-width);
-    max-width: var(--content-max-width);
+    width: 100%;
+    flex: 1;
   }
 
   svg {
     fill: currentColor;
+  }
+
+  a {
+    color: inherit;
   }
 }
 

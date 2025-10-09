@@ -2,4 +2,8 @@
   website-main {
     display: contents;
   }
+
+  main {
+    padding-top: 0;
+  }
 }

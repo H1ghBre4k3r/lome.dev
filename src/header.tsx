@@ -2,7 +2,7 @@ import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./header.css";
 import { Component } from "./component";
 
-import { siGithub, siNeovim } from "simple-icons";
+import { siGithub } from "simple-icons";
 import { svg } from "./utils";
 
 @Component("website-header")
@@ -14,24 +14,18 @@ export class WebsiteHeader extends AbstractElement {
   render() {
     return (
       <header>
-        <h1>H1ghBre4k3r</h1>
-        <ul>
-          <li>
-            <h3>CS Student</h3>
-          </li>
-          <li>
-            {svg(siNeovim.svg)}
-            <a href="https://github.com/H1ghBre4k3r" target="_blank">
-              <h3>Programmer</h3>
+        <div className="header-content">
+          <a href="#home" className="logo">lome.dev</a>
+          <nav>
+            <a href="#about">About</a>
+            <a href="#blog">Blog</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+            <a href="https://github.com/H1ghBre4k3r" target="_blank" rel="noopener noreferrer" className="github-link">
+              {svg(siGithub.svg)}
             </a>
-          </li>
-          <li>
-            {svg(siGithub.svg)}
-            <a href="https://githubcampus.expert/H1ghBre4k3r/" target="_blank">
-              <h3>GitHub Campus Expert</h3>
-            </a>
-          </li>
-        </ul>
+          </nav>
+        </div>
       </header>
     );
   }
