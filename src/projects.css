@@ -74,6 +74,7 @@
   }
 
   .project-link {
+    position: relative;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -84,6 +85,16 @@
     border-radius: 10px;
     transition: all 0.3s ease;
   }
+  .project-link::after {
+    content: '→';
+    position: absolute;
+    right: -18px;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: translateX(-6px);
+  }
+  .project-link:hover::after { opacity: 1; transform: translateX(0); }
+
 
   .project-link:hover {
     background: rgba(102, 126, 234, 0.2);
@@ -120,6 +131,16 @@
     background: rgba(102,126,234,0.12);
     border: 1px solid rgba(102,126,234,0.25);
     border-radius: 999px;
+  .project-languages { display:flex; gap: 0.5rem; margin-top: 0.25rem; flex-wrap: wrap; }
+  .lang-badge{
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.14);
+    font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.85);
+  }
+  @media (prefers-color-scheme: light){ .lang-badge{ color: rgba(0,0,0,0.7); background: rgba(255,255,255,0.85); border-color: rgba(0,0,0,0.1);} }
+
     font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.85);
   }
   @media (prefers-color-scheme: light){ .meta-badge{ color: rgba(0,0,0,0.7); background: rgba(102,126,234,0.08);} }

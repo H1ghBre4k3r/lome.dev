@@ -22,12 +22,8 @@
     height: 100%;
     background: radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
     pointer-events: none;
-    animation: bgFloat 16s ease-in-out infinite alternate;
-  }
-
-  @keyframes bgFloat {
-    0% { transform: translate3d(0,0,0) }
-    100% { transform: translate3d(-20px, 10px, 0) }
+    transform: translate3d(var(--hero-parallax-x, 0px), var(--hero-parallax-y, 0px), 0);
+    will-change: transform;
   }
 
   .hero-content {
@@ -142,6 +138,9 @@
   }
 
   .tech-highlight-rust {
+  .hero-title .caret { margin-left: 6px; opacity: 0.9; animation: caretBlink 1.2s steps(1,end) infinite; }
+  @keyframes caretBlink { 0%, 50% { opacity: 0.9; } 51%, 100% { opacity: 0; } }
+
     color: #FF6B35;
     font-weight: 700;
     text-shadow: 0 0 10px rgba(255, 107, 53, 0.3);

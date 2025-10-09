@@ -84,6 +84,11 @@
   }
 
   svg {
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    main { scroll-snap-type: y proximity; }
+    section { scroll-snap-align: start; }
+  }
+
     fill: currentColor;
   }
 
@@ -93,8 +98,8 @@
 }
 
 @layer organism {
-  /* Section neon dividers */
-  section:not(.hero)::after {
+  /* Section neon dividers (skip first section e.g., hero) */
+  section + section::after {
     content: '';
     display: block;
     height: 1px;

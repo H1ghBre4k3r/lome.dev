@@ -15,7 +15,7 @@ export class WebsiteProjects extends AbstractElement {
     super.connectedCallback();
     setTimeout(() => { addCardTiltToAll('.project-card', this); }, 100);
     // Fetch GitHub metadata best-effort
-    try { await this.fetchMetadata(); } catch {}
+    try { await this.fetchMetadata(); } catch (e) { console.error(e); }
   }
 
   async fetchMetadata() {
@@ -30,7 +30,10 @@ export class WebsiteProjects extends AbstractElement {
       const title = card.querySelector('h3')?.textContent?.trim() || '';
       const repo = map[title];
       if (!repo) return;
-      const res = await fetch(`https://api.github.com/repos/${repo}`);
+      const [res, langRes] = await Promise.all([
+        fetch(`https://api.github.com/repos/${repo}`),
+        fetch(`https://api.github.com/repos/${repo}/languages`)
+      ]);
       if (!res.ok) return;
       const data = await res.json();
       const meta = document.createElement('div');
@@ -41,6 +44,25 @@ export class WebsiteProjects extends AbstractElement {
         <span class="meta-badge">Updated ${new Date(data.pushed_at).toLocaleDateString()}</span>
       `;
       card.appendChild(meta);
+
+      // Languages
+      if (langRes.ok) {
+        const langs = await langRes.json();
+        const entries = Object.entries(langs) as [string, number][];
+        entries.sort((a, b) => b[1] - a[1]);
+        const top = entries.slice(0, 2).map(e => e[0]);
+        if (top.length) {
+          const langDiv = document.createElement('div');
+          langDiv.className = 'project-languages';
+          top.forEach(name => {
+            const badge = document.createElement('span');
+            badge.className = 'lang-badge';
+            badge.textContent = name;
+            langDiv.appendChild(badge);
+          });
+          card.appendChild(langDiv);
+        }
+      }
     }));
   }
 

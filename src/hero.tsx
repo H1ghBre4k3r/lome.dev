@@ -14,6 +14,17 @@ export class WebsiteHero extends AbstractElement {
   connectedCallback() {
     super.connectedCallback();
 
+    // Parallax for hero background
+    const hero = this.querySelector('.hero') as HTMLElement | null;
+    const onScroll = () => {
+      const y = Math.min(1, (window.scrollY || 0) / 600);
+      if (hero) {
+        hero.style.setProperty('--hero-parallax-x', `${-20 * y}px`);
+        hero.style.setProperty('--hero-parallax-y', `${10 * y}px`);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
     // Cycle keywords in subtitle
     const keywords = ["Developer", "Compiler Enthusiast", "Rustacean", "TypeScript Nerd", "IoT Tinkerer"];
     let k = 0;
@@ -56,7 +67,7 @@ export class WebsiteHero extends AbstractElement {
               <span className="badge-text">GitHub Campus Expert</span>
             </div>
             <h1 className="hero-title">
-              Hi, I'm <span className="gradient-text">Louis</span>
+              Hi, I'm <span className="gradient-text">Louis</span><span className="caret" aria-hidden="true">|</span>
             </h1>
             <p className="hero-subtitle">
               <span className="location-badge">📍 Kiel, Germany</span>

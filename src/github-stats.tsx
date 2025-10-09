@@ -4,6 +4,11 @@ import { Component } from "./component";
 
 interface StatItem { label: string; value: number; id: string; }
 
+interface Repostory {
+  fork: boolean;
+  stargazers_count?: number;
+}
+
 @Component("github-stats")
 export class GitHubStats extends AbstractElement {
   private gridEl: HTMLElement | null = null;
@@ -17,10 +22,10 @@ export class GitHubStats extends AbstractElement {
   connectedCallback() {
     super.connectedCallback();
     this.buildCards();
-    // Optional: attempt live fetch (no token, best-effort)
-    this.tryFetch().catch(() => {});
-    // Start count-up shortly after mount
+    // Start count-up shortly after mount for initial values
     setTimeout(() => this.animateCounters(), 300);
+    // Fetch live values
+    this.tryFetch().catch(console.error);
   }
 
   async tryFetch() {
@@ -33,19 +38,17 @@ export class GitHubStats extends AbstractElement {
       if (!userRes.ok || !reposRes.ok) return;
       await userRes.json();
       const repos = await reposRes.json();
-      const ownRepos = repos.filter((r: any) => !r.fork);
-      const starsSum = ownRepos.reduce((acc: number, r: any) => acc + (r.stargazers_count || 0), 0);
+      const ownRepos = repos.filter((r: Repostory) => !r.fork);
+      const starsSum = ownRepos.reduce((acc: number, r: Repostory) => acc + (r.stargazers_count || 0), 0);
       const reposCount = ownRepos.length;
       const stars = starsSum && starsSum > reposCount ? starsSum : 748;
-      this.stats = [
-        { id: "stars", label: "GitHub Stars", value: stars },
-        { id: "repos", label: "Repositories", value: reposCount || 85 },
-        { id: "years", label: "Years Coding", value: 8 },
-        { id: "projects", label: "Projects", value: 25 }
-      ];
-      this.buildCards();
+      // Update DOM values directly to avoid ordering issues
+      const starsEl = this.querySelector('.stat-value[data-id="stars"]') as HTMLElement | null;
+      const reposEl = this.querySelector('.stat-value[data-id="repos"]') as HTMLElement | null;
+      if (starsEl) { starsEl.dataset.value = String(stars); starsEl.textContent = '0'; }
+      if (reposEl) { reposEl.dataset.value = String(reposCount); reposEl.textContent = '0'; }
       this.animateCounters();
-    } catch {}
+    } catch (e) { console.error(e) }
   }
 
   animateCounters() {
