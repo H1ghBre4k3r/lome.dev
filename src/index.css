@@ -93,6 +93,23 @@
 }
 
 @layer organism {
+  /* Scroll reveal animations */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger animation for cards */
+  .project-card.scroll-reveal,
+  .blog-card.scroll-reveal {
+    transition-delay: calc(var(--index, 0) * 0.1s);
+  }
 }
 
 @layer utility {

@@ -2,6 +2,7 @@ import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./blog.css";
 import { Component } from "./component";
 import { getBlogPosts, formatDate, type BlogPost } from "./lib/blog";
+import { addCardTilt } from "./card-tilt";
 
 @Component("website-blog")
 export class WebsiteBlog extends AbstractElement {
@@ -46,7 +47,7 @@ export class WebsiteBlog extends AbstractElement {
   createBlogCard(post: BlogPost): HTMLElement {
     const article = document.createElement('article');
     article.className = 'blog-card';
-    
+
     // Make card clickable
     article.style.cursor = 'pointer';
     article.addEventListener('click', (e) => {
@@ -55,6 +56,9 @@ export class WebsiteBlog extends AbstractElement {
       window.history.pushState({}, '', url);
       window.dispatchEvent(new PopStateEvent('popstate'));
     });
+
+    // Add tilt effect
+    addCardTilt(article);
 
     const meta = document.createElement('div');
     meta.className = 'blog-meta';

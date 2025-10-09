@@ -3,11 +3,20 @@ import "./projects.css";
 import { Component } from "./component";
 import { siGithub } from "simple-icons";
 import { svg } from "./utils";
+import { addCardTiltToAll } from "./card-tilt";
 
 @Component("website-projects")
 export class WebsiteProjects extends AbstractElement {
   constructor() {
     super();
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // Add tilt effect to project cards after render
+    setTimeout(() => {
+      addCardTiltToAll('.project-card', this);
+    }, 100);
   }
 
   render() {

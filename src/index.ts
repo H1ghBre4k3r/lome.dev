@@ -1,7 +1,9 @@
 import "./index.css";
 import "./highlight.css";
+import "./particle-background";
 import "./main";
 import "./header";
+import "./terminal-typing";
 import "./hero";
 import "./about";
 import "./blog";
