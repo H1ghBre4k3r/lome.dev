@@ -4,6 +4,7 @@ import "./particle-background";
 import "./main";
 import "./header";
 import "./terminal-typing";
+import "./interactive-terminal";
 import "./hero";
 import "./about";
 import "./blog";

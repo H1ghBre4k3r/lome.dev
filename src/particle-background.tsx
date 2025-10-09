@@ -28,7 +28,7 @@ export class ParticleBackground extends AbstractElement {
     super.connectedCallback();
     this.setupCanvas();
     this.createParticles();
-    this.animate();
+    this.startAnimation();
     window.addEventListener('resize', () => this.setupCanvas());
     window.addEventListener('mousemove', (e) => this.onMouseMove(e));
   }
@@ -67,7 +67,7 @@ export class ParticleBackground extends AbstractElement {
     }
   }
 
-  animate() {
+  startAnimation() {
     if (!this.ctx || !this.canvas) return;
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -118,7 +118,7 @@ export class ParticleBackground extends AbstractElement {
       });
     });
 
-    this.animationFrame = requestAnimationFrame(() => this.animate());
+    this.animationFrame = requestAnimationFrame(() => this.startAnimation());
   }
 
   render() {

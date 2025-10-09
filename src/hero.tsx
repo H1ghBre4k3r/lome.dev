@@ -1,15 +1,15 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./hero.css";
 import { Component } from "./component";
-import { TerminalTyping } from "./terminal-typing";
+import { InteractiveTerminal } from "./interactive-terminal";
 
 @Component("website-hero")
 export class WebsiteHero extends AbstractElement {
-  private terminal: TerminalTyping;
+  private terminal: InteractiveTerminal;
 
   constructor() {
     super();
-    this.terminal = new TerminalTyping();
+    this.terminal = new InteractiveTerminal();
   }
 
   connectedCallback() {
@@ -17,7 +17,7 @@ export class WebsiteHero extends AbstractElement {
 
     // Start terminal animation after a short delay
     setTimeout(() => {
-      this.terminal.setLines([
+      this.terminal.setIntroLines([
         { text: 'whoami', delay: 300, className: 'highlight' },
         { text: 'H1ghBre4k3r', delay: 200 },
         { text: 'Computer Science Student @ Kiel, Germany 📍', delay: 400 },
@@ -28,10 +28,10 @@ export class WebsiteHero extends AbstractElement {
         { text: 'echo $ROLE', delay: 300, className: 'highlight' },
         { text: 'GitHub Campus Expert 🎓', delay: 200, className: 'gradient' },
         { text: '', delay: 100 },
-        { text: 'ls current-projects/', delay: 300, className: 'highlight' },
+        { text: 'ls projects/', delay: 300, className: 'highlight' },
         { text: '├── y-lang/ (Programming Language + Compiler)', delay: 100 },
         { text: '├── dependory/ (DI Framework for TypeScript)', delay: 100 },
-        { text: '└── server-monitoring/ (Monitoring from outer space)', delay: 500 },
+        { text: '└── server-monitoring/ (Monitoring from outer space)', delay: 300 },
       ]);
     }, 500);
   }

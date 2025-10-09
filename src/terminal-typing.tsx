@@ -13,8 +13,6 @@ export class TerminalTyping extends AbstractElement {
   private lines: TypingLine[] = [];
   private terminalBody: HTMLElement | null = null;
   private isTyping: boolean = false;
-  private currentLine: number = 0;
-  private currentChar: number = 0;
 
   constructor() {
     super();
@@ -101,7 +99,7 @@ export class TerminalTyping extends AbstractElement {
             <span className="terminal-button minimize"></span>
             <span className="terminal-button maximize"></span>
           </div>
-          <div className="terminal-title">h1ghbre4k3r@lome.dev ~ %</div>
+          <div className="terminal-title">H1ghBre4k3r@lome.dev ~ %</div>
         </div>
         <div className="terminal-body"></div>
       </div>
