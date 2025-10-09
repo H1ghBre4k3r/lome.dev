@@ -1,3 +1,5 @@
+import "./index.css";
+import "./highlight.css";
 import "./main";
 import "./header";
 import "./hero";

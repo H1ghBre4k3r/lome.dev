@@ -1,0 +1,32 @@
+/* Import highlight.js dark theme */
+@import 'highlight.js/styles/atom-one-dark.css' (prefers-color-scheme: dark);
+@import 'highlight.js/styles/atom-one-light.css' (prefers-color-scheme: light);
+
+/* Custom adjustments for code highlighting */
+.hljs {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* Enhance specific syntax elements */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-link {
+  font-weight: 600;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-name,
+.hljs-type,
+.hljs-attribute,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-tag,
+.hljs-template-variable {
+  font-weight: 500;
+}

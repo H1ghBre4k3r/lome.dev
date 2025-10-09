@@ -249,33 +249,33 @@
     border-radius: 4px;
     font-family: 'Fliege Mono', monospace;
     font-size: 0.9em;
-    color: rgba(255, 255, 255, 0.9);
+    color: #c792ea;
     border: 1px solid rgba(102, 126, 234, 0.15);
   }
 
   @media (prefers-color-scheme: light) {
     .post-content code {
       background: rgba(102, 126, 234, 0.06);
-      color: rgba(0, 0, 0, 0.85);
+      color: #7c4dff;
       border-color: rgba(102, 126, 234, 0.12);
     }
   }
 
   .post-content pre {
-    background: rgba(0, 0, 0, 0.35);
+    background: #282c34;
     padding: 1.5rem;
     border-radius: 10px;
     overflow-x: auto;
     margin: 2rem 0;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
   @media (prefers-color-scheme: light) {
     .post-content pre {
-      background: rgba(0, 0, 0, 0.04);
+      background: #fafafa;
       border-color: rgba(0, 0, 0, 0.08);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
   }
 
@@ -285,6 +285,7 @@
     border: none;
     font-size: 0.875rem;
     line-height: 1.6;
+    color: inherit;
   }
 
   .post-content ul,
