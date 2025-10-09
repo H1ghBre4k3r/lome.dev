@@ -6,6 +6,8 @@
   .about {
     padding: 6rem 2rem;
     position: relative;
+    overflow: hidden;
+    max-width: 100vw;
   }
 
   .about::before {

@@ -3,5 +3,7 @@ import "./header";
 import "./hero";
 import "./about";
 import "./blog";
+import "./blog-post";
+import "./blog-router";
 import "./projects";
 import "./contact";

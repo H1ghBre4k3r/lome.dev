@@ -10,6 +10,7 @@
     padding: 6rem 2rem 4rem;
     position: relative;
     overflow: hidden;
+    max-width: 100vw;
   }
 
   .hero::before {

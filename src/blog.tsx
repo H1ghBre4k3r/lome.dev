@@ -1,89 +1,113 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./blog.css";
 import { Component } from "./component";
+import { getBlogPosts, formatDate, type BlogPost } from "./lib/blog";
 
 @Component("website-blog")
 export class WebsiteBlog extends AbstractElement {
+  private posts: BlogPost[] = [];
+  private gridElement: HTMLElement | null = null;
+
   constructor() {
     super();
+    this.loadPosts();
+  }
+
+  async loadPosts() {
+    try {
+      this.posts = await getBlogPosts();
+      this.updateBlogGrid();
+    } catch (error) {
+      console.error('Failed to load blog posts:', error);
+      this.updateBlogGrid();
+    }
+  }
+
+  updateBlogGrid() {
+    if (!this.gridElement) return;
+
+    // Clear loading message
+    this.gridElement.innerHTML = '';
+
+    // Render blog cards
+    if (this.posts.length === 0) {
+      const noArticles = document.createElement('p');
+      noArticles.className = 'blog-loading';
+      noArticles.textContent = 'No articles found.';
+      this.gridElement.appendChild(noArticles);
+    } else {
+      this.posts.slice(0, 4).forEach(post => {
+        const card = this.createBlogCard(post);
+        this.gridElement!.appendChild(card);
+      });
+    }
+  }
+
+  createBlogCard(post: BlogPost): HTMLElement {
+    const article = document.createElement('article');
+    article.className = 'blog-card';
+    
+    // Make card clickable
+    article.style.cursor = 'pointer';
+    article.addEventListener('click', () => {
+      window.location.hash = `blog/${post.slug}`;
+    });
+
+    const meta = document.createElement('div');
+    meta.className = 'blog-meta';
+
+    const date = document.createElement('span');
+    date.className = 'blog-date';
+    date.textContent = formatDate(post.date);
+
+    const category = document.createElement('span');
+    category.className = 'blog-category';
+    category.textContent = post.category;
+
+    meta.appendChild(date);
+    meta.appendChild(category);
+
+    const title = document.createElement('h3');
+    title.className = 'blog-title';
+    title.textContent = post.title;
+
+    const excerpt = document.createElement('p');
+    excerpt.className = 'blog-excerpt';
+    excerpt.textContent = post.excerpt;
+
+    const tagsDiv = document.createElement('div');
+    tagsDiv.className = 'blog-tags';
+
+    post.tags.slice(0, 4).forEach(tag => {
+      const tagSpan = document.createElement('span');
+      tagSpan.className = 'tag';
+      tagSpan.textContent = tag;
+      tagsDiv.appendChild(tagSpan);
+    });
+
+    article.appendChild(meta);
+    article.appendChild(title);
+    article.appendChild(excerpt);
+    article.appendChild(tagsDiv);
+
+    return article;
   }
 
   render() {
-    return (
+    const section = (
       <section className="blog" id="blog">
         <div className="blog-content">
           <h2 className="section-title">Recent Articles</h2>
           <div className="blog-grid">
-            <article className="blog-card">
-              <div className="blog-meta">
-                <span className="blog-date">Coming Soon</span>
-                <span className="blog-category">Compilers</span>
-              </div>
-              <h3 className="blog-title">Building Y: An Expression-Centric Language</h3>
-              <p className="blog-excerpt">
-                Deep dive into the design decisions behind Y-lang, exploring how treating everything as an expression 
-                simplifies both the language semantics and the compiler implementation.
-              </p>
-              <div className="blog-tags">
-                <span className="tag">Rust</span>
-                <span className="tag">LLVM</span>
-                <span className="tag">Language Design</span>
-              </div>
-            </article>
-
-            <article className="blog-card">
-              <div className="blog-meta">
-                <span className="blog-date">Coming Soon</span>
-                <span className="blog-category">Rust</span>
-              </div>
-              <h3 className="blog-title">Lexer Generation with Proc Macros</h3>
-              <p className="blog-excerpt">
-                How Lachs uses Rust's powerful proc macro system to automatically generate lexers from enum definitions, 
-                making compiler frontend development faster and more maintainable.
-              </p>
-              <div className="blog-tags">
-                <span className="tag">Rust</span>
-                <span className="tag">Macros</span>
-                <span className="tag">Metaprogramming</span>
-              </div>
-            </article>
-
-            <article className="blog-card">
-              <div className="blog-meta">
-                <span className="blog-date">Coming Soon</span>
-                <span className="blog-category">TypeScript</span>
-              </div>
-              <h3 className="blog-title">Dependency Injection Without the Boilerplate</h3>
-              <p className="blog-excerpt">
-                Exploring how TypeScript decorators enable elegant dependency injection patterns in Dependory, 
-                and why decorator-based DI is more powerful than you might think.
-              </p>
-              <div className="blog-tags">
-                <span className="tag">TypeScript</span>
-                <span className="tag">Decorators</span>
-                <span className="tag">Design Patterns</span>
-              </div>
-            </article>
-
-            <article className="blog-card">
-              <div className="blog-meta">
-                <span className="blog-date">Coming Soon</span>
-                <span className="blog-category">DevOps</span>
-              </div>
-              <h3 className="blog-title">From Docker to Kubernetes: A Practical Guide</h3>
-              <p className="blog-excerpt">
-                Lessons learned deploying applications on Kubernetes, including tips for local development with K3s, 
-                managing configurations, and monitoring your cluster effectively.
-              </p>
-              <div className="blog-tags">
-                <span className="tag">Kubernetes</span>
-                <span className="tag">Docker</span>
-                <span className="tag">Infrastructure</span>
-              </div>
-            </article>
+            <p className="blog-loading">Loading articles...</p>
           </div>
         </div>
       </section>
-    );
+    ) as HTMLElement;
+
+    // Store reference to the grid element for later updates
+    this.gridElement = section.querySelector('.blog-grid');
+
+    return section;
   }
 }

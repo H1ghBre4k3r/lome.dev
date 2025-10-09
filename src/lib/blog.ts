@@ -1,0 +1,149 @@
+import { marked } from 'marked';
+
+export interface BlogPost {
+  slug: string;
+  title: string;
+  date: string;
+  category: string;
+  excerpt: string;
+  tags: string[];
+  content?: string;
+}
+
+// In-memory cache for blog posts
+let cachedPosts: BlogPost[] | null = null;
+
+/**
+ * Simple frontmatter parser for browser use
+ */
+function parseFrontmatter(markdown: string): { data: Record<string, unknown>; content: string } {
+  const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+  const match = markdown.match(frontmatterRegex);
+  
+  if (!match) {
+    return { data: {}, content: markdown };
+  }
+  
+  const [, frontmatterStr, content] = match;
+  const data: Record<string, unknown> = {};
+  
+  // Parse YAML-like frontmatter
+  const lines = frontmatterStr.split('\n');
+  let currentKey = '';
+  
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    
+    // Handle arrays
+    if (trimmed.startsWith('-')) {
+      const value = trimmed.slice(1).trim().replace(/^["']|["']$/g, '');
+      if (currentKey && Array.isArray(data[currentKey])) {
+        (data[currentKey] as string[]).push(value);
+      }
+      continue;
+    }
+    
+    // Handle key-value pairs
+    const colonIndex = trimmed.indexOf(':');
+    if (colonIndex > 0) {
+      const key = trimmed.slice(0, colonIndex).trim();
+      let value = trimmed.slice(colonIndex + 1).trim();
+      
+      // Remove quotes
+      value = value.replace(/^["']|["']$/g, '');
+      
+      // Check if next values might be an array
+      if (value === '' || value === '[') {
+        data[key] = [];
+        currentKey = key;
+      } else if (value.startsWith('[') && value.endsWith(']')) {
+        // Inline array
+        data[key] = value.slice(1, -1).split(',').map(v => v.trim().replace(/^["']|["']$/g, ''));
+        currentKey = '';
+      } else {
+        data[key] = value;
+        currentKey = '';
+      }
+    }
+  }
+  
+  return { data, content };
+}
+
+/**
+ * Fetches and parses all blog posts from the /blog directory
+ */
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  if (cachedPosts) {
+    return cachedPosts;
+  }
+
+  try {
+    // Fetch the blog index file which lists all available posts
+    const response = await fetch('/blog/index.json');
+    if (!response.ok) {
+      console.warn('No blog index found, returning empty array');
+      return [];
+    }
+    
+    const postFiles: string[] = await response.json();
+    
+    const posts = await Promise.all(
+      postFiles.map(async (filename) => {
+        const slug = filename.replace('.md', '');
+        const response = await fetch(`/blog/${filename}`);
+        const markdown = await response.text();
+        
+        const { data, content } = parseFrontmatter(markdown);
+        
+        return {
+          slug,
+          title: (data.title as string) || 'Untitled',
+          date: (data.date as string) || new Date().toISOString(),
+          category: (data.category as string) || 'Uncategorized',
+          excerpt: (data.excerpt as string) || '',
+          tags: (data.tags as string[]) || [],
+          content,
+        };
+      })
+    );
+    
+    // Sort by date, newest first
+    cachedPosts = posts.sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+    
+    return cachedPosts;
+  } catch (error) {
+    console.error('Error loading blog posts:', error);
+    return [];
+  }
+}
+
+/**
+ * Gets a single blog post by slug
+ */
+export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  const posts = await getBlogPosts();
+  return posts.find(post => post.slug === slug) || null;
+}
+
+/**
+ * Converts markdown content to HTML
+ */
+export function markdownToHtml(markdown: string): string {
+  return marked(markdown) as string;
+}
+
+/**
+ * Formats a date string to a readable format
+ */
+export function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}

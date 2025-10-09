@@ -5,6 +5,8 @@ declare namespace JSX {
     "website-hero": {};
     "website-about": {};
     "website-blog": {};
+    "website-blog-post": {};
+    "website-blog-router": {};
     "website-projects": {};
     "website-contact": {};
   }
