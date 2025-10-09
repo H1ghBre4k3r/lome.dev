@@ -47,13 +47,13 @@
     opacity: 0.8;
   }
 
-  nav {
+  .header-content nav {
     display: flex;
     gap: 2rem;
     align-items: center;
   }
 
-  nav a {
+  .header-content nav a {
     text-decoration: none;
     color: inherit;
     font-weight: 500;
@@ -61,7 +61,7 @@
     position: relative;
   }
 
-  nav a:not(.github-link)::after {
+  .header-content nav a:not(.github-link)::after {
     content: '';
     position: absolute;
     bottom: -4px;
@@ -72,7 +72,7 @@
     transition: width 0.3s ease;
   }
 
-  nav a:not(.github-link):hover::after {
+  .header-content nav a:not(.github-link):hover::after {
     width: 100%;
   }
 
@@ -96,16 +96,74 @@
   }
 
   @media only screen and (max-width: 768px) {
-    nav {
-      gap: 1rem;
-    }
-
-    nav a:not(.github-link) {
-      font-size: 0.9rem;
-    }
-
     .header-content {
       padding: 0 1rem;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+    }
+
+    .header-content nav {
+      gap: 0.75rem;
+    }
+
+    .header-content nav a:not(.github-link) {
+      font-size: 0.85rem;
+    }
+
+    .github-link {
+      padding: 0.375rem;
+    }
+
+    .github-link svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  @media only screen and (max-width: 480px) {
+    .header-content {
+      padding: 0 0.75rem;
+    }
+
+    .logo {
+      font-size: 1.125rem;
+    }
+
+    .header-content nav {
+      gap: 0.5rem;
+    }
+
+    .header-content nav a:not(.github-link) {
+      font-size: 0.75rem;
+    }
+
+    .github-link {
+      padding: 0.25rem;
+    }
+
+    .github-link svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  @media only screen and (max-width: 360px) {
+    .header-content {
+      padding: 0 0.5rem;
+    }
+
+    .logo {
+      font-size: 1rem;
+    }
+
+    .header-content nav {
+      gap: 0.375rem;
+    }
+
+    .header-content nav a:not(.github-link) {
+      font-size: 0.7rem;
     }
   }
 }

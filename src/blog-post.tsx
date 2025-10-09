@@ -2,23 +2,28 @@ import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./blog-post.css";
 import { Component } from "./component";
 import { getBlogPost, markdownToHtml, formatDate, type BlogPost } from "./lib/blog";
+import { WebsiteBlogTOC } from "./blog-toc";
 
 @Component("website-blog-post")
 export class WebsiteBlogPost extends AbstractElement {
   private post: BlogPost | null = null;
   private contentElement: HTMLElement | null = null;
+  private tocComponent: WebsiteBlogTOC;
 
   constructor() {
     super();
+    this.tocComponent = new WebsiteBlogTOC();
   }
 
-  async loadPost(slug: string) {
+  async loadPost(slug: string): Promise<BlogPost | null> {
     try {
       this.post = await getBlogPost(slug);
       this.updateContent();
+      return this.post;
     } catch (error) {
       console.error('Failed to load blog post:', error);
       this.showError();
+      return null;
     }
   }
 
@@ -35,9 +40,14 @@ export class WebsiteBlogPost extends AbstractElement {
     header.className = 'post-header';
 
     const backLink = document.createElement('a');
-    backLink.href = '#blog';
+    backLink.href = '/';
     backLink.className = 'back-link';
     backLink.innerHTML = '← Back to Articles';
+    backLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.history.pushState({}, '', '/');
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    });
 
     const meta = document.createElement('div');
     meta.className = 'post-meta';
@@ -84,6 +94,11 @@ export class WebsiteBlogPost extends AbstractElement {
     this.contentElement.innerHTML = '';
     this.contentElement.appendChild(header);
     this.contentElement.appendChild(article);
+
+    // Generate TOC after content is rendered
+    setTimeout(() => {
+      this.tocComponent.generateTOC(article);
+    }, 0);
   }
 
   showError() {
@@ -94,8 +109,17 @@ export class WebsiteBlogPost extends AbstractElement {
     error.innerHTML = `
       <h2>Post Not Found</h2>
       <p>Sorry, the blog post you're looking for doesn't exist.</p>
-      <a href="#blog" class="btn btn-primary">Back to Blog</a>
+      <a href="/" class="btn btn-primary">Back to Blog</a>
     `;
+    
+    const btn = error.querySelector('.btn');
+    if (btn) {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.history.pushState({}, '', '/');
+        window.dispatchEvent(new PopStateEvent('popstate'));
+      });
+    }
 
     this.contentElement.innerHTML = '';
     this.contentElement.appendChild(error);
@@ -104,8 +128,13 @@ export class WebsiteBlogPost extends AbstractElement {
   render() {
     const section = (
       <section className="blog-post" id="blog-post">
-        <div className="blog-post-content">
-          <div className="post-loading">Loading article...</div>
+        <div className="blog-post-container">
+          <div className="blog-post-content">
+            <div className="post-loading">Loading article...</div>
+          </div>
+          <aside className="blog-post-sidebar">
+            {this.tocComponent.render()}
+          </aside>
         </div>
       </section>
     ) as HTMLElement;

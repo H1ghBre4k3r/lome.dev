@@ -13,27 +13,44 @@ export class WebsiteBlogRouter extends AbstractElement {
   }
 
   setupRouting() {
-    // Handle initial hash on load
-    this.handleHashChange();
+    // Handle initial route on load
+    this.handleRouteChange();
 
-    // Listen for hash changes
+    // Listen for popstate (back/forward buttons)
+    window.addEventListener('popstate', () => {
+      this.handleRouteChange();
+    });
+
+    // Listen for hash changes (in-page navigation)
     window.addEventListener('hashchange', () => {
-      this.handleHashChange();
+      this.handleHashNavigation();
     });
   }
 
-  handleHashChange() {
+  handleHashNavigation() {
+    const path = window.location.pathname;
     const hash = window.location.hash;
+    
+    // If we're on a blog post and user clicks a nav link with hash
+    // Navigate to home first, then scroll to section
+    if (path.startsWith('/blog/') && path !== '/blog/' && hash) {
+      window.history.pushState({}, '', '/' + hash);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
+  }
+
+  handleRouteChange() {
+    const path = window.location.pathname;
     
     if (!this.blogList || !this.blogPost) {
       // Elements not ready yet, try again after render
-      setTimeout(() => this.handleHashChange(), 100);
+      setTimeout(() => this.handleRouteChange(), 100);
       return;
     }
 
     // Check if we're on a blog post page
-    if (hash.startsWith('#blog/')) {
-      const slug = hash.replace('#blog/', '');
+    if (path.startsWith('/blog/') && path !== '/blog/') {
+      const slug = path.replace('/blog/', '');
       this.showBlogPost(slug);
     } else {
       this.showBlogList();
@@ -71,11 +88,17 @@ export class WebsiteBlogRouter extends AbstractElement {
     // Show other sections
     this.showOtherSections();
     
-    // Scroll to blog section
-    const blogSection = document.getElementById('blog');
-    if (blogSection && window.location.hash === '#blog') {
+    // Update page title
+    document.title = 'Louis Mömmer - Software Engineer';
+    
+    // Scroll to blog section if coming from blog post
+    const path = window.location.pathname;
+    if (path === '/blog' || path === '/blog/') {
       setTimeout(() => {
-        blogSection.scrollIntoView({ behavior: 'smooth' });
+        const blogSection = document.getElementById('blog');
+        if (blogSection) {
+          blogSection.scrollIntoView({ behavior: 'smooth' });
+        }
       }, 100);
     }
   }
@@ -84,7 +107,7 @@ export class WebsiteBlogRouter extends AbstractElement {
     if (!this.blogList || !this.blogPost) return;
 
     this.blogList.style.display = 'none';
-    this.blogPost.style.display = 'contents';
+    this.blogPost.style.display = 'block';
 
     // Hide other sections
     this.hideOtherSections();
@@ -92,7 +115,12 @@ export class WebsiteBlogRouter extends AbstractElement {
     // Load the blog post
     const postComponent = this.blogPost as unknown as WebsiteBlogPost;
     if (postComponent.loadPost) {
-      postComponent.loadPost(slug);
+      postComponent.loadPost(slug).then((post) => {
+        // Update page title with post title
+        if (post) {
+          document.title = `${post.title} - Louis Mömmer`;
+        }
+      });
     }
 
     // Scroll to top

@@ -49,8 +49,11 @@ export class WebsiteBlog extends AbstractElement {
     
     // Make card clickable
     article.style.cursor = 'pointer';
-    article.addEventListener('click', () => {
-      window.location.hash = `blog/${post.slug}`;
+    article.addEventListener('click', (e) => {
+      e.preventDefault();
+      const url = `/blog/${post.slug}`;
+      window.history.pushState({}, '', url);
+      window.dispatchEvent(new PopStateEvent('popstate'));
     });
 
     const meta = document.createElement('div');

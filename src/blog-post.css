@@ -1,6 +1,6 @@
 @layer organism {
   website-blog-post {
-    display: contents;
+    display: block;
   }
 
   .blog-post {
@@ -9,9 +9,28 @@
     background: linear-gradient(180deg, rgba(102, 126, 234, 0.02) 0%, transparent 20%);
   }
 
+  .blog-post-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 3rem;
+    align-items: start;
+  }
+
   .blog-post-content {
     max-width: 760px;
     margin: 0 auto;
+    min-width: 0;
+  }
+
+  .blog-post-sidebar {
+    display: block;
+    position: sticky;
+    top: 6rem;
+    height: fit-content;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
   }
 
   .post-loading {
@@ -428,6 +447,18 @@
   .post-error .btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  }
+
+  /* Hide sidebar on tablets and smaller */
+  @media only screen and (max-width: 1200px) {
+    .blog-post-container {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .blog-post-sidebar {
+      display: none;
+    }
   }
 
   @media only screen and (max-width: 768px) {
