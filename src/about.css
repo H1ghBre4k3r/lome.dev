@@ -88,6 +88,18 @@
     gap: 1.5rem;
   }
 
+  @keyframes floaty {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .skill-item { animation: floaty 6s ease-in-out infinite; }
+  .skill-item:nth-child(odd) { animation-delay: 0.8s; }
+
+  .skill-item:hover svg { filter: drop-shadow(0 0 10px rgba(102,126,234,0.6)); }
+  .skill-item:hover { background: rgba(102,126,234,0.12); }
+
+
   .skill-item {
     display: flex;
     flex-direction: column;

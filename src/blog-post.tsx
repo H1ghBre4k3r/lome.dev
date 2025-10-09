@@ -2,17 +2,16 @@ import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./blog-post.css";
 import { Component } from "./component";
 import { getBlogPost, markdownToHtml, formatDate, type BlogPost } from "./lib/blog";
-import { WebsiteBlogTOC } from "./blog-toc";
+import { WebsiteBlogTOC } from "./blog-toc"; // type only
 
 @Component("website-blog-post")
 export class WebsiteBlogPost extends AbstractElement {
   private post: BlogPost | null = null;
   private contentElement: HTMLElement | null = null;
-  private tocComponent: WebsiteBlogTOC;
+  private tocEl: WebsiteBlogTOC | null = null;
 
   constructor() {
     super();
-    this.tocComponent = new WebsiteBlogTOC();
   }
 
   async loadPost(slug: string): Promise<BlogPost | null> {
@@ -97,7 +96,7 @@ export class WebsiteBlogPost extends AbstractElement {
 
     // Generate TOC after content is rendered
     setTimeout(() => {
-      this.tocComponent.generateTOC(article);
+      this.tocEl?.generateTOC(article);
     }, 0);
   }
 
@@ -133,13 +132,15 @@ export class WebsiteBlogPost extends AbstractElement {
             <div className="post-loading">Loading article...</div>
           </div>
           <aside className="blog-post-sidebar">
-            {this.tocComponent.render()}
+            <website-blog-toc></website-blog-toc>
           </aside>
         </div>
       </section>
     ) as HTMLElement;
 
     this.contentElement = section.querySelector('.blog-post-content');
+    this.tocEl = section.querySelector('website-blog-toc') as unknown as WebsiteBlogTOC;
+
 
     return section;
   }

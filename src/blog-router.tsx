@@ -30,7 +30,7 @@ export class WebsiteBlogRouter extends AbstractElement {
   handleHashNavigation() {
     const path = window.location.pathname;
     const hash = window.location.hash;
-    
+
     // If we're on a blog post and user clicks a nav link with hash
     // Navigate to home first, then scroll to section
     if (path.startsWith('/blog/') && path !== '/blog/' && hash) {
@@ -41,7 +41,7 @@ export class WebsiteBlogRouter extends AbstractElement {
 
   handleRouteChange() {
     const path = window.location.pathname;
-    
+
     if (!this.blogList || !this.blogPost) {
       // Elements not ready yet, try again after render
       setTimeout(() => this.handleRouteChange(), 100);
@@ -84,13 +84,13 @@ export class WebsiteBlogRouter extends AbstractElement {
 
     this.blogList.style.display = 'contents';
     this.blogPost.style.display = 'none';
-    
+
     // Show other sections
     this.showOtherSections();
-    
+
     // Update page title
-    document.title = 'Louis Mömmer - Software Engineer';
-    
+    document.title = 'H1ghBre4k3r - lome.dev';
+
     // Scroll to blog section if coming from blog post
     const path = window.location.pathname;
     if (path === '/blog' || path === '/blog/') {
@@ -118,7 +118,7 @@ export class WebsiteBlogRouter extends AbstractElement {
       postComponent.loadPost(slug).then((post) => {
         // Update page title with post title
         if (post) {
-          document.title = `${post.title} - Louis Mömmer`;
+          document.title = `${post.title} - H1ghBre4k3r`;
         }
       });
     }

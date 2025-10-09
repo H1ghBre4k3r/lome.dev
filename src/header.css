@@ -15,6 +15,24 @@
     padding: 1rem 0;
   }
 
+  .skip-link {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -40px;
+    background: #111;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    z-index: 1001;
+    transition: top 0.2s ease;
+  }
+
+  .skip-link:focus {
+    top: 0.5rem;
+  }
+
   @media (prefers-color-scheme: light) {
     website-header > header {
       background: rgba(255, 255, 255, 0.95);

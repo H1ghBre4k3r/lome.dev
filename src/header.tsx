@@ -34,6 +34,7 @@ export class WebsiteHeader extends AbstractElement {
   render() {
     const header = (
       <header>
+        <a className="skip-link" href="#main-content">Skip to content</a>
         <div className="header-content">
           <a href="/" className="logo">lome.dev</a>
           <nav>

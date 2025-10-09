@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 declare namespace JSX {
   export interface IntrinsicElements {
+    "particle-background": {};
     "website-header": {};
     "website-hero": {};
     "website-about": {};
@@ -9,5 +10,10 @@ declare namespace JSX {
     "website-blog-router": {};
     "website-projects": {};
     "website-contact": {};
+    "github-stats": {};
+    "website-achievements": {};
+    "code-showcase": {};
+    "interactive-terminal": {};
+    "website-blog-toc": {};
   }
 }

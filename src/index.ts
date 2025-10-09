@@ -1,7 +1,10 @@
 import "./index.css";
 import "./highlight.css";
+import "./particle-background";
 import "./main";
 import "./header";
+import "./terminal-typing";
+import "./interactive-terminal";
 import "./hero";
 import "./about";
 import "./blog";
@@ -10,3 +13,5 @@ import "./blog-toc";
 import "./blog-router";
 import "./projects";
 import "./contact";
+import "./github-stats";
+import "./achievements";

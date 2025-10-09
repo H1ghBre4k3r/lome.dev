@@ -3,11 +3,67 @@ import "./projects.css";
 import { Component } from "./component";
 import { siGithub } from "simple-icons";
 import { svg } from "./utils";
+import { addCardTiltToAll } from "./card-tilt";
 
 @Component("website-projects")
 export class WebsiteProjects extends AbstractElement {
   constructor() {
     super();
+  }
+
+  async connectedCallback() {
+    super.connectedCallback();
+    setTimeout(() => { addCardTiltToAll('.project-card', this); }, 100);
+    // Fetch GitHub metadata best-effort
+    try { await this.fetchMetadata(); } catch (e) { console.error(e); }
+  }
+
+  async fetchMetadata() {
+    const map: Record<string, string> = {
+      "Y Programming Language": "H1ghBre4k3r/y-lang",
+      "Dependory": "H1ghBre4k3r/dependory",
+      "Lachs": "H1ghBre4k3r/lachs",
+      "Disruption": "H1ghBre4k3r/disruption"
+    };
+    const cards = this.querySelectorAll('.project-card');
+    await Promise.all(Array.from(cards).map(async (card) => {
+      const title = card.querySelector('h3')?.textContent?.trim() || '';
+      const repo = map[title];
+      if (!repo) return;
+      const [res, langRes] = await Promise.all([
+        fetch(`https://api.github.com/repos/${repo}`),
+        fetch(`https://api.github.com/repos/${repo}/languages`)
+      ]);
+      if (!res.ok) return;
+      const data = await res.json();
+      const meta = document.createElement('div');
+      meta.className = 'project-meta';
+      meta.innerHTML = `
+        <span class="meta-badge">★ ${data.stargazers_count}</span>
+        <span class="meta-badge">⑂ ${data.forks_count}</span>
+        <span class="meta-badge">Updated ${new Date(data.pushed_at).toLocaleDateString()}</span>
+      `;
+      card.appendChild(meta);
+
+      // Languages
+      if (langRes.ok) {
+        const langs = await langRes.json();
+        const entries = Object.entries(langs) as [string, number][];
+        entries.sort((a, b) => b[1] - a[1]);
+        const top = entries.slice(0, 2).map(e => e[0]);
+        if (top.length) {
+          const langDiv = document.createElement('div');
+          langDiv.className = 'project-languages';
+          top.forEach(name => {
+            const badge = document.createElement('span');
+            badge.className = 'lang-badge';
+            badge.textContent = name;
+            langDiv.appendChild(badge);
+          });
+          card.appendChild(langDiv);
+        }
+      }
+    }));
   }
 
   render() {

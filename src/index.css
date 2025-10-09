@@ -84,6 +84,11 @@
   }
 
   svg {
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    main { scroll-snap-type: y proximity; }
+    section { scroll-snap-align: start; }
+  }
+
     fill: currentColor;
   }
 
@@ -93,10 +98,48 @@
 }
 
 @layer organism {
+  /* Section neon dividers (skip first section e.g., hero) */
+  section + section::after {
+    content: '';
+    display: block;
+    height: 1px;
+    max-width: var(--content-width);
+    margin: 4rem auto 0;
+    background: linear-gradient(90deg, transparent, rgba(102,126,234,0.35), rgba(118,75,162,0.35), transparent);
+    filter: blur(0.2px);
+  }
+
+  /* Scroll reveal animations */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger animation for cards */
+  .project-card.scroll-reveal,
+  .blog-card.scroll-reveal {
+    transition-delay: calc(var(--index, 0) * 0.1s);
+  }
 }
 
 @layer utility {
   [hidden] {
     display: none !important;
   }
+
+  /* Neon link/button hover */
+  a, .btn { transition: filter 200ms ease, text-shadow 200ms ease; }
+  a:hover, .btn:hover { text-shadow: 0 0 10px rgba(102,126,234,0.6); }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(102,126,234,0.6), rgba(118,75,162,0.6)); border-radius: 6px; }
+  ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, rgba(102,126,234,0.8), rgba(118,75,162,0.8)); }
 }

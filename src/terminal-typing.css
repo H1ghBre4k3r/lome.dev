@@ -1,0 +1,381 @@
+@layer organism {
+  terminal-typing,
+  interactive-terminal {
+    display: block;
+  }
+
+  .terminal-window {
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.5),
+      0 0 40px rgba(102, 126, 234, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    font-family: 'Fliege Mono', monospace;
+    position: relative;
+    cursor: text;
+    transition: transform 300ms ease, box-shadow 600ms ease;
+  @media (hover: hover) and (pointer: fine) {
+    .terminal-window:hover {
+      transform: perspective(900px) rotateX(1.2deg) rotateY(-1.2deg) scale(1.01);
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.6),
+        0 0 60px rgba(118, 75, 162, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+  }
+
+  @keyframes borderGlow {
+    0% {
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(102, 126, 234, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    100% {
+      box-shadow:
+        0 24px 72px rgba(0, 0, 0, 0.6),
+        0 0 70px rgba(118, 75, 162, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+  }
+
+    animation: borderGlow 8s ease-in-out infinite alternate;
+  }
+
+  /* CRT Scanline Effect */
+  .terminal-window::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      transparent 50%,
+      rgba(0, 0, 0, 0.1) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 10;
+    animation: scanline 8s linear infinite;
+  }
+
+  /* Screen Glow Effect */
+  .terminal-window::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(102, 126, 234, 0.1) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: 9;
+  }
+
+  @keyframes scanline {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 0 100%;
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    .terminal-window {
+      background: rgba(30, 30, 30, 0.95);
+      border-color: rgba(102, 126, 234, 0.4);
+    }
+  }
+
+  .terminal-header {
+    background: rgba(40, 40, 40, 0.8);
+    border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+  }
+
+  .terminal-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(102,126,234,0.08), transparent);
+    pointer-events: none;
+  }
+
+  .terminal-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .terminal-button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
+    position: relative;
+    transition: transform 200ms ease, box-shadow 200ms ease;
+  }
+
+  .terminal-button::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: radial-gradient(circle, currentColor 0%, transparent 60%);
+    opacity: 0.25;
+    filter: blur(4px);
+    transition: opacity 200ms ease;
+  }
+
+  .terminal-button:hover { transform: scale(1.1); }
+  .terminal-button:hover::after { opacity: 0.45; }
+
+  .terminal-button.close {
+    background: #ff5f56;
+    box-shadow: 0 0 8px rgba(255, 95, 86, 0.4);
+  }
+
+  .terminal-button.minimize {
+    background: #ffbd2e;
+    box-shadow: 0 0 8px rgba(255, 189, 46, 0.4);
+  }
+
+  .terminal-button.maximize {
+    background: #27c93f;
+    box-shadow: 0 0 8px rgba(39, 201, 63, 0.4);
+  }
+
+  .terminal-title {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 600;
+    background: linear-gradient(90deg, #c3cfe2, #ffffff, #c3cfe2);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: titleShimmer 6s linear infinite;
+  }
+
+  @keyframes titleShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .terminal-body {
+    padding: 1.5rem;
+    height: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    position: relative;
+    z-index: 11;
+    scroll-behavior: smooth;
+    background-image:
+      radial-gradient(1200px 600px at 80% -20%, rgba(102,126,234,0.08), transparent 40%),
+      radial-gradient(800px 400px at -10% 100%, rgba(118,75,162,0.12), transparent 50%),
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: auto, auto, 24px 24px, 24px 24px;
+    background-position: 0 0, 0 0, 0 0, 0 0;
+  }
+
+  /* Custom scrollbar */
+  .terminal-body::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .terminal-body::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .terminal-body::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.4);
+    border-radius: 4px;
+  }
+
+  .terminal-body::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.6);
+  }
+
+  .terminal-line {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0.2rem;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .terminal-prompt {
+    color: #39FF14;
+    font-weight: 700;
+    margin-right: 0.5rem;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+  }
+
+  .terminal-text {
+    color: rgba(255, 255, 255, 0.9);
+    flex: 1;
+  }
+
+  .terminal-line.highlight .terminal-text {
+    color: #00D9FF;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+  }
+
+  .terminal-line.accent .terminal-text {
+    color: #FF6B35;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+  }
+
+  .terminal-line.gradient .terminal-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+  }
+
+  .terminal-cursor {
+    color: #39FF14;
+    margin-left: 2px;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.8);
+    transition: opacity 0.3s ease, filter 0.3s ease;
+    filter: drop-shadow(0 0 6px rgba(57,255,20,0.6));
+  }
+  /* Fixed width for terminal window */
+  .terminal-window {
+    width: clamp(520px, 44vw, 680px);
+    max-width: 100%;
+  }
+
+
+  .terminal-cursor.active {
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% {
+      opacity: 1;
+    }
+    51%, 100% {
+      opacity: 0;
+    }
+  }
+
+  /* Interactive Input */
+  .terminal-input-line {
+    margin-bottom: 0;
+  }
+
+  .terminal-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Fliege Mono', monospace;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+    caret-color: #39FF14;
+    width: 100%;
+  }
+
+  .terminal-input:focus {
+    outline: none;
+  }
+
+  /* Ensure cursor is visible */
+  .terminal-input-line .terminal-cursor {
+    display: inline-block;
+    vertical-align: baseline;
+    margin-left: 2px;
+  }
+
+  /* Output Styling */
+  .terminal-line.error .terminal-text {
+    color: #ff6b6b;
+    font-weight: 600;
+  }
+
+  .terminal-line.success .terminal-text {
+    color: #39FF14;
+    font-weight: 600;
+  }
+
+  .terminal-line.warning .terminal-text {
+    color: #FFD93D;
+    font-weight: 600;
+  }
+
+  .terminal-line.info .terminal-text {
+    color: #00D9FF;
+  }
+  /* Preserve formatting for preformatted outputs (e.g., neofetch) */
+  .terminal-line.pre .terminal-text {
+    white-space: pre;
+    display: block;
+    font-size: 0.8rem;
+    line-height: 1.15;
+  }
+
+
+  /* Box drawing characters should have proper spacing */
+  .terminal-text {
+    letter-spacing: 0;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .terminal-window {
+      border-radius: 8px;
+      width: 100%;
+    }
+
+    .terminal-header {
+      padding: 0.625rem 0.875rem;
+    }
+
+    .terminal-button {
+      width: 10px;
+      height: 10px;
+    }
+
+    .terminal-title {
+      font-size: 0.75rem;
+    }
+
+    .terminal-body {
+      padding: 1rem;
+      height: 200px;
+      font-size: 0.85rem;
+    }
+  }
+}

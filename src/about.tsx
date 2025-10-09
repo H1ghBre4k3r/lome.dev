@@ -15,6 +15,7 @@ export class WebsiteAbout extends AbstractElement {
       <section className="about" id="about">
         <div className="about-content">
           <h2 className="section-title">About Me</h2>
+          <github-stats></github-stats>
           <div className="about-grid">
             <div className="about-text">
               <p>
@@ -61,6 +62,7 @@ export class WebsiteAbout extends AbstractElement {
                 </div>
               </div>
             </div>
+            <website-achievements></website-achievements>
           </div>
         </div>
       </section>
