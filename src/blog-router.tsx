@@ -20,6 +20,23 @@ export class WebsiteBlogRouter extends AbstractElement {
     window.addEventListener('popstate', () => {
       this.handleRouteChange();
     });
+
+    // Listen for hash changes (in-page navigation)
+    window.addEventListener('hashchange', () => {
+      this.handleHashNavigation();
+    });
+  }
+
+  handleHashNavigation() {
+    const path = window.location.pathname;
+    const hash = window.location.hash;
+    
+    // If we're on a blog post and user clicks a nav link with hash
+    // Navigate to home first, then scroll to section
+    if (path.startsWith('/blog/') && path !== '/blog/' && hash) {
+      window.history.pushState({}, '', '/' + hash);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
   }
 
   handleRouteChange() {

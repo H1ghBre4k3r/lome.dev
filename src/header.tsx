@@ -11,11 +11,31 @@ export class WebsiteHeader extends AbstractElement {
     super();
   }
 
+  handleNavClick(e: Event, hash: string) {
+    const path = window.location.pathname;
+    
+    // If we're on a blog post page, navigate to home first
+    if (path.startsWith('/blog/') && path !== '/blog/') {
+      e.preventDefault();
+      window.history.pushState({}, '', '/' + hash);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+      
+      // Wait for route change, then scroll
+      setTimeout(() => {
+        const target = document.querySelector(hash);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+    // Otherwise, let the default hash navigation work
+  }
+
   render() {
-    return (
+    const header = (
       <header>
         <div className="header-content">
-          <a href="#home" className="logo">lome.dev</a>
+          <a href="/" className="logo">lome.dev</a>
           <nav>
             <a href="#about">About</a>
             <a href="#blog">Blog</a>
@@ -27,6 +47,31 @@ export class WebsiteHeader extends AbstractElement {
           </nav>
         </div>
       </header>
-    );
+    ) as HTMLElement;
+
+    // Add click handlers to nav links
+    const navLinks = header.querySelectorAll('nav a[href^="#"]');
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href) {
+        link.addEventListener('click', (e) => this.handleNavClick(e, href));
+      }
+    });
+
+    // Handle logo click
+    const logo = header.querySelector('.logo');
+    if (logo) {
+      logo.addEventListener('click', (e) => {
+        const path = window.location.pathname;
+        // If on blog post, navigate to home
+        if (path.startsWith('/blog/') && path !== '/blog/') {
+          e.preventDefault();
+          window.history.pushState({}, '', '/');
+          window.dispatchEvent(new PopStateEvent('popstate'));
+        }
+      });
+    }
+
+    return header;
   }
 }
