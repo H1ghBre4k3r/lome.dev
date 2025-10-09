@@ -26,11 +26,14 @@ export class ParticleBackground extends AbstractElement {
 
   connectedCallback() {
     super.connectedCallback();
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.setupCanvas();
-    this.createParticles();
-    this.startAnimation();
-    window.addEventListener('resize', () => this.setupCanvas());
-    window.addEventListener('mousemove', (e) => this.onMouseMove(e));
+    if (!reduce) {
+      this.createParticles();
+      this.startAnimation();
+      window.addEventListener('resize', () => this.setupCanvas());
+      window.addEventListener('mousemove', (e) => this.onMouseMove(e));
+    }
   }
 
   disconnectedCallback() {

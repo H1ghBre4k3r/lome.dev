@@ -17,7 +17,7 @@ export class WebsiteMain extends AbstractElement {
 
   render() {
     return (
-      <main>
+      <main id="main-content">
         <particle-background></particle-background>
         <website-header></website-header>
         <website-hero></website-hero>
