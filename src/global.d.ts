@@ -10,5 +10,10 @@ declare namespace JSX {
     "website-blog-router": {};
     "website-projects": {};
     "website-contact": {};
+    "github-stats": {};
+    "website-achievements": {};
+    "code-showcase": {};
+    "interactive-terminal": {};
+    "website-blog-toc": {};
   }
 }

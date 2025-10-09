@@ -1,0 +1,21 @@
+@layer organism {
+  code-showcase { display: contents; }
+
+  .code-showcase { padding: 2rem 2rem 0; max-width: var(--content-width); margin: 0 auto; }
+
+  .code-card {
+    border-radius: 16px;
+    background: rgba(10,10,10,0.9);
+    border: 1px solid rgba(102,126,234,0.35);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(118,75,162,0.15);
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+  }
+
+  .code-card-header { display:flex; align-items:center; gap:8px; padding:8px 12px; background: rgba(30,30,30,0.9); border-bottom: 1px solid rgba(102,126,234,0.2); }
+  .dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .dot.red{ background:#ff5f56 } .dot.yellow{ background:#ffbd2e } .dot.green{ background:#27c93f }
+  .code-title{ margin-left:auto; font-size:0.8rem; color: rgba(255,255,255,0.7); font-weight:700; }
+
+  pre { margin:0; padding: 16px 20px; overflow:auto; }
+}

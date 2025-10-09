@@ -18,7 +18,10 @@ export class ParticleBackground extends AbstractElement {
   private animationFrame: number = 0;
   private mouseX: number = 0;
   private mouseY: number = 0;
-  private particleCount: number = 50;
+  private particleCount: number = 60;
+  private hueBase: number = 255; // blue-purple base
+  private shooting: {x:number;y:number;vx:number;vy:number;life:number}[] = [];
+  private lastSpawn = 0;
 
   constructor() {
     super();
@@ -73,13 +76,31 @@ export class ParticleBackground extends AbstractElement {
   startAnimation() {
     if (!this.ctx || !this.canvas) return;
 
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    const ctx = this.ctx;
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    const time = performance.now() * 0.001;
+    const mouseInfluence = 200;
+
+    // Spawn shooting stars occasionally
+    if (time - this.lastSpawn > 2 && Math.random() < 0.05) {
+      this.lastSpawn = time;
+      const fromTop = Math.random() < 0.5;
+      this.shooting.push({
+        x: fromTop ? Math.random() * this.canvas.width : -20,
+        y: fromTop ? -20 : Math.random() * this.canvas.height,
+        vx: 4 + Math.random() * 2,
+        vy: 2 + Math.random() * 1.5,
+        life: 1.0
+      });
+    }
 
     // Update and draw particles
     this.particles.forEach((particle, i) => {
-      // Update position
+      // Scroll parallax influence
+      const scrollY = window.scrollY || 0;
+      particle.y += particle.vy + scrollY * 0.0001;
       particle.x += particle.vx;
-      particle.y += particle.vy;
 
       // Bounce off edges
       if (particle.x < 0 || particle.x > this.canvas!.width) particle.vx *= -1;
@@ -90,35 +111,52 @@ export class ParticleBackground extends AbstractElement {
       const dy = this.mouseY - particle.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
-      if (dist < 150) {
-        const force = (150 - dist) / 150;
+      if (dist < mouseInfluence) {
+        const force = (mouseInfluence - dist) / mouseInfluence;
         particle.x -= dx * force * 0.03;
         particle.y -= dy * force * 0.03;
       }
 
-      // Draw particle
-      this.ctx!.beginPath();
-      this.ctx!.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-      this.ctx!.fillStyle = `rgba(102, 126, 234, ${0.4 + Math.random() * 0.3})`;
-      this.ctx!.fill();
+      // Color variation
+      const hue = (this.hueBase + Math.sin(time + i) * 25) % 360;
+      const alpha = 0.35 + 0.25 * (0.5 + 0.5 * Math.sin(time * 2 + i));
 
-      // Draw connections
+      // Draw particle
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${hue}, 80%, 70%, ${alpha})`;
+      ctx.fill();
+
+      // Draw pulsing connections
       this.particles.forEach((p2, j) => {
         if (i === j) return;
-
-        const dx = particle.x - p2.x;
-        const dy = particle.y - p2.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < 150) {
-          this.ctx!.beginPath();
-          this.ctx!.strokeStyle = `rgba(102, 126, 234, ${0.15 * (1 - distance / 150)})`;
-          this.ctx!.lineWidth = 0.5;
-          this.ctx!.moveTo(particle.x, particle.y);
-          this.ctx!.lineTo(p2.x, p2.y);
-          this.ctx!.stroke();
+        const dx2 = particle.x - p2.x;
+        const dy2 = particle.y - p2.y;
+        const distance = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+        if (distance < 180) {
+          ctx.beginPath();
+          ctx.strokeStyle = `hsla(${hue}, 80%, 70%, ${0.12 * (1 - distance / 180)})`;
+          ctx.lineWidth = 0.5 + 0.2 * Math.sin(time * 2 + distance * 0.05);
+          ctx.moveTo(particle.x, particle.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
         }
       });
+    });
+
+    // Draw shooting stars
+    this.shooting = this.shooting.filter(s => (s.life -= 0.01) > 0);
+    this.shooting.forEach((s) => {
+      s.x += s.vx; s.y += s.vy;
+      const grad = ctx.createLinearGradient(s.x - 40, s.y - 40, s.x, s.y);
+      grad.addColorStop(0, "rgba(255,255,255,0)");
+      grad.addColorStop(1, "rgba(200,220,255,0.8)");
+      ctx.beginPath();
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 2;
+      ctx.moveTo(s.x - 40, s.y - 40);
+      ctx.lineTo(s.x, s.y);
+      ctx.stroke();
     });
 
     this.animationFrame = requestAnimationFrame(() => this.startAnimation());

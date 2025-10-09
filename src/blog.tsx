@@ -41,6 +41,11 @@ export class WebsiteBlog extends AbstractElement {
         const card = this.createBlogCard(post);
         this.gridElement!.appendChild(card);
       });
+      // Add tilt to all blog cards after render
+      setTimeout(() => {
+        const cards = this.gridElement!.querySelectorAll('.blog-card');
+        cards.forEach(c => addCardTilt(c as HTMLElement));
+      }, 50);
     }
   }
 

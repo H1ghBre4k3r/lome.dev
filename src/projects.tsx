@@ -11,12 +11,37 @@ export class WebsiteProjects extends AbstractElement {
     super();
   }
 
-  connectedCallback() {
+  async connectedCallback() {
     super.connectedCallback();
-    // Add tilt effect to project cards after render
-    setTimeout(() => {
-      addCardTiltToAll('.project-card', this);
-    }, 100);
+    setTimeout(() => { addCardTiltToAll('.project-card', this); }, 100);
+    // Fetch GitHub metadata best-effort
+    try { await this.fetchMetadata(); } catch {}
+  }
+
+  async fetchMetadata() {
+    const map: Record<string, string> = {
+      "Y Programming Language": "H1ghBre4k3r/y-lang",
+      "Dependory": "H1ghBre4k3r/dependory",
+      "Lachs": "H1ghBre4k3r/lachs",
+      "Disruption": "H1ghBre4k3r/disruption"
+    };
+    const cards = this.querySelectorAll('.project-card');
+    await Promise.all(Array.from(cards).map(async (card) => {
+      const title = card.querySelector('h3')?.textContent?.trim() || '';
+      const repo = map[title];
+      if (!repo) return;
+      const res = await fetch(`https://api.github.com/repos/${repo}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      const meta = document.createElement('div');
+      meta.className = 'project-meta';
+      meta.innerHTML = `
+        <span class="meta-badge">★ ${data.stargazers_count}</span>
+        <span class="meta-badge">⑂ ${data.forks_count}</span>
+        <span class="meta-badge">Updated ${new Date(data.pushed_at).toLocaleDateString()}</span>
+      `;
+      card.appendChild(meta);
+    }));
   }
 
   render() {

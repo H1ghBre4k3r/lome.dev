@@ -13,3 +13,5 @@ import "./blog-toc";
 import "./blog-router";
 import "./projects";
 import "./contact";
+import "./github-stats";
+import "./achievements";

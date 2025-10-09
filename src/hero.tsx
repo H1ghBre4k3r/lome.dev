@@ -1,23 +1,33 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./hero.css";
 import { Component } from "./component";
-import { InteractiveTerminal } from "./interactive-terminal";
+import { InteractiveTerminal } from "./interactive-terminal"; // type only
 
 @Component("website-hero")
 export class WebsiteHero extends AbstractElement {
-  private terminal: InteractiveTerminal;
+  private terminalEl: InteractiveTerminal | null = null;
 
   constructor() {
     super();
-    this.terminal = new InteractiveTerminal();
   }
 
   connectedCallback() {
     super.connectedCallback();
 
+    // Cycle keywords in subtitle
+    const keywords = ["Developer", "Compiler Enthusiast", "Rustacean", "TypeScript Nerd", "IoT Tinkerer"];
+    let k = 0;
+    setInterval(() => {
+      const el = this.querySelector('.keyword-rotate');
+      if (el) { el.textContent = keywords[k % keywords.length]; k++; }
+    }, 2200);
+
+    // Cache terminal element
+    this.terminalEl = this.querySelector('interactive-terminal') as unknown as InteractiveTerminal;
+
     // Start terminal animation after a short delay
     setTimeout(() => {
-      this.terminal.setIntroLines([
+      this.terminalEl?.setIntroLines([
         { text: 'whoami', delay: 300, className: 'highlight' },
         { text: 'H1ghBre4k3r', delay: 200 },
         { text: 'Computer Science Student @ Kiel, Germany 📍', delay: 400 },
@@ -51,7 +61,7 @@ export class WebsiteHero extends AbstractElement {
             <p className="hero-subtitle">
               <span className="location-badge">📍 Kiel, Germany</span>
               <span className="separator">•</span>
-              CS Student & Developer
+              CS Student & <span className="keyword-rotate">Developer</span>
             </p>
             <p className="hero-description">
               Passionate about building elegant solutions in <span className="tech-highlight">TypeScript</span> and <span className="tech-highlight-rust">Rust</span>.
@@ -64,7 +74,7 @@ export class WebsiteHero extends AbstractElement {
             </div>
           </div>
           <div className="hero-visual">
-            {this.terminal.render()}
+            <interactive-terminal></interactive-terminal>
           </div>
         </div>
       </section>

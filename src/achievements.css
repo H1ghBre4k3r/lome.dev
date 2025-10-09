@@ -1,0 +1,33 @@
+@layer organism {
+  website-achievements { display: contents; }
+
+  .achievements { margin: 2rem 0 0; }
+
+  .achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+
+  .badge {
+    position: relative;
+    padding: 1rem;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(118,75,162,0.25);
+    backdrop-filter: blur(8px);
+    transition: transform 200ms ease, box-shadow 300ms ease;
+    cursor: default;
+  }
+
+  .badge:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(102,126,234,0.18); }
+
+  .badge-medal {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: conic-gradient(from 0deg, #cbbcff, #7f5bd8, #cbbcff);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 8px 20px rgba(118,75,162,0.35);
+    margin-bottom: 0.5rem;
+  }
+
+  .badge-title { font-weight: 700; font-size: 0.95rem; }
+}

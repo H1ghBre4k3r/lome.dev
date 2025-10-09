@@ -114,6 +114,17 @@
     gap: 0.5rem;
   }
 
+  .project-meta { display:flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+  .meta-badge {
+    padding: 0.25rem 0.6rem;
+    background: rgba(102,126,234,0.12);
+    border: 1px solid rgba(102,126,234,0.25);
+    border-radius: 999px;
+    font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.85);
+  }
+  @media (prefers-color-scheme: light){ .meta-badge{ color: rgba(0,0,0,0.7); background: rgba(102,126,234,0.08);} }
+
+
   .tag {
     padding: 0.375rem 0.875rem;
     background: rgba(102, 126, 234, 0.15);

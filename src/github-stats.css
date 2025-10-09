@@ -1,0 +1,52 @@
+@layer organism {
+  github-stats { display: contents; }
+
+  .github-stats {
+    margin: 2rem 0 3rem;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+
+  .stat-card {
+    position: relative;
+    padding: 1.25rem 1rem;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(102,126,234,0.25);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px rgba(102,126,234,0.12);
+    transition: transform 200ms ease, box-shadow 300ms ease;
+  }
+
+  @media (prefers-color-scheme: light){
+    .stat-card{ background: rgba(255,255,255,0.85); border-color: rgba(0,0,0,0.1); }
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(118,75,162,0.18);
+  }
+
+  .stat-value {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    margin-top: 0.35rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+  }
+  @media (prefers-color-scheme: light){
+    .stat-label{ color: rgba(0,0,0,0.55); }
+  }
+}
