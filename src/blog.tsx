@@ -33,34 +33,41 @@ export class WebsiteBlog extends AbstractElement {
     if (!this.contentEl || (this.categories.length === 0 && this.tags.length === 0)) return;
     let bar = this.contentEl.querySelector('.blog-filters');
     if (!bar) {
-      bar = document.createElement('div');
-      bar.className = 'blog-filters';
-      bar.innerHTML = `
-        <input class="filter-input" type="search" placeholder="Search articles..." aria-label="Search articles" />
-        <select class="filter-select category">
-          <option value="all">All categories</option>
-        </select>
-        <select class="filter-select tag">
-          <option value="all">All tags</option>
-        </select>
-      `;
+      bar = (
+        <div className="blog-filters">
+          <input
+            className="filter-input"
+            type="search"
+            placeholder="Search articles..."
+            aria-label="Search articles"
+            onInput={(e: Event) => {
+              this.filterQuery = (e.target as HTMLInputElement).value;
+              this.updateBlogGrid();
+            }}
+          />
+          <select
+            className="filter-select category"
+            onChange={(e: Event) => {
+              this.filterCategory = (e.target as HTMLSelectElement).value;
+              this.updateBlogGrid();
+            }}
+          >
+            <option value="all">All categories</option>
+            {() => this.categories.map(c => <option value={c}>{c}</option>)}
+          </select>
+          <select
+            className="filter-select tag"
+            onChange={(e: Event) => {
+              this.filterTag = (e.target as HTMLSelectElement).value;
+              this.updateBlogGrid();
+            }}
+          >
+            <option value="all">All tags</option>
+            {() => this.tags.map(t => <option value={t}>{t}</option>)}
+          </select>
+        </div>
+      ) as HTMLElement;
       this.contentEl.insertBefore(bar, this.contentEl.querySelector('.blog-grid'));
-      const input = bar.querySelector('.filter-input') as HTMLInputElement;
-      const catSel = bar.querySelector('.filter-select.category') as HTMLSelectElement;
-      const tagSel = bar.querySelector('.filter-select.tag') as HTMLSelectElement;
-      input.addEventListener('input', () => { this.filterQuery = input.value; this.updateBlogGrid(); });
-      catSel.addEventListener('change', () => { this.filterCategory = catSel.value; this.updateBlogGrid(); });
-      tagSel.addEventListener('change', () => { this.filterTag = tagSel.value; this.updateBlogGrid(); });
-    }
-    const catSel = (this.contentEl.querySelector('.filter-select.category') as HTMLSelectElement | null);
-    const tagSel = (this.contentEl.querySelector('.filter-select.tag') as HTMLSelectElement | null);
-    if (catSel && catSel.options.length === 1) {
-      this.categories.forEach(c => {
-        const o = document.createElement('option'); o.value = c; o.textContent = c; catSel.appendChild(o);
-      });
-    }
-    if (tagSel && tagSel.options.length === 1) {
-      this.tags.forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = t; tagSel.appendChild(o); });
     }
   }
 
@@ -92,9 +99,7 @@ export class WebsiteBlog extends AbstractElement {
 
     // Render blog cards
     if (filtered.length === 0) {
-      const noArticles = document.createElement('p');
-      noArticles.className = 'blog-loading';
-      noArticles.textContent = 'No matching articles.';
+      const noArticles = (<p className="blog-loading">No matching articles.</p>) as HTMLElement;
       this.gridElement.appendChild(noArticles);
     } else {
       filtered.forEach(post => {
@@ -110,66 +115,28 @@ export class WebsiteBlog extends AbstractElement {
   }
 
   createBlogCard(post: BlogPost): HTMLElement {
-    const article = document.createElement('article');
-    article.className = 'blog-card';
-
-    // Make card clickable
-    article.style.cursor = 'pointer';
-    article.addEventListener('click', (e) => {
-      e.preventDefault();
-      const url = `/blog/${post.slug}`;
-      window.history.pushState({}, '', url);
-      window.dispatchEvent(new PopStateEvent('popstate'));
-      // ensure timeline stays hidden during transition
-      document.querySelector('website-blog-router')?.dispatchEvent(new Event('routechange'));
-    });
-
-    // Add tilt effect
-    addCardTilt(article);
-
-    const meta = document.createElement('div');
-    meta.className = 'blog-meta';
-
-    const date = document.createElement('span');
-    date.className = 'blog-date';
-    date.textContent = formatDate(post.date);
-
-    const reading = document.createElement('span');
-    reading.className = 'blog-reading';
-    reading.textContent = estimateReadingTime(post.content || post.excerpt || '');
-
-    const category = document.createElement('span');
-    category.className = 'blog-category';
-    category.textContent = post.category;
-
-    meta.appendChild(date);
-    meta.appendChild(reading);
-    meta.appendChild(category);
-
-    const title = document.createElement('h3');
-    title.className = 'blog-title';
-    title.textContent = post.title;
-
-    const excerpt = document.createElement('p');
-    excerpt.className = 'blog-excerpt';
-    excerpt.textContent = post.excerpt;
-
-    const tagsDiv = document.createElement('div');
-    tagsDiv.className = 'blog-tags';
-
-    post.tags.slice(0, 4).forEach(tag => {
-      const tagSpan = document.createElement('span');
-      tagSpan.className = 'tag';
-      tagSpan.textContent = tag;
-      tagsDiv.appendChild(tagSpan);
-    });
-
-    article.appendChild(meta);
-    article.appendChild(title);
-    article.appendChild(excerpt);
-    article.appendChild(tagsDiv);
-
-    return article;
+    const card = (
+      <article className="blog-card" onClick={(e: Event) => {
+        e.preventDefault();
+        const url = `/blog/${post.slug}`;
+        window.history.pushState({}, '', url);
+        window.dispatchEvent(new PopStateEvent('popstate'));
+        document.querySelector('website-blog-router')?.dispatchEvent(new Event('routechange'));
+      }}>
+        <div className="blog-meta">
+          <span className="blog-date">{formatDate(post.date)}</span>
+          <span className="blog-reading">{estimateReadingTime(post.content || post.excerpt || '')}</span>
+          <span className="blog-category">{post.category}</span>
+        </div>
+        <h3 className="blog-title">{post.title}</h3>
+        <p className="blog-excerpt">{post.excerpt}</p>
+        <div className="blog-tags">
+          {() => post.tags.slice(0, 4).map(tag => <span className="tag">{tag}</span>)}
+        </div>
+      </article>
+    ) as HTMLElement;
+    addCardTilt(card);
+    return card;
   }
 
   render() {

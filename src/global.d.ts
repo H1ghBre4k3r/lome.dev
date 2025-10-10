@@ -15,5 +15,7 @@ declare namespace JSX {
     "code-showcase": {};
     "interactive-terminal": {};
     "website-blog-toc": {};
+    'website-timeline': {};
+    'website-skills': {};
   }
 }

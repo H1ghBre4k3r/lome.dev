@@ -29,7 +29,26 @@ export class WebsiteSkills extends AbstractElement {
             const color = skill.color || getSkillLevelColor(skill.level);
 
             return (
-              <div className={`skill-card scroll-reveal ${skill.projects && skill.projects.length > 0 ? 'clickable' : ''}`} tabIndex={skill.projects && skill.projects.length ? 0 : undefined} data-projects={(skill.projects||[]).join('|')} data-skill={skill.name} data-level={skill.level}>
+              <div
+                className={`skill-card scroll-reveal ${skill.projects && skill.projects.length > 0 ? 'clickable' : ''}`}
+                tabIndex={skill.projects && skill.projects.length ? 0 : undefined}
+                data-projects={(skill.projects || []).join('|')}
+                data-skill={skill.name}
+                data-level={skill.level}
+                onClick={(e: Event) => {
+                  const card = (e.currentTarget as HTMLElement);
+                  if (!card.classList.contains('clickable')) return;
+                  this.openModal(skill.name, skill.level, skill.projects || []);
+                }}
+                onKeydown={(e: Event) => {
+                  const ke = e as unknown as KeyboardEvent;
+                  if (ke.key !== 'Enter') return;
+                  const card = (e.currentTarget as HTMLElement);
+                  if (!card.classList.contains('clickable')) return;
+                  ke.preventDefault();
+                  this.openModal(skill.name, skill.level, skill.projects || []);
+                }}
+              >
                 <div className="skill-name">{skill.name}</div>
                 <div className="skill-level-bar">
                   <div className="skill-level-fill" data-percentage={percentage} data-color={color}></div>
@@ -66,21 +85,21 @@ export class WebsiteSkills extends AbstractElement {
       const elements = this.querySelectorAll('.skill-card.scroll-reveal, .currently-learning.scroll-reveal, .soft-skills.scroll-reveal');
       if (bars.length === 0 || elements.length === 0) return requestAnimationFrame(init);
 
-      // Modal wiring
+      // Modal wiring with JSX
       if (!this.modalEl) {
-        this.modalEl = document.createElement('div');
-        this.modalEl.className = 'skill-modal';
-        this.modalEl.innerHTML = `
-          <div class="modal-backdrop"></div>
-          <div class="modal-content"></div>
-          <button class="modal-close" aria-label="Close">×</button>
-        `;
+        this.modalEl = (
+          <div className="skill-modal" onClick={(e: Event) => {
+            // Close only when clicking backdrop/close
+            if ((e.target as HTMLElement).matches('.modal-backdrop, .modal-close')) this.closeModal();
+          }}>
+            <div className="modal-backdrop"></div>
+            <div className="modal-content"></div>
+            <button className="modal-close" aria-label="Close">×</button>
+          </div>
+        ) as HTMLElement;
+
         this.modalContent = this.modalEl.querySelector('.modal-content');
         document.body.appendChild(this.modalEl);
-        this.modalEl.addEventListener('click', (e) => {
-          // Close only when clicking backdrop/close
-          if ((e.target as HTMLElement).matches('.modal-backdrop, .modal-close')) this.closeModal();
-        });
       }
 
       // Click/keyboard to open modal
@@ -162,11 +181,25 @@ export class WebsiteSkills extends AbstractElement {
   openModal(title: string, level: string, projects: string[]) {
     if (!this.modalEl || !this.modalContent) return;
     this.modalEl.classList.add('active');
-    this.modalContent.innerHTML = `
-      <div class="modal-skill-name">${title}</div>
-      <div class="modal-skill-level">${level}</div>
-      ${projects.length ? `<div class="modal-skill-projects"><h4>Projects</h4>${projects.map(p=>`<span class=\"project-tag\">${p}</span>`).join('')}</div>` : ''}
-    `;
+
+    // Clear and rebuild modal content with JSX
+    this.modalContent.innerHTML = '';
+
+    const skillName = (<div className="modal-skill-name">{title}</div>) as HTMLElement;
+    const skillLevel = (<div className="modal-skill-level">{level}</div>) as HTMLElement;
+
+    this.modalContent.appendChild(skillName);
+    this.modalContent.appendChild(skillLevel);
+
+    if (projects.length > 0) {
+      const projectsDiv = (
+        <div className="modal-skill-projects">
+          <h4>Projects</h4>
+          {() => projects.map(p => <span className="project-tag">{p}</span>)}
+        </div>
+      ) as HTMLElement;
+      this.modalContent.appendChild(projectsDiv);
+    }
   }
 
   closeModal() {

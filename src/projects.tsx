@@ -36,13 +36,13 @@ export class WebsiteProjects extends AbstractElement {
       ]);
       if (!res.ok) return;
       const data = await res.json();
-      const meta = document.createElement('div');
-      meta.className = 'project-meta';
-      meta.innerHTML = `
-        <span class="meta-badge">★ ${data.stargazers_count}</span>
-        <span class="meta-badge">⑂ ${data.forks_count}</span>
-        <span class="meta-badge">Updated ${new Date(data.pushed_at).toLocaleDateString()}</span>
-      `;
+      const meta = (
+        <div className="project-meta">
+          <span className="meta-badge">★ {data.stargazers_count}</span>
+          <span className="meta-badge">⑂ {data.forks_count}</span>
+          <span className="meta-badge">Updated {new Date(data.pushed_at).toLocaleDateString()}</span>
+        </div>
+      ) as HTMLElement;
       card.appendChild(meta);
 
       // Languages
@@ -52,14 +52,11 @@ export class WebsiteProjects extends AbstractElement {
         entries.sort((a, b) => b[1] - a[1]);
         const top = entries.slice(0, 2).map(e => e[0]);
         if (top.length) {
-          const langDiv = document.createElement('div');
-          langDiv.className = 'project-languages';
-          top.forEach(name => {
-            const badge = document.createElement('span');
-            badge.className = 'lang-badge';
-            badge.textContent = name;
-            langDiv.appendChild(badge);
-          });
+          const langDiv = (
+            <div className="project-languages">
+              {() => top.map(name => <span className="lang-badge">{name}</span>)}
+            </div>
+          ) as HTMLElement;
           card.appendChild(langDiv);
         }
       }

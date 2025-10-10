@@ -46,23 +46,16 @@ export class TerminalTyping extends AbstractElement {
   async typeLine(line: TypingLine) {
     if (!this.terminalBody) return;
 
-    const lineElement = document.createElement('div');
-    lineElement.className = `terminal-line ${line.className || ''}`;
+    const lineElement = (
+      <div className={`terminal-line ${line.className || ''}`}>
+        <span className="terminal-prompt">&gt; </span>
+        <span className="terminal-text"></span>
+        <span className="terminal-cursor">▊</span>
+      </div>
+    ) as HTMLElement;
 
-    const promptSpan = document.createElement('span');
-    promptSpan.className = 'terminal-prompt';
-    promptSpan.textContent = '> ';
-
-    const textSpan = document.createElement('span');
-    textSpan.className = 'terminal-text';
-
-    const cursorSpan = document.createElement('span');
-    cursorSpan.className = 'terminal-cursor';
-    cursorSpan.textContent = '▊';
-
-    lineElement.appendChild(promptSpan);
-    lineElement.appendChild(textSpan);
-    lineElement.appendChild(cursorSpan);
+    const textSpan = lineElement.querySelector('.terminal-text') as HTMLSpanElement;
+    const cursorSpan = lineElement.querySelector('.terminal-cursor') as HTMLSpanElement;
 
     this.terminalBody.appendChild(lineElement);
 

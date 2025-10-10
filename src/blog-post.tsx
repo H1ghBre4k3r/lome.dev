@@ -35,72 +35,26 @@ export class WebsiteBlogPost extends AbstractElement {
       return;
     }
 
-    // Create article header
-    const header = document.createElement('header');
-    header.className = 'post-header';
+    // Header via JSX (Atomicity)
+    const header = (
+      <header className="post-header">
+        <a href="#blog" className="back-link" onClick={(e: Event) => { e.preventDefault(); window.location.hash = 'blog'; }}>← Back to Articles</a>
+        <div className="post-meta">
+          <span className="post-date">{formatDate(this.post.date)}</span>
+          <span className="post-reading">{estimateReadingTime(this.post.content || '')}</span>
+          <span className="post-category">{this.post.category}</span>
+        </div>
+        <h1 className="post-title">{this.post.title}</h1>
+        <div className="post-tags">{() => this.post!.tags.map(tag => <span className="tag">{tag}</span>)}</div>
+        <div className="share-buttons">
+          <a className="share-btn" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(this.post!.title)}&url=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer">Share on X</a>
+          <a className="share-btn" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer">Share on LinkedIn</a>
+        </div>
+      </header>
+    ) as HTMLElement;
 
-    const backLink = document.createElement('a');
-    backLink.href = '#blog';
-    backLink.className = 'back-link';
-    backLink.innerHTML = '← Back to Articles';
-    backLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      // Use hash to enable native back behavior; router will normalize to /#blog
-      window.location.hash = 'blog';
-    });
-
-    const meta = document.createElement('div');
-    meta.className = 'post-meta';
-
-    const date = document.createElement('span');
-    date.className = 'post-date';
-    date.textContent = formatDate(this.post.date);
-
-    const category = document.createElement('span');
-    category.className = 'post-category';
-    category.textContent = this.post.category;
-
-    meta.appendChild(date);
-    meta.appendChild(category);
-
-    const reading = document.createElement('span');
-    reading.className = 'post-reading';
-    reading.textContent = estimateReadingTime(this.post.content || '');
-
-    const title = document.createElement('h1');
-    title.className = 'post-title';
-    title.textContent = this.post.title;
-
-    const tagsDiv = document.createElement('div');
-    tagsDiv.className = 'post-tags';
-
-    this.post.tags.forEach(tag => {
-      const tagSpan = document.createElement('span');
-      tagSpan.className = 'tag';
-      tagSpan.textContent = tag;
-      tagsDiv.appendChild(tagSpan);
-    });
-
-    header.appendChild(backLink);
-    header.appendChild(meta);
-    header.appendChild(title);
-    header.appendChild(tagsDiv);
-
-    // Share buttons
-    const share = document.createElement('div');
-    share.className = 'share-buttons';
-    const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent(this.post.title);
-    share.innerHTML = `
-      <a class="share-btn" href="https://twitter.com/intent/tweet?text=${text}&url=${url}" target="_blank" rel="noopener noreferrer">Share on X</a>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=${url}" target="_blank" rel="noopener noreferrer">Share on LinkedIn</a>
-    `;
-    header.appendChild(share);
-
-    // Create article content
-    const article = document.createElement('article');
-    article.className = 'post-content';
-    
+    // Article via JSX container
+    const article = (<article className="post-content"></article>) as HTMLElement;
     if (this.post.content) {
       article.innerHTML = markdownToHtml(this.post.content);
     }
@@ -119,22 +73,17 @@ export class WebsiteBlogPost extends AbstractElement {
   showError() {
     if (!this.contentElement) return;
 
-    const error = document.createElement('div');
-    error.className = 'post-error';
-    error.innerHTML = `
-      <h2>Post Not Found</h2>
-      <p>Sorry, the blog post you're looking for doesn't exist.</p>
-      <a href="/" class="btn btn-primary">Back to Blog</a>
-    `;
-    
-    const btn = error.querySelector('.btn');
-    if (btn) {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.history.pushState({}, '', '/');
-        window.dispatchEvent(new PopStateEvent('popstate'));
-      });
-    }
+    const error = (
+      <div className="post-error">
+        <h2>Post Not Found</h2>
+        <p>Sorry, the blog post you're looking for doesn't exist.</p>
+        <a href="/" className="btn btn-primary" onClick={(e: Event) => {
+          e.preventDefault();
+          window.history.pushState({}, '', '/');
+          window.dispatchEvent(new PopStateEvent('popstate'));
+        }}>Back to Blog</a>
+      </div>
+    ) as HTMLElement;
 
     this.contentElement.innerHTML = '';
     this.contentElement.appendChild(error);
