@@ -43,7 +43,7 @@ export class CodeShowcase extends AbstractElement {
           <pre><code className="hljs"></code></pre>
         </div>
       </section>
-    ) as HTMLElement;
+    );
 
     this.codeEl = el.querySelector("code.hljs");
     this.titleEl = el.querySelector(".code-title");

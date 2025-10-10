@@ -34,7 +34,7 @@ export class WebsiteHero extends AbstractElement {
     }, 2200);
 
     // Cache terminal element
-    this.terminalEl = this.querySelector('interactive-terminal') as unknown as InteractiveTerminal;
+    this.terminalEl = this.querySelector<InteractiveTerminal>('interactive-terminal');
 
     // Start terminal animation after a short delay
     setTimeout(() => {

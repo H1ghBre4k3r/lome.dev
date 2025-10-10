@@ -1,7 +1,7 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./blog.css";
 import { Component } from "./component";
-import { getBlogPosts, formatDate, type BlogPost } from "./lib/blog";
+import { getBlogPosts, formatDate, estimateReadingTime, type BlogPost } from "./lib/blog";
 import { addCardTilt } from "./card-tilt";
 
 @Component("website-blog")
@@ -74,11 +74,16 @@ export class WebsiteBlog extends AbstractElement {
     date.className = 'blog-date';
     date.textContent = formatDate(post.date);
 
+    const reading = document.createElement('span');
+    reading.className = 'blog-reading';
+    reading.textContent = estimateReadingTime(post.content || post.excerpt || '');
+
     const category = document.createElement('span');
     category.className = 'blog-category';
     category.textContent = post.category;
 
     meta.appendChild(date);
+    meta.appendChild(reading);
     meta.appendChild(category);
 
     const title = document.createElement('h3');

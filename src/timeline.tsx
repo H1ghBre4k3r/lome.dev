@@ -20,6 +20,17 @@ export class WebsiteTimeline extends AbstractElement {
         addScrollReveal(timelineItems);
       }
     }, 100);
+
+    // Expand/collapse details (event delegation)
+    this.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest('.timeline-toggle') as HTMLButtonElement | null;
+      if (!btn) return;
+      const item = btn.closest('.timeline-item') as HTMLElement | null;
+      if (!item) return;
+      const expanded = item.classList.toggle('expanded');
+      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      btn.textContent = expanded ? 'Show less' : 'Show more';
+    });
   }
 
   timelineEntries = () => {
@@ -45,6 +56,7 @@ export class WebsiteTimeline extends AbstractElement {
               {() => entry?.tags?.map(tag => <span className="tag">{tag}</span>)}
             </div>
           )}
+          <button className="timeline-toggle" aria-expanded="false">Show more</button>
         </div>
       </div>
     ));

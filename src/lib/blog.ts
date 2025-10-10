@@ -1,4 +1,10 @@
 import { marked } from 'marked';
+export function estimateReadingTime(text: string) {
+  const words = (text || '').trim().split(/\s+/).filter(Boolean).length;
+  const mins = Math.max(1, Math.round(words / 200));
+  return `${mins} min read`;
+}
+
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js/lib/core';
 

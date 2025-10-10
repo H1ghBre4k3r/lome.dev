@@ -1,6 +1,7 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./blog-post.css";
 import { Component } from "./component";
+import { estimateReadingTime } from "./lib/blog";
 import { getBlogPost, markdownToHtml, formatDate, type BlogPost } from "./lib/blog";
 import { WebsiteBlogTOC } from "./blog-toc"; // type only
 
@@ -61,6 +62,10 @@ export class WebsiteBlogPost extends AbstractElement {
 
     meta.appendChild(date);
     meta.appendChild(category);
+
+    const reading = document.createElement('span');
+    reading.className = 'post-reading';
+    reading.textContent = estimateReadingTime(this.post.content || '');
 
     const title = document.createElement('h1');
     title.className = 'post-title';
