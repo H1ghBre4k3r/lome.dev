@@ -8,15 +8,73 @@ import { addCardTilt } from "./card-tilt";
 export class WebsiteBlog extends AbstractElement {
   private posts: BlogPost[] = [];
   private gridElement: HTMLElement | null = null;
+  private contentEl: HTMLElement | null = null;
+  private categories: string[] = [];
+  private tags: string[] = [];
+  private filterCategory: string = 'all';
+  private filterTag: string = 'all';
+  private filterQuery: string = '';
 
   constructor() {
     super();
     this.loadPosts();
   }
+  applyFilters(posts: BlogPost[]): BlogPost[] {
+    return posts.filter(p => {
+      const catOk = this.filterCategory === 'all' || p.category === this.filterCategory;
+      const tagOk = this.filterTag === 'all' || p.tags.includes(this.filterTag);
+      const q = this.filterQuery.trim().toLowerCase();
+      const qOk = !q || [p.title, p.excerpt, p.tags.join(' ')].some(s => s.toLowerCase().includes(q));
+      return catOk && tagOk && qOk;
+    });
+  }
+
+  renderFilters() {
+    if (!this.contentEl || (this.categories.length === 0 && this.tags.length === 0)) return;
+    let bar = this.contentEl.querySelector('.blog-filters');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.className = 'blog-filters';
+      bar.innerHTML = `
+        <input class="filter-input" type="search" placeholder="Search articles..." aria-label="Search articles" />
+        <select class="filter-select category">
+          <option value="all">All categories</option>
+        </select>
+        <select class="filter-select tag">
+          <option value="all">All tags</option>
+        </select>
+      `;
+      this.contentEl.insertBefore(bar, this.contentEl.querySelector('.blog-grid'));
+      const input = bar.querySelector('.filter-input') as HTMLInputElement;
+      const catSel = bar.querySelector('.filter-select.category') as HTMLSelectElement;
+      const tagSel = bar.querySelector('.filter-select.tag') as HTMLSelectElement;
+      input.addEventListener('input', () => { this.filterQuery = input.value; this.updateBlogGrid(); });
+      catSel.addEventListener('change', () => { this.filterCategory = catSel.value; this.updateBlogGrid(); });
+      tagSel.addEventListener('change', () => { this.filterTag = tagSel.value; this.updateBlogGrid(); });
+    }
+    const catSel = (this.contentEl.querySelector('.filter-select.category') as HTMLSelectElement | null);
+    const tagSel = (this.contentEl.querySelector('.filter-select.tag') as HTMLSelectElement | null);
+    if (catSel && catSel.options.length === 1) {
+      this.categories.forEach(c => {
+        const o = document.createElement('option'); o.value = c; o.textContent = c; catSel.appendChild(o);
+      });
+    }
+    if (tagSel && tagSel.options.length === 1) {
+      this.tags.forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = t; tagSel.appendChild(o); });
+    }
+  }
+
 
   async loadPosts() {
     try {
       this.posts = await getBlogPosts();
+      // derive filters
+      const catSet = new Set<string>();
+      const tagSet = new Set<string>();
+      this.posts.forEach(p => { catSet.add(p.category); p.tags.forEach(t => tagSet.add(t)); });
+      this.categories = Array.from(catSet).sort();
+      this.tags = Array.from(tagSet).sort();
+      this.renderFilters();
       this.updateBlogGrid();
     } catch (error) {
       console.error('Failed to load blog posts:', error);
@@ -30,14 +88,16 @@ export class WebsiteBlog extends AbstractElement {
     // Clear loading message
     this.gridElement.innerHTML = '';
 
+    const filtered = this.applyFilters(this.posts);
+
     // Render blog cards
-    if (this.posts.length === 0) {
+    if (filtered.length === 0) {
       const noArticles = document.createElement('p');
       noArticles.className = 'blog-loading';
-      noArticles.textContent = 'No articles found.';
+      noArticles.textContent = 'No matching articles.';
       this.gridElement.appendChild(noArticles);
     } else {
-      this.posts.slice(0, 4).forEach(post => {
+      filtered.forEach(post => {
         const card = this.createBlogCard(post);
         this.gridElement!.appendChild(card);
       });
@@ -124,8 +184,11 @@ export class WebsiteBlog extends AbstractElement {
       </section>
     ) as HTMLElement;
 
-    // Store reference to the grid element for later updates
+    // Store references
     this.gridElement = section.querySelector('.blog-grid');
+    this.contentEl = section.querySelector('.blog-content');
+    // If posts already loaded, render filters now
+    if (this.posts.length) this.renderFilters();
 
     return section;
   }

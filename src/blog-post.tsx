@@ -86,6 +86,17 @@ export class WebsiteBlogPost extends AbstractElement {
     header.appendChild(title);
     header.appendChild(tagsDiv);
 
+    // Share buttons
+    const share = document.createElement('div');
+    share.className = 'share-buttons';
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent(this.post.title);
+    share.innerHTML = `
+      <a class="share-btn" href="https://twitter.com/intent/tweet?text=${text}&url=${url}" target="_blank" rel="noopener noreferrer">Share on X</a>
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=${url}" target="_blank" rel="noopener noreferrer">Share on LinkedIn</a>
+    `;
+    header.appendChild(share);
+
     // Create article content
     const article = document.createElement('article');
     article.className = 'post-content';
