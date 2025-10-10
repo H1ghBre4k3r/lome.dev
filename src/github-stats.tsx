@@ -11,7 +11,6 @@ interface Repostory {
 
 @Component("github-stats")
 export class GitHubStats extends AbstractElement {
-  private gridEl: HTMLElement | null = null;
   private stats: StatItem[] = [
     { id: "stars", label: "GitHub Stars", value: 748 },
     { id: "repos", label: "Repositories", value: 85 },
@@ -21,7 +20,6 @@ export class GitHubStats extends AbstractElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this.buildCards();
     // Start count-up shortly after mount for initial values
     setTimeout(() => this.animateCounters(), 300);
     // Fetch live values
@@ -68,34 +66,20 @@ export class GitHubStats extends AbstractElement {
     });
   }
 
-  buildCards() {
-    if (!this.gridEl) return;
-    this.gridEl.innerHTML = "";
-    this.stats.forEach((s) => {
-      const card = document.createElement('div');
-      card.className = 'stat-card';
-      const val = document.createElement('div');
-      val.className = 'stat-value';
-      (val as HTMLElement).dataset.id = s.id;
-      (val as HTMLElement).dataset.value = String(s.value);
-      val.textContent = '0';
-      const label = document.createElement('div');
-      label.className = 'stat-label';
-      label.textContent = s.label;
-      card.appendChild(val);
-      card.appendChild(label);
-      this.gridEl!.appendChild(card);
-    });
+  cards = () => {
+    return this.stats.map(({ id, value, label }) => {
+      return <div className="stat-card">
+        <div className="stat-value" data-id={id} data-value={`${value}`}>0</div>
+        <div className="stat-label">{label}</div>
+      </div>
+    })
   }
 
   render() {
-    const el = (
+    return (
       <section className="github-stats">
-        <div className="stats-grid"></div>
+        <div className="stats-grid">{this.cards}</div>
       </section>
-    ) as HTMLElement;
-
-    this.gridEl = el.querySelector('.stats-grid');
-    return el;
+    )
   }
 }
