@@ -15,39 +15,25 @@ const BADGES: Badge[] = [
 
 @Component("website-achievements")
 export class WebsiteAchievements extends AbstractElement {
-  private gridEl: HTMLElement | null = null;
-
   connectedCallback() {
     super.connectedCallback();
-    this.build();
   }
 
-  build() {
-    if (!this.gridEl) return;
-    this.gridEl.innerHTML = '';
-    BADGES.forEach(b => {
-      const badge = document.createElement('div');
-      badge.className = 'badge';
-      badge.title = b.desc;
-      const medal = document.createElement('div');
-      medal.className = 'badge-medal';
-      medal.setAttribute('aria-hidden', 'true');
-      const title = document.createElement('div');
-      title.className = 'badge-title';
-      title.textContent = b.title;
-      badge.appendChild(medal);
-      badge.appendChild(title);
-      this.gridEl!.appendChild(badge);
-    });
+  badges = () => {
+    return BADGES.map((badge) => {
+      const { desc, title } = badge;
+      return <div className={"badge"} title={desc}>
+        <div className={"badge-medal"}></div>
+        <div className={"badge-title"}>{title}</div>
+      </div>
+    })
   }
 
   render() {
-    const el = (
+    return (
       <section className="achievements" aria-label="GitHub achievements">
-        <div className="achievements-grid"></div>
+        <div className="achievements-grid">{this.badges}</div>
       </section>
     ) as HTMLElement;
-    this.gridEl = el.querySelector('.achievements-grid');
-    return el;
   }
 }
