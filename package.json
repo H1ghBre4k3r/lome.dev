@@ -19,7 +19,7 @@
     "vite": "^7.1.9"
   },
   "dependencies": {
-    "@pesca-dev/atomicity": "^0.1.5",
+    "@pesca-dev/atomicity": "^0.1.6",
     "highlight.js": "^11.11.1",
     "marked": "^16.4.0",
     "marked-highlight": "^2.2.2",

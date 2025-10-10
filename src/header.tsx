@@ -17,16 +17,8 @@ export class WebsiteHeader extends AbstractElement {
     // If we're on a blog post page, navigate to home first
     if (path.startsWith('/blog/') && path !== '/blog/') {
       e.preventDefault();
-      window.history.pushState({}, '', '/' + hash);
-      window.dispatchEvent(new PopStateEvent('popstate'));
-      
-      // Wait for route change, then scroll
-      setTimeout(() => {
-        const target = document.querySelector(hash);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
+      window.location.href = '/' + hash; // allow native history/back and hash scroll
+      return;
     }
     // Otherwise, let the default hash navigation work
   }

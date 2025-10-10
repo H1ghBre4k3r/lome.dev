@@ -114,7 +114,7 @@ export class InteractiveTerminal extends AbstractElement {
     this.createInputLine();
 
     // Focus on terminal
-    this.focus();
+    // this.focus();
   }
 
   createInputLine() {
@@ -155,10 +155,10 @@ export class InteractiveTerminal extends AbstractElement {
     input.addEventListener('keydown', (e) => this.handleKeyDown(e));
     input.addEventListener('input', () => this.handleInput());
 
-    // Focus the input
-    setTimeout(() => {
-      input.focus();
-    }, 100);
+    // // Focus the input
+    // setTimeout(() => {
+    //   input.focus();
+    // }, 100);
   }
 
   handleKeyDown(e: KeyboardEvent) {
@@ -246,7 +246,7 @@ export class InteractiveTerminal extends AbstractElement {
     this.scrollToBottom();
 
     // Focus input
-    this.inputField?.focus();
+    // this.inputField?.focus();
   }
 
   navigateHistory(direction: number) {
@@ -325,11 +325,11 @@ export class InteractiveTerminal extends AbstractElement {
     this.terminalBody.scrollTop = this.terminalBody.scrollHeight;
   }
 
-  focus() {
-    if (this.inputField) {
-      this.inputField.focus();
-    }
-  }
+  // focus() {
+  //   if (this.inputField) {
+  //     this.inputField.focus();
+  //   }
+  // }
   autocomplete() {
     if (!this.inputField) return;
     const inputEl = this.inputField as HTMLInputElement;

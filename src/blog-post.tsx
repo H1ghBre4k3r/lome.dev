@@ -39,13 +39,13 @@ export class WebsiteBlogPost extends AbstractElement {
     header.className = 'post-header';
 
     const backLink = document.createElement('a');
-    backLink.href = '/';
+    backLink.href = '#blog';
     backLink.className = 'back-link';
     backLink.innerHTML = '← Back to Articles';
     backLink.addEventListener('click', (e) => {
       e.preventDefault();
-      window.history.pushState({}, '', '/');
-      window.dispatchEvent(new PopStateEvent('popstate'));
+      // Use hash to enable native back behavior; router will normalize to /#blog
+      window.location.hash = 'blog';
     });
 
     const meta = document.createElement('div');

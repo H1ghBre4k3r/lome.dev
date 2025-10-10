@@ -2,6 +2,10 @@
  * Adds scroll-triggered reveal animations to elements
  */
 export function addScrollReveal(elements: NodeListOf<Element> | Element[]) {
+  // Use smaller root margin on mobile for better visibility
+  const isMobile = window.innerWidth <= 768;
+  const bottomMargin = isMobile ? '-50px' : '-100px';
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
@@ -14,7 +18,7 @@ export function addScrollReveal(elements: NodeListOf<Element> | Element[]) {
     },
     {
       threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
+      rootMargin: `0px 0px ${bottomMargin} 0px`
     }
   );
 

@@ -15,3 +15,5 @@ import "./projects";
 import "./contact";
 import "./github-stats";
 import "./achievements";
+import "./timeline";
+import "./skills";

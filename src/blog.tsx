@@ -60,6 +60,8 @@ export class WebsiteBlog extends AbstractElement {
       const url = `/blog/${post.slug}`;
       window.history.pushState({}, '', url);
       window.dispatchEvent(new PopStateEvent('popstate'));
+      // ensure timeline stays hidden during transition
+      document.querySelector('website-blog-router')?.dispatchEvent(new Event('routechange'));
     });
 
     // Add tilt effect
