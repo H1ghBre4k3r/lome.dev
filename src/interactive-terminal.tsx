@@ -69,23 +69,16 @@ export class InteractiveTerminal extends AbstractElement {
   async typeIntroLine(line: TypingLine) {
     if (!this.terminalBody) return;
 
-    const lineElement = document.createElement('div');
-    lineElement.className = `terminal-line ${line.className || ''}`;
+    const lineElement = (
+      <div className={`terminal-line ${line.className || ''}`}>
+        <span className="terminal-prompt">&gt; </span>
+        <span className="terminal-text"></span>
+        <span className="terminal-cursor">▊</span>
+      </div>
+    ) as HTMLElement;
 
-    const promptSpan = document.createElement('span');
-    promptSpan.className = 'terminal-prompt';
-    promptSpan.textContent = '> ';
-
-    const textSpan = document.createElement('span');
-    textSpan.className = 'terminal-text';
-
-    const cursorSpan = document.createElement('span');
-    cursorSpan.className = 'terminal-cursor';
-    cursorSpan.textContent = '▊';
-
-    lineElement.appendChild(promptSpan);
-    lineElement.appendChild(textSpan);
-    lineElement.appendChild(cursorSpan);
+    const textSpan = lineElement.querySelector('.terminal-text') as HTMLSpanElement;
+    const cursorSpan = lineElement.querySelector('.terminal-cursor') as HTMLSpanElement;
 
     this.terminalBody.appendChild(lineElement);
 
@@ -114,51 +107,41 @@ export class InteractiveTerminal extends AbstractElement {
     this.createInputLine();
 
     // Focus on terminal
-    this.focus();
+    // this.focus();
   }
 
   createInputLine() {
     if (!this.terminalBody) return;
 
-    const lineElement = document.createElement('div');
-    lineElement.className = 'terminal-line terminal-input-line';
+    const lineElement = (
+      <div className="terminal-line terminal-input-line">
+        <span className="terminal-prompt">&gt; </span>
+        <input
+          type="text"
+          className="terminal-input"
+          spellcheck={false}
+          autocomplete="off"
+          autocapitalize="off"
+          placeholder="Type a command (Tab to autocomplete, help to list)"
+          aria-label="Terminal input"
+          onKeydown={(e: Event) => this.handleKeyDown(e as KeyboardEvent)}
+          onInput={() => this.handleInput()}
+        />
+        <span className="terminal-cursor active">▊</span>
+      </div>
+    ) as HTMLElement;
 
-    const promptSpan = document.createElement('span');
-    promptSpan.className = 'terminal-prompt';
-    promptSpan.textContent = '> ';
-
-    // Use standard input element for reliable text input
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.className = 'terminal-input';
-    input.spellcheck = false;
-    input.autocomplete = 'off';
-    input.autocapitalize = 'off';
-
-    const cursorSpan = document.createElement('span');
-    cursorSpan.className = 'terminal-cursor active';
-    cursorSpan.textContent = '▊';
-
-    input.placeholder = 'Type a command (Tab to autocomplete, help to list)';
-    input.setAttribute('aria-label', 'Terminal input');
-
-    lineElement.appendChild(promptSpan);
-    lineElement.appendChild(input);
-    lineElement.appendChild(cursorSpan);
+    const input = lineElement.querySelector('.terminal-input') as HTMLInputElement;
 
     this.terminalBody.appendChild(lineElement);
     this.inputLine = lineElement;
     this.inputField = input as unknown as HTMLSpanElement;
     this.scrollToBottom();
 
-    // Add event listeners AFTER element is in DOM
-    input.addEventListener('keydown', (e) => this.handleKeyDown(e));
-    input.addEventListener('input', () => this.handleInput());
-
-    // Focus the input
-    setTimeout(() => {
-      input.focus();
-    }, 100);
+    // // Focus the input
+    // setTimeout(() => {
+    //   input.focus();
+    // }, 100);
   }
 
   handleKeyDown(e: KeyboardEvent) {
@@ -246,7 +229,7 @@ export class InteractiveTerminal extends AbstractElement {
     this.scrollToBottom();
 
     // Focus input
-    this.inputField?.focus();
+    // this.inputField?.focus();
   }
 
   navigateHistory(direction: number) {
@@ -299,21 +282,13 @@ export class InteractiveTerminal extends AbstractElement {
   addOutputLine(text: string, className: string = '', isCommand: boolean = false) {
     if (!this.terminalBody) return;
 
-    const lineElement = document.createElement('div');
-    lineElement.className = `terminal-line ${className}`;
+    const lineElement = (
+      <div className={`terminal-line ${className}`}>
+        {isCommand ? <span className="terminal-prompt">&gt; </span> : <span></span>}
+        <span className="terminal-text">{text}</span>
+      </div>
+    ) as HTMLElement;
 
-    if (isCommand) {
-      const promptSpan = document.createElement('span');
-      promptSpan.className = 'terminal-prompt';
-      promptSpan.textContent = '> ';
-      lineElement.appendChild(promptSpan);
-    }
-
-    const textSpan = document.createElement('span');
-    textSpan.className = 'terminal-text';
-    textSpan.textContent = text;
-
-    lineElement.appendChild(textSpan);
     this.terminalBody.appendChild(lineElement);
 
     this.outputLines.push({ text, className, isCommand });
@@ -325,11 +300,11 @@ export class InteractiveTerminal extends AbstractElement {
     this.terminalBody.scrollTop = this.terminalBody.scrollHeight;
   }
 
-  focus() {
-    if (this.inputField) {
-      this.inputField.focus();
-    }
-  }
+  // focus() {
+  //   if (this.inputField) {
+  //     this.inputField.focus();
+  //   }
+  // }
   autocomplete() {
     if (!this.inputField) return;
     const inputEl = this.inputField as HTMLInputElement;

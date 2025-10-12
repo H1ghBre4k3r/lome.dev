@@ -21,10 +21,20 @@ export class WebsiteBlogRouter extends AbstractElement {
       this.handleRouteChange();
     });
 
+    // Listen to custom routechange events (e.g., clicks)
+    this.addEventListener('routechange', () => {
+      this.handleRouteChange();
+    });
+
     // Listen for hash changes (in-page navigation)
     window.addEventListener('hashchange', () => {
       this.handleHashNavigation();
     });
+
+    // Also handle initial hash on load
+    if (window.location.hash) {
+      this.handleHashNavigation();
+    }
   }
 
   handleHashNavigation() {
@@ -34,8 +44,21 @@ export class WebsiteBlogRouter extends AbstractElement {
     // If we're on a blog post and user clicks a nav link with hash
     // Navigate to home first, then scroll to section
     if (path.startsWith('/blog/') && path !== '/blog/' && hash) {
-      window.history.pushState({}, '', '/' + hash);
-      window.dispatchEvent(new PopStateEvent('popstate'));
+      // Navigate to root with hash; popstate will render list
+      window.location.href = '/' + hash;
+      return;
+    }
+
+    // If on homepage and hash is #blog, show blog list then scroll
+    if ((path === '/' || path === '') && hash === '#blog') {
+      this.showBlogList();
+      setTimeout(() => {
+        const el = document.getElementById('blog');
+        if (el) {
+          const y = el.getBoundingClientRect().top + window.scrollY - 80; // account for scroll-padding
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }, 50);
     }
   }
 
@@ -59,7 +82,7 @@ export class WebsiteBlogRouter extends AbstractElement {
 
   hideOtherSections() {
     // Hide all main sections except header and blog post
-    const sections = ['website-hero', 'website-about', 'website-projects', 'website-contact'];
+    const sections = ['website-hero', 'website-about', 'website-timeline', 'website-projects', 'website-contact'];
     sections.forEach(selector => {
       const element = document.querySelector(selector);
       if (element && element instanceof HTMLElement) {
@@ -70,7 +93,7 @@ export class WebsiteBlogRouter extends AbstractElement {
 
   showOtherSections() {
     // Show all main sections
-    const sections = ['website-hero', 'website-about', 'website-projects', 'website-contact'];
+    const sections = ['website-hero', 'website-about', 'website-timeline', 'website-projects', 'website-contact'];
     sections.forEach(selector => {
       const element = document.querySelector(selector);
       if (element && element instanceof HTMLElement) {
@@ -91,9 +114,9 @@ export class WebsiteBlogRouter extends AbstractElement {
     // Update page title
     document.title = 'H1ghBre4k3r - lome.dev';
 
-    // Scroll to blog section if coming from blog post
-    const path = window.location.pathname;
-    if (path === '/blog' || path === '/blog/') {
+    // Scroll to blog section if needed
+    const { pathname, hash } = window.location;
+    if (pathname === '/blog' || pathname === '/blog/' || hash === '#blog') {
       setTimeout(() => {
         const blogSection = document.getElementById('blog');
         if (blogSection) {
@@ -114,17 +137,30 @@ export class WebsiteBlogRouter extends AbstractElement {
 
     // Load the blog post
     const postComponent = this.blogPost as unknown as WebsiteBlogPost;
+    // If hash is #blog, scroll into view after showing list
+    if (window.location.hash === '#blog') {
+      setTimeout(() => {
+        const el = document.getElementById('blog');
+        if (el) {
+          const y = el.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }, 50);
+    }
+
     if (postComponent.loadPost) {
       postComponent.loadPost(slug).then((post) => {
         // Update page title with post title
         if (post) {
           document.title = `${post.title} - H1ghBre4k3r`;
         }
+
+        // Scroll to top AFTER content is loaded and rendered
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
       });
     }
-
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   render() {

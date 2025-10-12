@@ -76,3 +76,35 @@ public/
 - All components extend `AbstractElement` and use the `@Component` decorator for registration
 - The app uses custom fonts loaded from the public directory
 - No traditional React/Vue/Angular - this is a custom web components implementation
+
+
+## Atomicity usage quick reference
+- Import `a`, `AbstractElement`, signals from `@pesca-dev/atomicity`. Set tsconfig: "jsx": "react", "jsxFactory": "a".
+- JSX -> `createElement(tag, props, ...children)`. Props: `on*` = listeners, `className` -> `class`, string = attribute, function = reactive attribute.
+- Children may be functions (signals). Returning an array from that function renders lists; passing the function reference enables reactivity.
+
+Example: functional-children list rendering (as used in achievements)
+```tsx
+import { a, AbstractElement } from "@pesca-dev/atomicity";
+import { Component } from "./component";
+
+@Component("x-achievements")
+export class Achievements extends AbstractElement {
+  badges = () => BADGES.map(b => (
+    <div className="badge" title={b.desc}>
+      <div className="badge-medal"></div>
+      <div className="badge-title">{b.title}</div>
+    </div>
+  ));
+  render() {
+    return (
+      <section className="achievements">
+        <div className="achievements-grid">{this.badges}</div>
+      </section>
+    ) as HTMLElement;
+  }
+}
+```
+Notes
+- Pass `{this.badges}` (do not call it). Atomicity treats function children as signals, calls them, and re-renders when their dependencies (atoms) change. Arrays are supported natively.
+- For typed attributes: extend `AbstractElement<Attrs>` and call `super({ key: [fromString, default] }, useShadow?)`; declare `static get observedAttributes()` accordingly. Access via `this.attrs.key()` / `.get()`; update with `.set()`.

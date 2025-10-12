@@ -1,8 +1,6 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./about.css";
 import { Component } from "./component";
-import { siNeovim, siTypescript, siReact, siDocker, siKubernetes, siRust } from "simple-icons";
-import { svg } from "./utils";
 
 @Component("website-about")
 export class WebsiteAbout extends AbstractElement {
@@ -33,37 +31,18 @@ export class WebsiteAbout extends AbstractElement {
                 open-source projects, or exploring the latest developments in cloud-native technologies.
               </p>
             </div>
-            <div className="about-skills">
-              <h3>Technologies I Love</h3>
-              <div className="skills-grid">
-                <div className="skill-item">
-                  {svg(siTypescript.svg)}
-                  <span>TypeScript</span>
-                </div>
-                <div className="skill-item">
-                  {svg(siReact.svg)}
-                  <span>React</span>
-                </div>
-                <div className="skill-item">
-                  {svg(siRust.svg)}
-                  <span>Rust</span>
-                </div>
-                <div className="skill-item">
-                  {svg(siDocker.svg)}
-                  <span>Docker</span>
-                </div>
-                <div className="skill-item">
-                  {svg(siKubernetes.svg)}
-                  <span>Kubernetes</span>
-                </div>
-                <div className="skill-item">
-                  {svg(siNeovim.svg)}
-                  <span>Neovim</span>
-                </div>
-              </div>
-            </div>
             <website-achievements></website-achievements>
           </div>
+
+          <div className="github-deep-integration">
+            <div className="github-grid">
+              <coding-streak></coding-streak>
+              <language-chart></language-chart>
+            </div>
+            <contribution-heatmap></contribution-heatmap>
+          </div>
+
+          <website-skills></website-skills>
         </div>
       </section>
     );

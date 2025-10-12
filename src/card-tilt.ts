@@ -27,7 +27,7 @@ export function addCardTilt(element: HTMLElement) {
     const percentX = (x - centerX) / centerX;
     const percentY = (y - centerY) / centerY;
 
-    const maxTilt = 10; // degrees
+    const maxTilt = 5; // degrees
     const rotateY = percentX * maxTilt;
     const rotateX = -percentY * maxTilt;
 

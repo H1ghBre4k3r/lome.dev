@@ -2,6 +2,7 @@ import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./hero.css";
 import { Component } from "./component";
 import { InteractiveTerminal } from "./interactive-terminal"; // type only
+import { addGlitchText } from "./glitch-text";
 
 @Component("website-hero")
 export class WebsiteHero extends AbstractElement {
@@ -25,6 +26,9 @@ export class WebsiteHero extends AbstractElement {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
 
+    // Apply glitch effect to hero title
+    addGlitchText('.hero-title', this, false);
+
     // Cycle keywords in subtitle
     const keywords = ["Developer", "Compiler Enthusiast", "Rustacean", "TypeScript Nerd", "IoT Tinkerer"];
     let k = 0;
@@ -34,7 +38,7 @@ export class WebsiteHero extends AbstractElement {
     }, 2200);
 
     // Cache terminal element
-    this.terminalEl = this.querySelector('interactive-terminal') as unknown as InteractiveTerminal;
+    this.terminalEl = this.querySelector<InteractiveTerminal>('interactive-terminal');
 
     // Start terminal animation after a short delay
     setTimeout(() => {
@@ -59,7 +63,7 @@ export class WebsiteHero extends AbstractElement {
 
   render() {
     return (
-      <section className="hero" id="home">
+      <section className="hero" id="home" tabIndex={-1}>
         <div className="hero-content">
           <div className="hero-text">
             <div className="hero-badge">

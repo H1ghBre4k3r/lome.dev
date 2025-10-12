@@ -1,4 +1,4 @@
-ARG NODE_VERSION=20.16.0
+ARG NODE_VERSION=24.10.0
 
 FROM node:${NODE_VERSION}-alpine as base
 

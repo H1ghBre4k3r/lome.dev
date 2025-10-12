@@ -1,14 +1,24 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./blog-post.css";
 import { Component } from "./component";
-import { getBlogPost, markdownToHtml, formatDate, type BlogPost } from "./lib/blog";
+import {
+  estimateReadingTime,
+  getBlogPost,
+  getBlogPosts,
+  getRelatedPosts,
+  markdownToHtml,
+  formatDate,
+  type BlogPost
+} from "./lib/blog";
 import { WebsiteBlogTOC } from "./blog-toc"; // type only
+import { BlogRelatedArticles } from "./blog-related"; // type only
 
 @Component("website-blog-post")
 export class WebsiteBlogPost extends AbstractElement {
   private post: BlogPost | null = null;
   private contentElement: HTMLElement | null = null;
   private tocEl: WebsiteBlogTOC | null = null;
+  private relatedEl: BlogRelatedArticles | null = null;
 
   constructor() {
     super();
@@ -18,12 +28,126 @@ export class WebsiteBlogPost extends AbstractElement {
     try {
       this.post = await getBlogPost(slug);
       this.updateContent();
+
+      // Update SEO meta tags and structured data
+      if (this.post) {
+        this.updateMetaTags(this.post);
+        this.updateStructuredData(this.post);
+      }
+
+      // Load related posts
+      if (this.post && this.relatedEl) {
+        const allPosts = await getBlogPosts();
+        const related = getRelatedPosts(this.post, allPosts, 3);
+        this.relatedEl.setRelatedPosts(related);
+      }
+
       return this.post;
     } catch (error) {
       console.error('Failed to load blog post:', error);
       this.showError();
       return null;
     }
+  }
+
+  /**
+   * Update meta tags for SEO when viewing a blog post
+   */
+  private updateMetaTags(post: BlogPost) {
+    const url = `https://lome.dev/#blog/${post.slug}`;
+
+    // Update document title
+    document.title = `${post.title} | lome.dev`;
+
+    // Helper to update or create meta tag
+    const setMeta = (nameOrProperty: string, value: string, isProperty = false) => {
+      const attr = isProperty ? 'property' : 'name';
+      let meta = document.querySelector(`meta[${attr}="${nameOrProperty}"]`);
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute(attr, nameOrProperty);
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', value);
+    };
+
+    // Standard meta tags
+    setMeta('description', post.excerpt);
+
+    // Open Graph tags
+    setMeta('og:title', post.title, true);
+    setMeta('og:description', post.excerpt, true);
+    setMeta('og:type', 'article', true);
+    setMeta('og:url', url, true);
+    setMeta('article:published_time', post.date, true);
+    setMeta('article:author', 'Louis (H1ghBre4k3r)', true);
+    setMeta('article:section', post.category, true);
+    post.tags.forEach((tag, index) => {
+      if (index < 4) {
+        const meta = document.createElement('meta');
+        meta.setAttribute('property', 'article:tag');
+        meta.setAttribute('content', tag);
+        document.head.appendChild(meta);
+      }
+    });
+
+    // Twitter Card tags
+    setMeta('twitter:card', 'summary_large_image');
+    setMeta('twitter:title', post.title);
+    setMeta('twitter:description', post.excerpt);
+
+    // Update canonical URL
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', url);
+  }
+
+  /**
+   * Add JSON-LD structured data for blog posts
+   */
+  private updateStructuredData(post: BlogPost) {
+    // Remove old structured data if exists
+    const oldScript = document.querySelector('script[data-blog-post-ld]');
+    if (oldScript) {
+      oldScript.remove();
+    }
+
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt,
+      "datePublished": post.date,
+      "dateModified": post.date,
+      "author": {
+        "@type": "Person",
+        "name": "Louis",
+        "alternateName": "H1ghBre4k3r",
+        "url": "https://lome.dev/"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Louis",
+        "alternateName": "H1ghBre4k3r"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://lome.dev/#blog/${post.slug}`
+      },
+      "keywords": post.tags.join(', '),
+      "articleSection": post.category,
+      "inLanguage": "en-US"
+    };
+
+    const script = document.createElement('script');
+    script.setAttribute('type', 'application/ld+json');
+    script.setAttribute('data-blog-post-ld', 'true');
+    script.textContent = JSON.stringify(structuredData, null, 2);
+    document.head.appendChild(script);
   }
 
   updateContent() {
@@ -34,57 +158,26 @@ export class WebsiteBlogPost extends AbstractElement {
       return;
     }
 
-    // Create article header
-    const header = document.createElement('header');
-    header.className = 'post-header';
+    // Header via JSX (Atomicity)
+    const header = (
+      <header className="post-header">
+        <a href="#blog" className="back-link" onClick={(e: Event) => { e.preventDefault(); window.location.hash = 'blog'; }}>← Back to Articles</a>
+        <div className="post-meta">
+          <span className="post-date">{formatDate(this.post.date)}</span>
+          <span className="post-reading">{estimateReadingTime(this.post.content || '')}</span>
+          <span className="post-category">{this.post.category}</span>
+        </div>
+        <h1 className="post-title">{this.post.title}</h1>
+        <div className="post-tags">{() => this.post!.tags.map(tag => <span className="tag">{tag}</span>)}</div>
+        <div className="share-buttons">
+          <a className="share-btn" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(this.post!.title)}&url=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer">Share on X</a>
+          <a className="share-btn" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer">Share on LinkedIn</a>
+        </div>
+      </header>
+    ) as HTMLElement;
 
-    const backLink = document.createElement('a');
-    backLink.href = '/';
-    backLink.className = 'back-link';
-    backLink.innerHTML = '← Back to Articles';
-    backLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.history.pushState({}, '', '/');
-      window.dispatchEvent(new PopStateEvent('popstate'));
-    });
-
-    const meta = document.createElement('div');
-    meta.className = 'post-meta';
-
-    const date = document.createElement('span');
-    date.className = 'post-date';
-    date.textContent = formatDate(this.post.date);
-
-    const category = document.createElement('span');
-    category.className = 'post-category';
-    category.textContent = this.post.category;
-
-    meta.appendChild(date);
-    meta.appendChild(category);
-
-    const title = document.createElement('h1');
-    title.className = 'post-title';
-    title.textContent = this.post.title;
-
-    const tagsDiv = document.createElement('div');
-    tagsDiv.className = 'post-tags';
-
-    this.post.tags.forEach(tag => {
-      const tagSpan = document.createElement('span');
-      tagSpan.className = 'tag';
-      tagSpan.textContent = tag;
-      tagsDiv.appendChild(tagSpan);
-    });
-
-    header.appendChild(backLink);
-    header.appendChild(meta);
-    header.appendChild(title);
-    header.appendChild(tagsDiv);
-
-    // Create article content
-    const article = document.createElement('article');
-    article.className = 'post-content';
-    
+    // Article via JSX container
+    const article = (<article className="post-content"></article>) as HTMLElement;
     if (this.post.content) {
       article.innerHTML = markdownToHtml(this.post.content);
     }
@@ -103,22 +196,17 @@ export class WebsiteBlogPost extends AbstractElement {
   showError() {
     if (!this.contentElement) return;
 
-    const error = document.createElement('div');
-    error.className = 'post-error';
-    error.innerHTML = `
-      <h2>Post Not Found</h2>
-      <p>Sorry, the blog post you're looking for doesn't exist.</p>
-      <a href="/" class="btn btn-primary">Back to Blog</a>
-    `;
-    
-    const btn = error.querySelector('.btn');
-    if (btn) {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.history.pushState({}, '', '/');
-        window.dispatchEvent(new PopStateEvent('popstate'));
-      });
-    }
+    const error = (
+      <div className="post-error">
+        <h2>Post Not Found</h2>
+        <p>Sorry, the blog post you're looking for doesn't exist.</p>
+        <a href="/" className="btn btn-primary" onClick={(e: Event) => {
+          e.preventDefault();
+          window.history.pushState({}, '', '/');
+          window.dispatchEvent(new PopStateEvent('popstate'));
+        }}>Back to Blog</a>
+      </div>
+    ) as HTMLElement;
 
     this.contentElement.innerHTML = '';
     this.contentElement.appendChild(error);
@@ -135,12 +223,15 @@ export class WebsiteBlogPost extends AbstractElement {
             <website-blog-toc></website-blog-toc>
           </aside>
         </div>
+        <div className="blog-post-related">
+          <blog-related-articles></blog-related-articles>
+        </div>
       </section>
     ) as HTMLElement;
 
     this.contentElement = section.querySelector('.blog-post-content');
     this.tocEl = section.querySelector('website-blog-toc') as unknown as WebsiteBlogTOC;
-
+    this.relatedEl = section.querySelector('blog-related-articles') as unknown as BlogRelatedArticles;
 
     return section;
   }

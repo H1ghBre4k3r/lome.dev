@@ -1,21 +1,19 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./github-stats.css";
 import { Component } from "./component";
+import { fetchEnhancedStats } from "./lib/github";
 
 interface StatItem { label: string; value: number; id: string; }
-
-interface Repostory {
-  fork: boolean;
-  stargazers_count?: number;
-}
 
 @Component("github-stats")
 export class GitHubStats extends AbstractElement {
   private stats: StatItem[] = [
     { id: "stars", label: "GitHub Stars", value: 748 },
     { id: "repos", label: "Repositories", value: 85 },
+    { id: "forks", label: "Total Forks", value: 120 },
+    { id: "followers", label: "Followers", value: 150 },
     { id: "years", label: "Years Coding", value: 8 },
-    { id: "projects", label: "Projects", value: 25 }
+    { id: "public", label: "Public Repos", value: 90 }
   ];
 
   connectedCallback() {
@@ -23,30 +21,38 @@ export class GitHubStats extends AbstractElement {
     // Start count-up shortly after mount for initial values
     setTimeout(() => this.animateCounters(), 300);
     // Fetch live values
-    this.tryFetch().catch(console.error);
+    this.fetchLiveStats().catch(console.error);
   }
 
-  async tryFetch() {
+  async fetchLiveStats() {
     try {
-      const user = "H1ghBre4k3r";
-      const [userRes, reposRes] = await Promise.all([
-        fetch(`https://api.github.com/users/${user}`),
-        fetch(`https://api.github.com/users/${user}/repos?per_page=100&type=owner&sort=updated`)
-      ]);
-      if (!userRes.ok || !reposRes.ok) return;
-      await userRes.json();
-      const repos = await reposRes.json();
-      const ownRepos = repos.filter((r: Repostory) => !r.fork);
-      const starsSum = ownRepos.reduce((acc: number, r: Repostory) => acc + (r.stargazers_count || 0), 0);
-      const reposCount = ownRepos.length;
-      const stars = starsSum && starsSum > reposCount ? starsSum : 748;
-      // Update DOM values directly to avoid ordering issues
-      const starsEl = this.querySelector('.stat-value[data-id="stars"]') as HTMLElement | null;
-      const reposEl = this.querySelector('.stat-value[data-id="repos"]') as HTMLElement | null;
-      if (starsEl) { starsEl.dataset.value = String(stars); starsEl.textContent = '0'; }
-      if (reposEl) { reposEl.dataset.value = String(reposCount); reposEl.textContent = '0'; }
+      const stats = await fetchEnhancedStats();
+      if (!stats) return;
+
+      // Update stat values
+      const updates = [
+        { id: 'stars', value: stats.stars },
+        { id: 'repos', value: stats.repos },
+        { id: 'forks', value: stats.forks },
+        { id: 'followers', value: stats.followers },
+        { id: 'years', value: stats.yearsCoding },
+        { id: 'public', value: stats.publicRepos }
+      ];
+
+      // Update DOM values directly
+      updates.forEach(({ id, value }) => {
+        const el = this.querySelector(`.stat-value[data-id="${id}"]`) as HTMLElement | null;
+        if (el) {
+          el.dataset.value = String(value);
+          el.textContent = '0';
+        }
+      });
+
+      // Re-animate with new values
       this.animateCounters();
-    } catch (e) { console.error(e) }
+    } catch (error) {
+      console.error('Failed to fetch GitHub stats:', error);
+    }
   }
 
   animateCounters() {

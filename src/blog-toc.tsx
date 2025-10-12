@@ -57,24 +57,23 @@ export class WebsiteBlogTOC extends AbstractElement {
     this.tocList.innerHTML = '';
 
     if (this.tocItems.length === 0) {
-      const emptyState = document.createElement('div');
-      emptyState.className = 'toc-empty';
-      emptyState.textContent = 'No headings found';
+      const emptyState = (<div className="toc-empty">No headings found</div>) as HTMLElement;
       this.tocList.appendChild(emptyState);
       return;
     }
 
     this.tocItems.forEach(item => {
-      const link = document.createElement('a');
-      link.href = `#${item.id}`;
-      link.className = `toc-link toc-level-${item.level}`;
-      link.textContent = item.text;
-      link.dataset.id = item.id;
-
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.scrollToHeading(item.id);
-      });
+      const link = (
+        <a
+          href={`#${item.id}`}
+          className={`toc-link toc-level-${item.level}`}
+          data-id={item.id}
+          onClick={(e: Event) => {
+            e.preventDefault();
+            this.scrollToHeading(item.id);
+          }}
+        >{item.text}</a>
+      ) as HTMLAnchorElement;
 
       this.tocList!.appendChild(link);
     });

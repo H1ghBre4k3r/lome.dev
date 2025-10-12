@@ -13,8 +13,9 @@
 
   @media (prefers-color-scheme: light) {
     .blog-toc {
-      background: rgba(0, 0, 0, 0.02);
-      border-color: rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(0, 0, 0, 0.12);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
   }
 
@@ -31,8 +32,8 @@
 
   @media (prefers-color-scheme: light) {
     .toc-header {
-      color: rgba(0, 0, 0, 0.45);
-      border-bottom-color: rgba(0, 0, 0, 0.08);
+      color: rgba(0, 0, 0, 0.55);
+      border-bottom-color: rgba(0, 0, 0, 0.12);
     }
   }
 
@@ -56,7 +57,7 @@
 
   @media (prefers-color-scheme: light) {
     .toc-link {
-      color: rgba(0, 0, 0, 0.6);
+      color: rgba(0, 0, 0, 0.65);
     }
   }
 
@@ -97,7 +98,7 @@
 
   @media (prefers-color-scheme: light) {
     .toc-link.toc-level-4 {
-      color: rgba(0, 0, 0, 0.5);
+      color: rgba(0, 0, 0, 0.55);
     }
   }
 
@@ -111,7 +112,7 @@
 
   @media (prefers-color-scheme: light) {
     .toc-empty {
-      color: rgba(0, 0, 0, 0.4);
+      color: rgba(0, 0, 0, 0.5);
     }
   }
 
@@ -136,7 +137,15 @@
 
   @media (prefers-color-scheme: light) {
     .blog-toc::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.02);
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .blog-toc::-webkit-scrollbar-thumb {
+      background: rgba(102, 126, 234, 0.4);
+    }
+
+    .blog-toc::-webkit-scrollbar-thumb:hover {
+      background: rgba(102, 126, 234, 0.6);
     }
   }
 

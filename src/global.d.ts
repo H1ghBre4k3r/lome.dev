@@ -2,6 +2,7 @@
 declare namespace JSX {
   export interface IntrinsicElements {
     "particle-background": {};
+    "scroll-progress": {};
     "website-header": {};
     "website-hero": {};
     "website-about": {};
@@ -15,5 +16,11 @@ declare namespace JSX {
     "code-showcase": {};
     "interactive-terminal": {};
     "website-blog-toc": {};
+    'website-timeline': {};
+    'website-skills': {};
+    'blog-related-articles': {};
+    'contribution-heatmap': {};
+    'language-chart': {};
+    'coding-streak': {};
   }
 }

@@ -1,0 +1,512 @@
+.timeline-section {
+  padding: 4rem 2rem;
+  max-width: var(--content-width);
+  margin: 0 auto;
+}
+
+.timeline-section .section-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 900;
+  margin: 0 0 1.5rem;
+  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+}
+
+.timeline-intro {
+  text-align: center;
+  max-width: 600px;
+  margin: 1rem auto 3rem;
+  opacity: 0.8;
+  font-size: 1.1rem;
+}
+
+.timeline-filters {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  background: rgba(102, 126, 234, 0.05);
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  background: rgba(102, 126, 234, 0.15);
+  border-color: rgba(102, 126, 234, 0.5);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+  border-color: rgba(102, 126, 234, 0.6);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+}
+
+.timeline {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(102, 126, 234, 0.5) 10%,
+    rgba(118, 75, 162, 0.5) 90%,
+    transparent
+  );
+  transform: translateX(-50%);
+}
+
+.timeline-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 2rem;
+  align-items: center;
+  position: relative;
+  overflow: visible;
+}
+
+.timeline-item:nth-child(even) .timeline-content {
+  grid-column: 1;
+  text-align: right;
+}
+
+.timeline-item:nth-child(even) .timeline-marker {
+  grid-column: 2;
+}
+
+.timeline-item:nth-child(even) .timeline-content::after {
+  display: none;
+}
+
+.timeline-item:nth-child(odd) .timeline-content {
+  grid-column: 3;
+  text-align: left;
+}
+
+.timeline-item:nth-child(odd) .timeline-marker {
+  grid-column: 2;
+}
+
+.timeline-marker {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+  border: 3px solid rgba(102, 126, 234, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.timeline-item:hover .timeline-marker {
+  transform: scale(1.15);
+  box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+}
+
+.marker-icon {
+  font-size: 1.5rem;
+}
+
+.timeline-content {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(102, 126, 234, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2);
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  gap: 1rem;
+}
+
+.timeline-date {
+  font-weight: 600;
+  color: rgba(102, 126, 234, 0.9);
+  font-size: 0.9rem;
+}
+
+.timeline-type {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.timeline-type.education {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.timeline-type.work {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.timeline-type.achievement {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.timeline-type.opensource {
+  background: rgba(168, 85, 247, 0.2);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.timeline-title {
+  font-size: 1.3rem;
+  margin: 0.5rem 0;
+  color: #fff;
+}
+
+.timeline-title a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+.timeline-title a:hover {
+  color: rgba(102, 126, 234, 0.9);
+}
+
+.timeline-org {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 0.75rem;
+  font-style: italic;
+}
+
+.timeline-description {
+  margin: 1rem 0;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.timeline-item.expanded .timeline-description {
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
+.timeline-toggle {
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid rgba(102, 126, 234, 0.4);
+  background: rgba(102, 126, 234, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.timeline-toggle:hover {
+  background: rgba(102, 126, 234, 0.15);
+}
+
+.timeline-tags {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.timeline-item:nth-child(even) .timeline-tags {
+  justify-content: flex-end;
+}
+
+.timeline-tags .tag {
+  padding: 0.3rem 0.75rem;
+  background: rgba(102, 126, 234, 0.15);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Expandable content */
+.timeline-expandable {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
+  margin-top: 0;
+}
+
+.timeline-item.expanded .timeline-expandable {
+  max-height: 1000px;
+  opacity: 1;
+  margin-top: 1.5rem;
+}
+
+.timeline-details {
+  margin: 0 0 1rem 0;
+  padding: 1rem;
+  background: rgba(102, 126, 234, 0.05);
+  border-left: 3px solid rgba(102, 126, 234, 0.4);
+  border-radius: 6px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  font-style: italic;
+}
+
+@media (prefers-color-scheme: light) {
+  .timeline-details {
+    background: rgba(102, 126, 234, 0.08);
+    color: rgba(0, 0, 0, 0.75);
+  }
+}
+
+.expandable-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.75rem 0;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (prefers-color-scheme: light) {
+  .expandable-title {
+    color: rgba(0, 0, 0, 0.85);
+  }
+}
+
+.timeline-achievements,
+.timeline-skills {
+  margin-bottom: 1rem;
+}
+
+.achievements-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.achievements-list li {
+  padding: 0.6rem 0 0.6rem 1.5rem;
+  position: relative;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  border-left: 2px solid rgba(102, 126, 234, 0.2);
+  margin-bottom: 0.5rem;
+}
+
+.achievements-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0.4rem;
+  color: rgba(102, 126, 234, 0.7);
+  font-weight: bold;
+}
+
+@media (prefers-color-scheme: light) {
+  .achievements-list li {
+    color: rgba(0, 0, 0, 0.75);
+  }
+}
+
+.skills-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  padding: 0.4rem 0.9rem;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(139, 92, 246, 1);
+  transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+  background: rgba(139, 92, 246, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
+@media (prefers-color-scheme: light) {
+  .skill-tag {
+    background: rgba(139, 92, 246, 0.1);
+    color: rgba(139, 92, 246, 1);
+  }
+}
+
+.timeline-item:nth-child(even) .skills-tags {
+  justify-content: flex-end;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .timeline-line {
+    left: 30px;
+    transform: none;
+  }
+
+  .timeline-item {
+    grid-template-columns: 60px 1fr;
+    gap: 1rem;
+  }
+
+  .timeline-item:nth-child(even) .timeline-content,
+  .timeline-item:nth-child(odd) .timeline-content {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .timeline-item:nth-child(even) .timeline-marker,
+  .timeline-item:nth-child(odd) .timeline-marker {
+    grid-column: 1;
+    justify-self: center;
+  }
+
+  .timeline-item:nth-child(even) .timeline-tags {
+    justify-content: flex-start;
+  }
+
+  .timeline-marker {
+    width: 40px;
+    height: 40px;
+  }
+
+  .marker-icon {
+    font-size: 1.2rem;
+  }
+
+  .timeline-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Light mode */
+@media (prefers-color-scheme: light) {
+  .timeline-intro {
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .timeline-content {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(102, 126, 234, 0.25);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .timeline-content:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.12);
+  }
+
+  .timeline-title {
+    color: #1a1a1a;
+  }
+
+  .timeline-org {
+    color: rgba(0, 0, 0, 0.55);
+  }
+
+  .timeline-description {
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  .timeline-toggle {
+    background: rgba(102, 126, 234, 0.12);
+    border-color: rgba(102, 126, 234, 0.3);
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .timeline-toggle:hover {
+    background: rgba(102, 126, 234, 0.2);
+    color: rgba(0, 0, 0, 0.9);
+  }
+
+  .filter-btn {
+    color: rgba(0, 0, 0, 0.7);
+    background: rgba(102, 126, 234, 0.1);
+    border-color: rgba(102, 126, 234, 0.25);
+  }
+
+  .filter-btn:hover {
+    color: rgba(0, 0, 0, 0.9);
+    background: rgba(102, 126, 234, 0.15);
+  }
+
+  .filter-btn.active {
+    color: #fff;
+  }
+
+  .timeline-tags .tag {
+    background: rgba(102, 126, 234, 0.12);
+    border-color: rgba(102, 126, 234, 0.25);
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  .timeline-marker {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+    border-color: rgba(102, 126, 234, 0.4);
+  }
+}

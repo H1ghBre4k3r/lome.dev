@@ -1,0 +1,282 @@
+@layer organism {
+  coding-streak {
+    display: block;
+  }
+
+  .coding-streak-section {
+    margin: 3rem 0;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 16px;
+    backdrop-filter: blur(8px);
+  }
+
+  @media (prefers-color-scheme: light) {
+    .coding-streak-section {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(102, 126, 234, 0.2);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  .streak-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .streak-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .streak-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .streak-card {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  @media (prefers-color-scheme: light) {
+    .streak-card {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .streak-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(102, 126, 234, 0.15);
+    border-color: rgba(102, 126, 234, 0.4);
+  }
+
+  @media (prefers-color-scheme: light) {
+    .streak-card:hover {
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.12);
+    }
+  }
+
+  .streak-card.current {
+    border-color: rgba(255, 126, 87, 0.3);
+  }
+
+  .streak-card.current:hover {
+    border-color: rgba(255, 126, 87, 0.5);
+  }
+
+  .streak-card.longest {
+    border-color: rgba(255, 215, 0, 0.3);
+  }
+
+  .streak-card.longest:hover {
+    border-color: rgba(255, 215, 0, 0.5);
+  }
+
+  .streak-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .streak-value {
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+
+  .streak-label {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.75rem;
+  }
+
+  @media (prefers-color-scheme: light) {
+    .streak-label {
+      color: rgba(0, 0, 0, 0.65);
+    }
+  }
+
+  .streak-message,
+  .streak-milestone {
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+  }
+
+  .streak-message {
+    background: rgba(255, 126, 87, 0.15);
+    color: rgba(255, 126, 87, 0.9);
+    border: 1px solid rgba(255, 126, 87, 0.3);
+  }
+
+  @media (prefers-color-scheme: light) {
+    .streak-message {
+      background: rgba(255, 126, 87, 0.1);
+      color: rgba(200, 70, 30, 0.9);
+      border-color: rgba(255, 126, 87, 0.25);
+    }
+  }
+
+  .streak-milestone {
+    background: rgba(255, 215, 0, 0.15);
+    color: rgba(255, 215, 0, 0.95);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+  }
+
+  @media (prefers-color-scheme: light) {
+    .streak-milestone {
+      background: rgba(255, 215, 0, 0.1);
+      color: rgba(180, 120, 0, 0.95);
+      border-color: rgba(255, 215, 0, 0.3);
+    }
+  }
+
+  .streak-activity {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 12px;
+  }
+
+  @media (prefers-color-scheme: light) {
+    .streak-activity {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .activity-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1rem;
+  }
+
+  @media (prefers-color-scheme: light) {
+    .activity-title {
+      color: rgba(0, 0, 0, 0.75);
+    }
+  }
+
+  .activity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16px, 1fr));
+    gap: 4px;
+  }
+
+  .activity-day {
+    aspect-ratio: 1;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  /* Activity levels */
+  .activity-day.level-0 {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .activity-day.level-1 {
+    background: rgba(102, 126, 234, 0.3);
+  }
+
+  .activity-day.level-2 {
+    background: rgba(102, 126, 234, 0.5);
+  }
+
+  .activity-day.level-3 {
+    background: rgba(102, 126, 234, 0.7);
+  }
+
+  .activity-day.level-4 {
+    background: rgba(118, 75, 162, 0.9);
+  }
+
+  @media (prefers-color-scheme: light) {
+    .activity-day.level-0 {
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .activity-day.level-1 {
+      background: rgba(102, 126, 234, 0.25);
+    }
+
+    .activity-day.level-2 {
+      background: rgba(102, 126, 234, 0.45);
+    }
+
+    .activity-day.level-3 {
+      background: rgba(102, 126, 234, 0.65);
+    }
+
+    .activity-day.level-4 {
+      background: rgba(118, 75, 162, 0.85);
+    }
+  }
+
+  .activity-day:hover {
+    transform: scale(1.2);
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+  }
+
+  .streak-loading {
+    padding: 2rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9375rem;
+  }
+
+  @media (prefers-color-scheme: light) {
+    .streak-loading {
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  /* Responsive design */
+  @media only screen and (max-width: 768px) {
+    .coding-streak-section {
+      padding: 1.5rem 1rem;
+    }
+
+    .streak-title {
+      font-size: 1.25rem;
+    }
+
+    .streak-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .streak-value {
+      font-size: 2.5rem;
+    }
+
+    .activity-grid {
+      grid-template-columns: repeat(auto-fill, minmax(12px, 1fr));
+      gap: 3px;
+    }
+  }
+}

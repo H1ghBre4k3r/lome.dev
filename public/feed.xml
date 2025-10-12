@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>lome.dev Blog</title>
+    <description>Technical articles about compilers, Rust, TypeScript, and software engineering by Louis (H1ghBre4k3r)</description>
+    <link>https://lome.dev</link>
+    <atom:link href="https://lome.dev/feed.xml" rel="self" type="application/rss+xml"/>
+    <language>en-US</language>
+    <lastBuildDate>Sun, 12 Oct 2025 23:48:17 GMT</lastBuildDate>
+    <generator>lome.dev custom RSS generator</generator>
+    <copyright>Copyright 2025 Louis (H1ghBre4k3r)</copyright>
+    <managingEditor>louis@lome.dev (Louis)</managingEditor>
+    <item>
+      <title>Dependency Injection Without the Boilerplate</title>
+      <link>https://lome.dev/#blog/dependency-injection</link>
+      <guid isPermaLink="true">https://lome.dev/#blog/dependency-injection</guid>
+      <description>Exploring how TypeScript decorators enable elegant dependency injection patterns in Dependory, and why decorator-based DI is more powerful than you might think.</description>
+      <pubDate>Tue, 05 Mar 2024 00:00:00 GMT</pubDate>
+      <category>TypeScript</category>
+      <category>TypeScript</category>
+      <category>Decorators</category>
+      <category>Design Patterns</category>
+    </item>
+    <item>
+      <title>Lexer Generation with Proc Macros</title>
+      <link>https://lome.dev/#blog/lexer-proc-macros</link>
+      <guid isPermaLink="true">https://lome.dev/#blog/lexer-proc-macros</guid>
+      <description>How Lachs uses Rust&apos;s powerful proc macro system to automatically generate lexers from enum definitions, making compiler frontend development faster and more maintainable.</description>
+      <pubDate>Sat, 10 Feb 2024 00:00:00 GMT</pubDate>
+      <category>Rust</category>
+      <category>Rust</category>
+      <category>Macros</category>
+      <category>Metaprogramming</category>
+      <category>Compilers</category>
+    </item>
+    <item>
+      <title>Building Y: An Expression-Centric Language</title>
+      <link>https://lome.dev/#blog/y-lang-design</link>
+      <guid isPermaLink="true">https://lome.dev/#blog/y-lang-design</guid>
+      <description>Deep dive into the design decisions behind Y-lang, exploring how treating everything as an expression simplifies both the language semantics and the compiler implementation.</description>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 GMT</pubDate>
+      <category>Compilers</category>
+      <category>Rust</category>
+      <category>LLVM</category>
+      <category>Language Design</category>
+      <category>Compilers</category>
+    </item>
+  </channel>
+</rss>

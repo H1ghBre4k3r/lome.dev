@@ -1,0 +1,38 @@
+@layer molecule {
+  /* Cursor trail particle */
+  .cursor-trail-particle {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.4));
+    pointer-events: none;
+    z-index: 9998;
+    animation: cursorTrailFade 0.8s ease-out forwards;
+  }
+
+  @keyframes cursorTrailFade {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0.3);
+      opacity: 0;
+    }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .cursor-trail-particle {
+      display: none;
+    }
+  }
+
+  /* Hide on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    .cursor-trail-particle {
+      display: none;
+    }
+  }
+}
