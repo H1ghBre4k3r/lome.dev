@@ -2,6 +2,7 @@ import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./hero.css";
 import { Component } from "./component";
 import { InteractiveTerminal } from "./interactive-terminal"; // type only
+import { addGlitchText } from "./glitch-text";
 
 @Component("website-hero")
 export class WebsiteHero extends AbstractElement {
@@ -24,6 +25,9 @@ export class WebsiteHero extends AbstractElement {
       }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Apply glitch effect to hero title
+    addGlitchText('.hero-title', this, false);
 
     // Cycle keywords in subtitle
     const keywords = ["Developer", "Compiler Enthusiast", "Rustacean", "TypeScript Nerd", "IoT Tinkerer"];

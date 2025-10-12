@@ -4,6 +4,8 @@ import { Component } from "./component";
 import { siGithub } from "simple-icons";
 import { svg } from "./utils";
 import { addCardTiltToAll } from "./card-tilt";
+import { addMagneticHover } from "./magnetic-hover";
+import { addGlitchText } from "./glitch-text";
 import {
   type Project,
   getAllProjects,
@@ -35,6 +37,13 @@ export class WebsiteProjects extends AbstractElement {
     setTimeout(() => {
       this.renderProjects();
       addCardTiltToAll('.project-card', this);
+      addMagneticHover('.project-card', this, {
+        strength: 0.25,
+        distance: 200,
+        rotation: true,
+        scale: true
+      });
+      addGlitchText('.section-title', this, false);
       this.fetchMetadata();
     }, 100);
   }
@@ -163,8 +172,16 @@ export class WebsiteProjects extends AbstractElement {
       grid.appendChild(showLessBtn);
     }
 
-    // Apply tilt effect to new cards
-    setTimeout(() => addCardTiltToAll('.project-card', this), 50);
+    // Apply tilt and magnetic effects to new cards
+    setTimeout(() => {
+      addCardTiltToAll('.project-card', this);
+      addMagneticHover('.project-card', this, {
+        strength: 0.25,
+        distance: 200,
+        rotation: true,
+        scale: true
+      });
+    }, 50);
   }
 
   createProjectCard(project: Project): HTMLElement {
@@ -207,6 +224,27 @@ export class WebsiteProjects extends AbstractElement {
         ) : ''}
       </div>
     ) as HTMLElement;
+
+    // Add holographic mouse tracking effect
+    card.addEventListener('mousemove', (e: MouseEvent) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const deltaX = (x - centerX) / centerX;
+      const deltaY = (y - centerY) / centerY;
+
+      card.style.setProperty('--mouse-x', `${deltaX * 30}px`);
+      card.style.setProperty('--mouse-y', `${deltaY * 30}px`);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.setProperty('--mouse-x', '0px');
+      card.style.setProperty('--mouse-y', '0px');
+    });
 
     return card;
   }
