@@ -112,38 +112,6 @@ export const PROJECTS: Project[] = [
     ]
   },
   {
-    slug: 'html-parser',
-    title: 'HTML Parser',
-    description: 'A simple and progressively spec-compliant HTML parser written in Rust. Focuses on correctness and standards compliance for parsing HTML documents.',
-    repo: 'H1ghBre4k3r/html-parser',
-    category: 'Library',
-    technologies: ['Rust', 'HTML', 'Parser'],
-    status: 'active',
-    featured: false,
-    highlights: [
-      'Spec-compliant parsing',
-      'Written in pure Rust',
-      'DOM tree construction',
-      'Error-resilient parsing'
-    ]
-  },
-  {
-    slug: 'decorator-components',
-    title: 'Decorator Components',
-    description: 'Lightweight TypeScript decorators for building web components. Provides a clean, declarative API for creating custom elements with less boilerplate.',
-    repo: 'H1ghBre4k3r/decorator-components',
-    category: 'Library',
-    technologies: ['TypeScript', 'Decorators', 'Web Components'],
-    status: 'maintained',
-    featured: false,
-    highlights: [
-      'Decorator-based component definition',
-      'Minimal boilerplate',
-      'TypeScript-first design',
-      'Standards-based web components'
-    ]
-  },
-  {
     slug: 'hurricane-ics',
     title: 'Hurricane ICS',
     description: 'ICS calendar provider for the Hurricane Festival. Generates iCalendar files from festival lineups, allowing attendees to import their favorite artist schedules.',
@@ -175,22 +143,6 @@ export const PROJECTS: Project[] = [
       'Easy integration'
     ]
   },
-  {
-    slug: 'eventer',
-    title: 'Eventer',
-    description: 'A tool to plan and coordinate events for an arbitrary number of participants. Helps with scheduling, RSVP tracking, and event organization.',
-    repo: 'H1ghBre4k3r/eventer',
-    category: 'Application',
-    technologies: ['TypeScript', 'React', 'Node.js'],
-    status: 'maintained',
-    featured: false,
-    highlights: [
-      'Event scheduling',
-      'RSVP management',
-      'Participant coordination',
-      'Calendar integration'
-    ]
-  }
 ];
 
 /**
