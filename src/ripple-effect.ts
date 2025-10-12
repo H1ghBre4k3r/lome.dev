@@ -2,6 +2,9 @@ import './ripple-effect.css';
 
 export type RippleVariant = 'default' | 'light' | 'accent';
 
+// Store ripple handlers in a WeakMap to avoid using 'any'
+const rippleHandlers = new WeakMap<HTMLElement, (e: MouseEvent) => void>();
+
 interface RippleOptions {
   variant?: RippleVariant;
   duration?: number;
@@ -35,13 +38,14 @@ export function addRippleEffect(
     };
 
     // Remove existing listener if any
-    if ((el as any)._rippleHandler) {
-      el.removeEventListener('click', (el as any)._rippleHandler);
+    const existingHandler = rippleHandlers.get(el);
+    if (existingHandler) {
+      el.removeEventListener('click', existingHandler);
     }
 
     // Add new listener
     el.addEventListener('click', handleClick);
-    (el as any)._rippleHandler = handleClick;
+    rippleHandlers.set(el, handleClick);
   });
 }
 
@@ -91,10 +95,11 @@ export function removeRippleEffect(
   const elements = container.querySelectorAll(selector);
 
   elements.forEach((element) => {
-    const el = element as any;
-    if (el._rippleHandler) {
-      el.removeEventListener('click', el._rippleHandler);
-      delete el._rippleHandler;
+    const el = element as HTMLElement;
+    const handler = rippleHandlers.get(el);
+    if (handler) {
+      el.removeEventListener('click', handler);
+      rippleHandlers.delete(el);
     }
     el.classList.remove('ripple-container');
   });

@@ -10,7 +10,6 @@ interface SectionInfo {
 
 @Component("scroll-progress")
 export class ScrollProgress extends AbstractElement {
-  private progressBar: HTMLElement | null = null;
   private progressFill: HTMLElement | null = null;
   private circleProgress: HTMLElement | null = null;
   private circleFill: SVGCircleElement | null = null;
@@ -40,7 +39,6 @@ export class ScrollProgress extends AbstractElement {
 
     // Initial update
     setTimeout(() => {
-      this.progressBar = this.querySelector('.scroll-progress-bar');
       this.progressFill = this.querySelector('.scroll-progress-fill');
       this.circleProgress = this.querySelector('.scroll-progress-circle');
       this.circleFill = this.querySelector('.progress-circle-fill');
@@ -159,40 +157,82 @@ export class ScrollProgress extends AbstractElement {
   }
 
   render() {
-    return (
-      <div>
-        {/* Top progress bar */}
-        <div className="scroll-progress-bar">
-          <div className="scroll-progress-fill"></div>
-        </div>
+    const container = document.createElement('div');
 
-        {/* Circular scroll to top indicator */}
-        <div className="scroll-progress-circle" onClick={() => this.scrollToTop()}>
-          <svg viewBox="0 0 100 100">
-            <defs>
-              <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
-              </linearGradient>
-            </defs>
-            <circle className="progress-circle-bg" cx="50" cy="50" r="45" />
-            <circle className="progress-circle-fill" cx="50" cy="50" r="45" />
-          </svg>
-          <div className="progress-circle-icon">↑</div>
-        </div>
-
-        {/* Section indicators */}
-        <div className="section-progress-indicators">
-          {() => this.sections.map(section => (
-            <div
-              className="section-indicator"
-              data-section={section.id}
-              data-label={section.label}
-              onClick={() => this.scrollToSection(section.id)}
-            ></div>
-          ))}
-        </div>
+    // Top progress bar
+    const progressBar = (
+      <div className="scroll-progress-bar">
+        <div className="scroll-progress-fill"></div>
       </div>
     ) as HTMLElement;
+    container.appendChild(progressBar);
+
+    // Circular scroll to top indicator
+    const circleContainer = document.createElement('div');
+    circleContainer.className = 'scroll-progress-circle';
+    circleContainer.onclick = () => this.scrollToTop();
+
+    // Create SVG using DOM methods
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 100 100');
+
+    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+    gradient.setAttribute('id', 'progressGradient');
+    gradient.setAttribute('x1', '0%');
+    gradient.setAttribute('y1', '0%');
+    gradient.setAttribute('x2', '100%');
+    gradient.setAttribute('y2', '0%');
+
+    const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    stop1.setAttribute('offset', '0%');
+    stop1.setAttribute('style', 'stop-color:#667eea;stop-opacity:1');
+
+    const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    stop2.setAttribute('offset', '100%');
+    stop2.setAttribute('style', 'stop-color:#764ba2;stop-opacity:1');
+
+    gradient.appendChild(stop1);
+    gradient.appendChild(stop2);
+    defs.appendChild(gradient);
+    svg.appendChild(defs);
+
+    const circleBg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circleBg.setAttribute('class', 'progress-circle-bg');
+    circleBg.setAttribute('cx', '50');
+    circleBg.setAttribute('cy', '50');
+    circleBg.setAttribute('r', '45');
+
+    const circleFill = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circleFill.setAttribute('class', 'progress-circle-fill');
+    circleFill.setAttribute('cx', '50');
+    circleFill.setAttribute('cy', '50');
+    circleFill.setAttribute('r', '45');
+
+    svg.appendChild(circleBg);
+    svg.appendChild(circleFill);
+    circleContainer.appendChild(svg);
+
+    const icon = (<div className="progress-circle-icon">↑</div>) as HTMLElement;
+    circleContainer.appendChild(icon);
+
+    container.appendChild(circleContainer);
+
+    // Section indicators
+    const sectionIndicators = (
+      <div className="section-progress-indicators">
+        {() => this.sections.map(section => (
+          <div
+            className="section-indicator"
+            data-section={section.id}
+            data-label={section.label}
+            onClick={() => this.scrollToSection(section.id)}
+          ></div>
+        ))}
+      </div>
+    ) as HTMLElement;
+    container.appendChild(sectionIndicators);
+
+    return container;
   }
 }

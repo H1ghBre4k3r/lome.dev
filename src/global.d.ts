@@ -2,6 +2,7 @@
 declare namespace JSX {
   export interface IntrinsicElements {
     "particle-background": {};
+    "scroll-progress": {};
     "website-header": {};
     "website-hero": {};
     "website-about": {};
