@@ -39,7 +39,7 @@
 
   @media (prefers-color-scheme: light) {
     .contact-subtitle {
-      color: rgba(0, 0, 0, 0.5);
+      color: rgba(0, 0, 0, 0.6);
     }
   }
 
@@ -69,8 +69,14 @@
 
   @media (prefers-color-scheme: light) {
     .contact-link {
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .contact-link:hover {
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
     }
   }
 
@@ -111,7 +117,7 @@
 
   @media (prefers-color-scheme: light) {
     .footer p {
-      color: rgba(0, 0, 0, 0.4);
+      color: rgba(0, 0, 0, 0.5);
     }
   }
 

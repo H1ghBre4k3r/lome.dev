@@ -59,7 +59,7 @@ export class WebsiteHero extends AbstractElement {
 
   render() {
     return (
-      <section className="hero" id="home">
+      <section className="hero" id="home" tabIndex={-1}>
         <div className="hero-content">
           <div className="hero-text">
             <div className="hero-badge">

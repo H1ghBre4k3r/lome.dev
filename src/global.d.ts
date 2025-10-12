@@ -17,5 +17,9 @@ declare namespace JSX {
     "website-blog-toc": {};
     'website-timeline': {};
     'website-skills': {};
+    'blog-related-articles': {};
+    'contribution-heatmap': {};
+    'language-chart': {};
+    'coding-streak': {};
   }
 }

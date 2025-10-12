@@ -154,11 +154,13 @@ export class WebsiteBlogRouter extends AbstractElement {
         if (post) {
           document.title = `${post.title} - H1ghBre4k3r`;
         }
+
+        // Scroll to top AFTER content is loaded and rendered
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
       });
     }
-
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   render() {

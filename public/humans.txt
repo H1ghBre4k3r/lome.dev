@@ -1,0 +1,21 @@
+/* TEAM */
+Developer: Louis (H1ghBre4k3r)
+Site: https://lome.dev
+GitHub: https://github.com/H1ghBre4k3r
+Location: Germany
+
+/* THANKS */
+Framework: @pesca-dev/atomicity
+Icons: Simple Icons
+Fonts: Fliege Mono (headings), Inter (body)
+Markdown: Marked.js
+Syntax Highlighting: Highlight.js
+
+/* SITE */
+Last update: 2025-10-12
+Language: English
+Doctype: HTML5
+IDE: VS Code
+Standards: HTML5, CSS3, TypeScript
+Components: Web Components (Custom Elements)
+Build: Vite

@@ -33,6 +33,15 @@ export class WebsiteAbout extends AbstractElement {
             </div>
             <website-achievements></website-achievements>
           </div>
+
+          <div className="github-deep-integration">
+            <div className="github-grid">
+              <coding-streak></coding-streak>
+              <language-chart></language-chart>
+            </div>
+            <contribution-heatmap></contribution-heatmap>
+          </div>
+
           <website-skills></website-skills>
         </div>
       </section>

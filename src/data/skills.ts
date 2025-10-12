@@ -185,10 +185,10 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
 ];
 
 export const CURRENTLY_LEARNING: string[] = [
-  'WebAssembly',
-  'Zig',
-  'Advanced Type Theory',
-  'Distributed Consensus Algorithms'
+  'Embedded Rust (ESP32)',
+  'Matter/HomeKit Protocol',
+  'LLVM IR & Compiler Optimization',
+  'Rust 2024 Edition Features'
 ];
 
 export const SOFT_SKILLS: string[] = [

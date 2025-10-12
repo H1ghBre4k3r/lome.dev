@@ -191,3 +191,58 @@ export function formatDate(dateString: string): string {
     day: 'numeric'
   });
 }
+
+/**
+ * Calculates similarity score between two blog posts
+ */
+function calculateSimilarity(post1: BlogPost, post2: BlogPost): number {
+  let score = 0;
+
+  // Same category = 3 points
+  if (post1.category === post2.category) {
+    score += 3;
+  }
+
+  // Shared tags = 2 points per tag
+  const sharedTags = post1.tags.filter(tag => post2.tags.includes(tag));
+  score += sharedTags.length * 2;
+
+  // Bonus point if they have any tags in common
+  if (sharedTags.length > 0) {
+    score += 1;
+  }
+
+  return score;
+}
+
+/**
+ * Gets related blog posts based on tags and category similarity
+ * @param currentPost The post to find related articles for
+ * @param allPosts All available posts
+ * @param limit Maximum number of related posts to return (default: 3)
+ */
+export function getRelatedPosts(
+  currentPost: BlogPost,
+  allPosts: BlogPost[],
+  limit = 3
+): BlogPost[] {
+  // Filter out the current post
+  const otherPosts = allPosts.filter(post => post.slug !== currentPost.slug);
+
+  // Calculate similarity scores
+  const postsWithScores = otherPosts.map(post => ({
+    post,
+    score: calculateSimilarity(currentPost, post)
+  }));
+
+  // Sort by score (descending) and then by date (most recent first)
+  postsWithScores.sort((a, b) => {
+    if (b.score !== a.score) {
+      return b.score - a.score;
+    }
+    return new Date(b.post.date).getTime() - new Date(a.post.date).getTime();
+  });
+
+  // Return top N posts
+  return postsWithScores.slice(0, limit).map(item => item.post);
+}

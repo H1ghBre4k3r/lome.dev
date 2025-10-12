@@ -58,7 +58,7 @@
 
   @media (prefers-color-scheme: light) {
     .about-text p {
-      color: rgba(0, 0, 0, 0.6);
+      color: rgba(0, 0, 0, 0.65);
     }
   }
 
@@ -72,8 +72,9 @@
 
   @media (prefers-color-scheme: light) {
     .about-skills {
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
   }
 
@@ -113,7 +114,13 @@
 
   @media (prefers-color-scheme: light) {
     .skill-item {
-      background: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .skill-item:hover {
+      background: rgba(102, 126, 234, 0.12);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.12);
     }
   }
 
@@ -130,6 +137,18 @@
   .skill-item span {
     font-weight: 600;
     font-size: 0.95rem;
+  }
+
+  /* GitHub Deep Integration Section */
+  .github-deep-integration {
+    margin: 4rem 0;
+  }
+
+  .github-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
   }
 
   @media only screen and (max-width: 968px) {
@@ -154,6 +173,11 @@
     .skill-item svg {
       width: 32px;
       height: 32px;
+    }
+
+    .github-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
     }
   }
 }

@@ -23,12 +23,22 @@
   }
 
   @media (prefers-color-scheme: light){
-    .stat-card{ background: rgba(255,255,255,0.85); border-color: rgba(0,0,0,0.1); }
+    .stat-card{
+      background: rgba(255,255,255,0.95);
+      border-color: rgba(0,0,0,0.12);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
   }
 
   .stat-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 32px rgba(118,75,162,0.18);
+  }
+
+  @media (prefers-color-scheme: light){
+    .stat-card:hover {
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+    }
   }
 
   .stat-value {
@@ -47,6 +57,6 @@
     color: rgba(255,255,255,0.7);
   }
   @media (prefers-color-scheme: light){
-    .stat-label{ color: rgba(0,0,0,0.55); }
+    .stat-label{ color: rgba(0,0,0,0.65); }
   }
 }

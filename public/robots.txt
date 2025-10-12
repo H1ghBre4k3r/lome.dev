@@ -1,0 +1,15 @@
+# lome.dev robots.txt
+# Allow all search engines to crawl the entire site
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://lome.dev/sitemap.xml
+
+# Crawl delay (optional, helps with server load)
+# Crawl-delay: 1
+
+# Block common bot traps (if any exist in the future)
+# Disallow: /admin/
+# Disallow: /private/

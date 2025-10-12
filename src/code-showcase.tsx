@@ -1,7 +1,15 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
 import "./code-showcase.css";
 import { Component } from "./component";
-import hljs from "highlight.js";
+// Use modular imports to reduce bundle size
+import hljs from "highlight.js/lib/core";
+import rust from "highlight.js/lib/languages/rust";
+import typescript from "highlight.js/lib/languages/typescript";
+
+// Register only the languages we need
+hljs.registerLanguage('rust', rust);
+hljs.registerLanguage('typescript', typescript);
+hljs.registerLanguage('ts', typescript); // Alias for typescript
 
 const SNIPPETS = [
   { lang: "rust", code: `fn main() {\n    println!("Hello from Y-Lang compiler backend!" );\n}` },

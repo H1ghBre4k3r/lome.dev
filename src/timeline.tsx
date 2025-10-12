@@ -40,19 +40,56 @@ export class WebsiteTimeline extends AbstractElement {
           </h3>
           <div className="timeline-org">{entry.organization}</div>
           <p className="timeline-description">{entry.description}</p>
-          {entry.tags && entry.tags.length > 0 && (
+          {(entry.tags && entry.tags.length > 0) ? (
             <div className="timeline-tags">
               {() => entry?.tags?.map(tag => <span className="tag">{tag}</span>)}
             </div>
-          )}
-          <button className="timeline-toggle" aria-expanded="false" onClick={(e: Event) => {
-            const btn = e.currentTarget as HTMLButtonElement;
-            const item = btn.closest('.timeline-item') as HTMLElement | null;
-            if (!item) return;
-            const expanded = item.classList.toggle('expanded');
-            btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-            btn.textContent = expanded ? 'Show less' : 'Show more';
-          }}>Show more</button>
+          ) : ''}
+          {() => {
+            if (!(entry.details || entry.achievements || entry.skills)) return '';
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'timeline-expandable-wrapper';
+
+            const expandable = (
+              <div className="timeline-expandable">
+                {entry.details ? (<p className="timeline-details">{entry.details}</p>) : ''}
+                {(entry.achievements && entry.achievements.length > 0) ? (
+                  <div className="timeline-achievements">
+                    <h4 className="expandable-title">✨ Key Achievements</h4>
+                    <ul className="achievements-list">
+                      {() => entry.achievements?.map(achievement => <li>{achievement}</li>)}
+                    </ul>
+                  </div>
+                ) : ''}
+                {(entry.skills && entry.skills.length > 0) ? (
+                  <div className="timeline-skills">
+                    <h4 className="expandable-title">🛠️ Technologies & Skills</h4>
+                    <div className="skills-tags">
+                      {() => entry.skills?.map(skill => <span className="skill-tag">{skill}</span>)}
+                    </div>
+                  </div>
+                ) : ''}
+              </div>
+            ) as HTMLElement;
+
+            const button = (
+              <button className="timeline-toggle" aria-expanded="false" onClick={(e: Event) => {
+                const btn = e.currentTarget as HTMLButtonElement;
+                const item = btn.closest('.timeline-item') as HTMLElement | null;
+                if (!item) return;
+                const expanded = item.classList.toggle('expanded');
+                btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+                btn.textContent = expanded ? 'Show less ↑' : 'Show more ↓';
+              }}>
+                <span>Show more ↓</span>
+              </button>
+            ) as HTMLElement;
+
+            wrapper.appendChild(expandable);
+            wrapper.appendChild(button);
+            return wrapper;
+          }}
         </div>
       </div>
     ));
