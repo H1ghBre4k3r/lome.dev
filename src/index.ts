@@ -1,9 +1,11 @@
 // Critical CSS - load immediately
 import "./index.css";
 import "./highlight.css";
+import "./glass-morphism.css";
 
 // Critical above-the-fold components - load immediately
 import "./particle-background";
+import "./scroll-progress";
 import "./main";
 import "./header";
 import "./terminal-typing";

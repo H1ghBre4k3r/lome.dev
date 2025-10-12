@@ -4,7 +4,6 @@ import { Component } from "./component";
 import { siGithub } from "simple-icons";
 import { svg } from "./utils";
 import { addCardTiltToAll } from "./card-tilt";
-import { addMagneticHover } from "./magnetic-hover";
 import { addGlitchText } from "./glitch-text";
 import {
   type Project,
@@ -37,12 +36,6 @@ export class WebsiteProjects extends AbstractElement {
     setTimeout(() => {
       this.renderProjects();
       addCardTiltToAll('.project-card', this);
-      addMagneticHover('.project-card', this, {
-        strength: 0.25,
-        distance: 200,
-        rotation: true,
-        scale: true
-      });
       addGlitchText('.section-title', this, false);
       this.fetchMetadata();
     }, 100);
@@ -172,15 +165,9 @@ export class WebsiteProjects extends AbstractElement {
       grid.appendChild(showLessBtn);
     }
 
-    // Apply tilt and magnetic effects to new cards
+    // Apply tilt effect to new cards
     setTimeout(() => {
       addCardTiltToAll('.project-card', this);
-      addMagneticHover('.project-card', this, {
-        strength: 0.25,
-        distance: 200,
-        rotation: true,
-        scale: true
-      });
     }, 50);
   }
 

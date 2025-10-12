@@ -9,10 +9,21 @@
   font-weight: 900;
   margin: 0 0 1.5rem;
   text-align: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
 }
 
 .timeline-intro {
@@ -89,6 +100,7 @@
   gap: 2rem;
   align-items: center;
   position: relative;
+  overflow: visible;
 }
 
 .timeline-item:nth-child(even) .timeline-content {

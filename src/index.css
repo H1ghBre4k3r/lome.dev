@@ -92,11 +92,6 @@
   }
 
   svg {
-  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
-    main { scroll-snap-type: y proximity; }
-    section { scroll-snap-align: start; }
-  }
-
     fill: currentColor;
   }
 
