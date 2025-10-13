@@ -121,19 +121,19 @@
   }
 
   .related-article-tags .tag {
-    padding: 0.25rem 0.6rem;
-    background: rgba(102, 126, 234, 0.12);
-    border: 1px solid rgba(102, 126, 234, 0.25);
-    border-radius: 12px;
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.8);
+    /* Inherit base styles from molecule .tag */
+    padding: 0.25rem 0.6rem; /* Smaller for related articles */
+    border-radius: 12px; /* More rounded for related articles */
+    font-size: 0.75rem; /* Smaller font for related articles */
+    color: rgba(255, 255, 255, 0.8); /* Related article specific color */
   }
 
   @media (prefers-color-scheme: light) {
     .related-article-tags .tag {
+      /* Related article specific light mode */
       background: rgba(102, 126, 234, 0.12);
-      color: rgba(0, 0, 0, 0.75);
       border-color: rgba(102, 126, 234, 0.3);
+      color: rgba(0, 0, 0, 0.75);
     }
   }
 

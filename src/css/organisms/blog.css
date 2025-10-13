@@ -7,12 +7,13 @@
     flex-wrap: wrap;
   }
 
+  /* Blog-specific input styling - use molecule base styles */
   .blog-filters .filter-input {
-    flex: 1 1 240px;
+    flex: 1 1 240px; /* Blog-specific flex property */
   }
 
   .blog-filters .filter-select {
-    min-width: 150px;
+    min-width: 150px; /* Blog-specific min-width */
   }
 
   website-blog {

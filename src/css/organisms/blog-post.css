@@ -50,35 +50,10 @@
     }
   }
 
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    color: rgba(255, 255, 255, 0.55);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.875rem;
-    margin-bottom: 2.5rem;
-    padding: 0.5rem 0.875rem;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  @media (prefers-color-scheme: light) {
-    .back-link {
-      color: rgba(0, 0, 0, 0.65);
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(0, 0, 0, 0.12);
-    }
-  }
-
-  .back-link:hover {
-    color: #667eea;
-    background: rgba(102, 126, 234, 0.08);
-    border-color: rgba(102, 126, 234, 0.2);
-    transform: translateX(-4px);
+  /* Blog post-specific back link styling - use molecule base styles */
+  .blog-post .back-link {
+    /* Inherit from molecule .back-link, add blog-specific margin */
+    margin-bottom: 2.5rem; /* Blog post specific spacing */
   }
 
   .post-header {
@@ -151,26 +126,27 @@
     margin-top: 1rem;
   }
 
-  .post-tags .tag {
-    padding: 0.375rem 0.75rem;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 6px;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.7);
+  /* Blog post-specific tag styling - use molecule base styles */
+  .blog-post .post-tags .tag {
+    /* Start with molecule .tag base styles */
+    padding: 0.375rem 0.75rem; /* Smaller padding for blog post context */
+    background: rgba(255, 255, 255, 0.04); /* Different background */
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Different border */
+    border-radius: 6px; /* Less rounded for blog context */
+    font-size: 0.8125rem; /* Smaller font */
+    color: rgba(255, 255, 255, 0.7); /* Muted color */
     transition: all 0.2s ease;
   }
 
   @media (prefers-color-scheme: light) {
-    .post-tags .tag {
+    .blog-post .post-tags .tag {
       background: rgba(255, 255, 255, 0.7);
       border-color: rgba(0, 0, 0, 0.12);
       color: rgba(0, 0, 0, 0.7);
     }
   }
 
-  .post-tags .tag:hover {
+  .blog-post .post-tags .tag:hover {
     background: rgba(102, 126, 234, 0.1);
     border-color: rgba(102, 126, 234, 0.3);
     color: #667eea;
@@ -559,7 +535,7 @@
       border-radius: 0;
     }
 
-    .back-link {
+    .blog-post .back-link {
       margin-bottom: 2rem;
       font-size: 0.8125rem;
     }
