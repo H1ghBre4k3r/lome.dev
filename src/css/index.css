@@ -1,0 +1,63 @@
+/* ============================================================================
+   CSS Architecture - Layered Cascade System
+   ============================================================================
+   
+   This file imports all CSS in the correct layer order:
+   1. Atoms - Foundational styles (variables, resets)
+   2. Molecules - Reusable UI components
+   3. Organisms - Complex sections
+   4. Utilities - Helpers and overrides
+   
+   See CSS_ARCHITECTURE.md for detailed documentation
+   ============================================================================ */
+
+/* Atoms - Foundation Layer */
+@import './atoms/reset.css';
+@import './atoms/colors.css';
+@import './atoms/typography.css';
+@import './atoms/spacing.css';
+
+/* Molecules - Reusable Component Layer */
+@import './molecules/headings.css';
+@import './molecules/buttons.css';
+@import './molecules/badges.css';
+@import './molecules/cards.css';
+@import './molecules/inputs.css';
+@import './molecules/links.css';
+
+/* Organisms - Complex Section Layer */
+@import './organisms/main.css';
+@import './organisms/section-dividers.css';
+@import './organisms/hero.css';
+@import './organisms/projects.css';
+@import './organisms/about.css';
+@import './organisms/achievements.css';
+@import './organisms/blog.css';
+@import './organisms/blog-post.css';
+@import './organisms/blog-related.css';
+@import './organisms/blog-toc.css';
+@import './organisms/contact.css';
+@import './organisms/github-stats.css';
+@import './organisms/contribution-heatmap.css';
+@import './organisms/coding-streak.css';
+@import './organisms/language-chart.css';
+@import './organisms/timeline.css';
+@import './organisms/skills.css';
+@import './organisms/terminal-typing.css';
+@import './organisms/code-showcase.css';
+@import './organisms/particle-background.css';
+@import './organisms/header.css';
+
+/* Utilities - Helper & Override Layer */
+@import './utilities/animations.css';
+@import './utilities/utilities.css';
+
+/* Special Effects (Utilities) */
+@import './utilities/ripple-effect.css';
+@import './utilities/glitch-text.css';
+@import './utilities/glass-morphism.css';
+@import './utilities/cursor-trail.css';
+@import './utilities/scroll-progress.css';
+
+/* Syntax highlighting (separate layer for specificity) */
+@import '../highlight.css';

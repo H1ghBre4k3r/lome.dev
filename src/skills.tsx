@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./skills.css";
 import { Component } from "./component";
 import {
   SKILL_CATEGORIES,

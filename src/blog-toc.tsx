@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./blog-toc.css";
 import { Component } from "./component";
 
 interface TOCItem {

@@ -1,0 +1,33 @@
+@layer atom {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+    overflow-x: clip;
+  }
+
+  body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: clip;
+  }
+
+  main {
+    width: 100%;
+    flex: 1;
+    overflow-x: clip;
+  }
+
+  svg {
+    fill: currentColor;
+  }
+
+  a {
+    color: inherit;
+  }
+}

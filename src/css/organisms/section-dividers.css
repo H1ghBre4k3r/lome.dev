@@ -1,0 +1,12 @@
+@layer organism {
+  /* Section neon dividers (skip first section e.g., hero) */
+  section + section::after {
+    content: '';
+    display: block;
+    height: 1px;
+    max-width: var(--content-width);
+    margin: 4rem auto 0;
+    background: linear-gradient(90deg, transparent, rgba(102,126,234,0.35), rgba(118,75,162,0.35), transparent);
+    filter: blur(0.2px);
+  }
+}

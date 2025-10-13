@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./contribution-heatmap.css";
 import { Component } from "./component";
 import { fetchContributions, type ContributionDay, GITHUB_USERNAME } from "./lib/github";
 

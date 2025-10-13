@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./language-chart.css";
 import { Component } from "./component";
 import { fetchAggregatedLanguages } from "./lib/github";
 

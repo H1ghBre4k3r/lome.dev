@@ -1,7 +1,5 @@
-// Critical CSS - load immediately
-import "./index.css";
-import "./highlight.css";
-import "./glass-morphism.css";
+// Critical CSS - load immediately (new layered architecture)
+import "./css/index.css";
 
 // Critical above-the-fold components - load immediately
 import "./particle-background";

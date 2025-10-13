@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./hero.css";
 import { Component } from "./component";
 import { InteractiveTerminal } from "./interactive-terminal"; // type only
 import { addGlitchText } from "./glitch-text";

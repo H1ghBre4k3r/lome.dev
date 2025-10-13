@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./terminal-typing.css";
 import { Component } from "./component";
 import { executeCommand, commands } from "./terminal-commands";
 

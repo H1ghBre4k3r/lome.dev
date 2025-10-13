@@ -1,4 +1,3 @@
-import './ripple-effect.css';
 
 export type RippleVariant = 'default' | 'light' | 'accent';
 

@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./coding-streak.css";
 import { Component } from "./component";
 import { fetchContributions, calculateStreak, type ContributionDay, GITHUB_USERNAME } from "./lib/github";
 

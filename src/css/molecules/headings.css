@@ -1,0 +1,50 @@
+@layer molecule {
+  h1 {
+    font-size: var(--h1-size);
+  }
+
+  h2 {
+    font-size: var(--h2-size);
+  }
+
+  h3 {
+    font-size: var(--h3-size);
+  }
+
+  /* Section title (common pattern across organisms) */
+  .section-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 900;
+    margin: 0 0 3rem;
+    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% {
+      background-position: 0% center;
+    }
+    50% {
+      background-position: 100% center;
+    }
+  }
+
+  /* Section description (common pattern) */
+  .section-description {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+  }
+
+  @media (prefers-color-scheme: light) {
+    .section-description {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+}

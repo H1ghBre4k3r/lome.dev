@@ -1,16 +1,19 @@
 @layer organism {
-.blog-filters { display: flex; gap: 0.75rem; align-items: center; margin: 0 0 1rem; flex-wrap: wrap; }
-.blog-filters .filter-input { flex: 1 1 240px; padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid rgba(102,126,234,0.3); background: rgba(255,255,255,0.06); color: inherit; }
-.blog-filters .filter-select { padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid rgba(102,126,234,0.3); background: rgba(255,255,255,0.06); color: inherit; }
-
-@media (prefers-color-scheme: light) {
-  .blog-filters .filter-input,
-  .blog-filters .filter-select {
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  .blog-filters {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin: 0 0 1rem;
+    flex-wrap: wrap;
   }
-}
+
+  .blog-filters .filter-input {
+    flex: 1 1 240px;
+  }
+
+  .blog-filters .filter-select {
+    min-width: 150px;
+  }
 
   website-blog {
     display: contents;
@@ -76,6 +79,12 @@
     transform-style: preserve-3d;
   }
 
+  .blog-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
+    border-color: rgba(102, 126, 234, 0.3);
+  }
+
   @media (prefers-color-scheme: light) {
     .blog-card {
       background: rgba(255, 255, 255, 0.95);
@@ -87,12 +96,6 @@
       background: rgba(255, 255, 255, 1);
       box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
     }
-  }
-
-  .blog-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
-    border-color: rgba(102, 126, 234, 0.3);
   }
 
   .blog-meta {
@@ -172,22 +175,9 @@
     margin-top: 0.5rem;
   }
 
+  /* Tags use the molecule .tag class with scoping */
   .blog-tags .tag {
-    padding: 0.375rem 0.875rem;
-    background: rgba(102, 126, 234, 0.1);
-    border: 1px solid rgba(102, 126, 234, 0.2);
-    border-radius: 20px;
     font-size: 0.8rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.8);
-  }
-
-  @media (prefers-color-scheme: light) {
-    .blog-tags .tag {
-      background: rgba(102, 126, 234, 0.1);
-      color: rgba(0, 0, 0, 0.65);
-      border-color: rgba(102, 126, 234, 0.25);
-    }
   }
 
   @media only screen and (max-width: 968px) {

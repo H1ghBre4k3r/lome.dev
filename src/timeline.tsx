@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./timeline.css";
 import { Component } from "./component";
 import { TIMELINE_ENTRIES } from "./data/timeline";
 import { addScrollReveal } from "./scroll-reveal";

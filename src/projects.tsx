@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./projects.css";
 import { Component } from "./component";
 import { siGithub } from "simple-icons";
 import { svg } from "./utils";

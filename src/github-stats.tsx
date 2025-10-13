@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./github-stats.css";
 import { Component } from "./component";
 import { fetchEnhancedStats } from "./lib/github";
 

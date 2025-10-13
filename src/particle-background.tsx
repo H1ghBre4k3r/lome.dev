@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./particle-background.css";
 import { Component } from "./component";
 
 interface Particle {

@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./main.css";
 import { Component } from "./component";
 import { initScrollReveal } from "./scroll-reveal";
 import { initRippleEffects } from "./ripple-effect";
