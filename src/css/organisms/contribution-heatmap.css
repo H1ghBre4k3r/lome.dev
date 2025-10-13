@@ -10,6 +10,7 @@
     border: 1px solid rgba(102, 126, 234, 0.2);
     border-radius: 16px;
     backdrop-filter: blur(8px);
+    position: relative; /* Ensure this is a positioning context */
   }
 
   @media (prefers-color-scheme: light) {
@@ -190,12 +191,13 @@
     font-size: 0.8125rem;
     pointer-events: none;
     opacity: 0;
-    transform: translateY(4px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    z-index: 1000;
+    transform: none;
+    transition: opacity 0.2s ease;
+    z-index: 9999;
     backdrop-filter: blur(8px);
     border: 1px solid rgba(102, 126, 234, 0.3);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    white-space: nowrap;
   }
 
   @media (prefers-color-scheme: light) {
