@@ -36,7 +36,7 @@ export function addScrollReveal(elements: NodeListOf<Element> | Element[]) {
     }
   );
 
-  elements.forEach(el => {
+  elements.forEach((el: Element) => {
     // If element is already visible, reveal it immediately
     if (isElementInView(el)) {
       el.classList.add('revealed');

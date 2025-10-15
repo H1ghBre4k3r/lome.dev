@@ -10,16 +10,44 @@
     font-size: 0.875rem;
     padding: 0.5rem 0.875rem;
     border-radius: 6px;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.06);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .back-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(102, 126, 234, 0.1),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  .back-link:hover::before {
+    left: 100%;
   }
 
   .back-link:hover {
     color: #667eea;
     background: rgba(102, 126, 234, 0.08);
     border-color: rgba(102, 126, 234, 0.2);
-    transform: translateX(-4px);
+    transform: translateX(-6px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+  }
+
+  .back-link:active {
+    transform: translateX(-3px) scale(0.98);
+    transition: transform 0.1s ease;
   }
 
   @media (prefers-color-scheme: light) {
@@ -44,19 +72,49 @@
     color: inherit;
     font-weight: 600;
     font-size: 1.1rem;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-link::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.2) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .contact-link:hover::before {
+    width: 300px;
+    height: 300px;
   }
 
   .contact-link:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px) scale(1.02);
     background: rgba(102, 126, 234, 0.15);
     border-color: rgba(102, 126, 234, 0.3);
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.25);
+  }
+
+  .contact-link:active {
+    transform: translateY(-3px) scale(0.98);
+    transition: transform 0.1s ease;
   }
 
   .contact-link svg {
     width: 24px;
     height: 24px;
+    transition: transform 0.3s ease;
+  }
+
+  .contact-link:hover svg {
+    transform: rotate(10deg) scale(1.1);
   }
 
   .contact-link .icon {
@@ -72,7 +130,7 @@
 
     .contact-link:hover {
       background: rgba(255, 255, 255, 1);
-      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.18);
     }
   }
 
@@ -87,7 +145,26 @@
     height: 40px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .project-link::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(102, 126, 234, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+  }
+
+  .project-link:hover::before {
+    width: 60px;
+    height: 60px;
   }
 
   .project-link::after {
@@ -95,22 +172,59 @@
     position: absolute;
     right: -18px;
     opacity: 0;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
     transform: translateX(-6px);
+    color: white;
+    font-weight: bold;
   }
 
   .project-link:hover {
-    background: rgba(102, 126, 234, 0.2);
-    transform: rotate(12deg);
+    background: rgba(102, 126, 234, 0.3);
+    transform: rotate(15deg) scale(1.1);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
   }
 
   .project-link:hover::after {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) rotate(-15deg);
   }
 
   .project-link svg {
     width: 20px;
     height: 20px;
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .project-link:hover svg {
+    transform: scale(1.2) rotate(-5deg);
+  }
+
+  /* Interactive link underlines */
+  .interactive-link {
+    position: relative;
+    text-decoration: none;
+    color: #667eea;
+    transition: color 0.3s ease;
+  }
+
+  .interactive-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .interactive-link:hover {
+    color: #764ba2;
+  }
+
+  .interactive-link:hover::after {
+    width: 100%;
   }
 }
