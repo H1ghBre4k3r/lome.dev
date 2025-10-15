@@ -47,7 +47,6 @@ export class WebsiteHeader extends AbstractElement {
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
-      window.scrollTo({ top: this.savedScrollY, behavior: 'instant' });
     }
   }
 
@@ -57,7 +56,6 @@ export class WebsiteHeader extends AbstractElement {
     document.body.style.position = '';
     document.body.style.top = '';
     document.body.style.width = '';
-    window.scrollTo({ top: this.savedScrollY, behavior: 'instant' });
   }
 
   navigateHash(e: Event, hash: string) {
