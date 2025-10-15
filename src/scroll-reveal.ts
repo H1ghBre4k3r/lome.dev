@@ -16,9 +16,19 @@ function isElementInView(element: Element): boolean {
  * Adds scroll-triggered reveal animations to elements
  */
 export function addScrollReveal(elements: NodeListOf<Element> | Element[]) {
-  // Use positive root margin on mobile to trigger animations earlier
+  // Adjust root margin based on viewport dimensions
   const isMobile = window.innerWidth <= 768;
-  const bottomMargin = isMobile ? '50px' : '-100px';
+  const isShortScreen = window.innerHeight <= 600;
+
+  // Use positive margins for small screens to trigger earlier
+  let bottomMargin: string;
+  if (isShortScreen) {
+    bottomMargin = '100px'; // Trigger earlier on short screens
+  } else if (isMobile) {
+    bottomMargin = '50px';
+  } else {
+    bottomMargin = '-100px';
+  }
 
   const observer = new IntersectionObserver(
     (entries) => {
@@ -51,12 +61,11 @@ export function addScrollReveal(elements: NodeListOf<Element> | Element[]) {
  * Initialize scroll reveal for common selectors
  */
 export function initScrollReveal() {
-  // On mobile: only animate cards/sub-elements, not main sections
-  // On desktop: animate everything including main sections
-  const isMobile = window.innerWidth <= 768;
-  const selectors = isMobile
-    ? ['.project-card', '.blog-card', '.about-grid', '.section-title']
-    : ['.about', '.projects', '.blog', '.contact', '.project-card', '.blog-card', '.about-grid', '.section-title'];
+  // Include main sections on both mobile and desktop for consistent experience
+  const selectors = [
+    '.about', '.projects', '.blog', '.contact',
+    '.project-card', '.blog-card', '.about-grid', '.section-title'
+  ];
 
   selectors.forEach(selector => {
     const elements = document.querySelectorAll(selector);
