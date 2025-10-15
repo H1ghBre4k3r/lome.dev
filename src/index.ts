@@ -9,6 +9,7 @@ import "./header";
 import "./terminal-typing";
 import "./interactive-terminal";
 import "./hero";
+import "./konami-code";
 
 // Lazy load below-the-fold components after initial render
 // This reduces initial bundle size and improves Time to Interactive

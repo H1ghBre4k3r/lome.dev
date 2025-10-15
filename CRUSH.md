@@ -10,6 +10,12 @@
 ## Testing
 No test framework configured - use Vitest for future testing setup
 
+## Easter Eggs
+- **Konami Code**: ↑↑↓↓←→←→BA activates readable LeetSpeak mode
+- **URL Activation**: `?leet=true` parameter for auto-activation
+- **Controls**: ESC to exit LeetSpeak mode, re-enter code to toggle
+- **Effects**: Subtle text transformation (1337 style), particle burst, screen shake, visual indicator
+
 # Code Style Guidelines
 
 ## Project Status & Architecture

@@ -9,6 +9,16 @@ interface Particle {
   size: number;
 }
 
+interface BurstParticle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  color: string;
+  life: number;
+}
+
 @Component("particle-background")
 export class ParticleBackground extends AbstractElement {
   private canvas: HTMLCanvasElement | null = null;
@@ -21,6 +31,7 @@ export class ParticleBackground extends AbstractElement {
   private hueBase: number = 255; // blue-purple base
   private shooting: {x:number;y:number;vx:number;vy:number;life:number}[] = [];
   private lastSpawn = 0;
+  private burstParticles: BurstParticle[] = [];
 
   constructor() {
     super();
@@ -68,6 +79,34 @@ export class ParticleBackground extends AbstractElement {
         vx: (Math.random() - 0.5) * 0.5,
         vy: (Math.random() - 0.5) * 0.5,
         size: Math.random() * 2 + 1
+      });
+    }
+  }
+
+  /**
+   * Create a burst of particles (for Konami code activation)
+   */
+  createBurst() {
+    if (!this.canvas) return;
+
+    const centerX = this.canvas.width / 2;
+    const centerY = this.canvas.height / 2;
+    const particleCount = 50;
+    const colors = ['#ff00ff', '#00ffff', '#ffff00', '#ff00aa', '#00ff00'];
+
+    for (let i = 0; i < particleCount; i++) {
+      const angle = (Math.PI * 2 * i) / particleCount;
+      const speed = 3 + Math.random() * 5;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      this.burstParticles.push({
+        x: centerX,
+        y: centerY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        size: 2 + Math.random() * 3,
+        color: color,
+        life: 1.0
       });
     }
   }
@@ -156,6 +195,26 @@ export class ParticleBackground extends AbstractElement {
       ctx.moveTo(s.x - 40, s.y - 40);
       ctx.lineTo(s.x, s.y);
       ctx.stroke();
+    });
+
+    // Draw burst particles
+    this.burstParticles = this.burstParticles.filter(particle => {
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+      particle.vx *= 0.98; // Friction
+      particle.vy *= 0.98;
+      particle.life -= 0.015;
+      
+      if (particle.life > 0) {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size * particle.life, 0, Math.PI * 2);
+        ctx.fillStyle = particle.color;
+        ctx.globalAlpha = particle.life;
+        ctx.fill();
+        ctx.globalAlpha = 1; // Reset alpha
+        return true;
+      }
+      return false;
     });
 
     this.animationFrame = requestAnimationFrame(() => this.startAnimation());
