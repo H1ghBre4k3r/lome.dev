@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./blog-related.css";
 import { Component } from "./component";
 import { type BlogPost, formatDate, estimateReadingTime } from "./lib/blog";
 

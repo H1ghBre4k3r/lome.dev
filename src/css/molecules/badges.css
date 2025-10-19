@@ -1,0 +1,106 @@
+@layer molecule {
+  /* Generic tag/badge */
+  .tag {
+    padding: 0.375rem 0.875rem;
+    background: rgba(102, 126, 234, 0.15);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  @media (prefers-color-scheme: light) {
+    .tag {
+      background: rgba(102, 126, 234, 0.12);
+      border-color: rgba(102, 126, 234, 0.25);
+      color: rgba(0, 0, 0, 0.75);
+    }
+  }
+
+  /* Status badges */
+  .status-badge {
+    padding: 0.375rem 0.875rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .status-badge.status-active {
+    background: rgba(52, 211, 153, 0.15);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    color: rgb(52, 211, 153);
+  }
+
+  .status-badge.status-maintained {
+    background: rgba(251, 191, 36, 0.15);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    color: rgb(251, 191, 36);
+  }
+
+  .status-badge.status-archived {
+    background: rgba(156, 163, 175, 0.15);
+    border: 1px solid rgba(156, 163, 175, 0.3);
+    color: rgba(156, 163, 175, 0.9);
+  }
+
+  /* Category badge */
+  .category-badge {
+    padding: 0.375rem 0.875rem;
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(139, 92, 246, 0.9);
+  }
+
+  @media (prefers-color-scheme: light) {
+    .category-badge {
+      background: rgba(139, 92, 246, 0.12);
+      border-color: rgba(139, 92, 246, 0.25);
+      color: rgba(139, 92, 246, 1);
+    }
+  }
+
+  /* Meta badge (smaller variant) */
+  .meta-badge {
+    padding: 0.25rem 0.6rem;
+    background: rgba(102, 126, 234, 0.12);
+    border: 1px solid rgba(102, 126, 234, 0.25);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  @media (prefers-color-scheme: light) {
+    .meta-badge {
+      color: rgba(0, 0, 0, 0.75);
+      background: rgba(102, 126, 234, 0.12);
+      border-color: rgba(102, 126, 234, 0.25);
+    }
+  }
+
+  /* Language badge */
+  .lang-badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  @media (prefers-color-scheme: light) {
+    .lang-badge {
+      color: rgba(0, 0, 0, 0.75);
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(0, 0, 0, 0.15);
+    }
+  }
+}

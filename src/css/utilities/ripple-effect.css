@@ -1,0 +1,201 @@
+@layer molecule {
+  /* Ripple effect container */
+  .ripple-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ripple element */
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.6) 0%, rgba(102, 126, 234, 0) 70%);
+    transform: scale(0);
+    animation: ripple-animation 0.6s ease-out;
+    pointer-events: none;
+  }
+
+  @keyframes ripple-animation {
+    0% {
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
+  /* Light ripple variant */
+  .ripple.light {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+  }
+
+  /* Accent ripple variant */
+  .ripple.accent {
+    background: radial-gradient(circle, rgba(118, 75, 162, 0.6) 0%, rgba(118, 75, 162, 0) 70%);
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .ripple {
+      animation: none;
+      opacity: 0;
+    }
+  }
+
+  /* Additional micro-interactions */
+  /* Enhanced hover effects */
+  .interactive-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .interactive-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+  }
+
+  /* Glow effect on hover */
+  .glow-hover {
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .glow-hover::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
+    border-radius: inherit;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+    filter: blur(4px);
+  }
+
+  .glow-hover:hover::before {
+    opacity: 0.7;
+    animation: glow-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      opacity: 0.7;
+      filter: blur(4px);
+    }
+    50% {
+      opacity: 0.9;
+      filter: blur(6px);
+    }
+  }
+
+  /* Smooth scale animations */
+  .scale-hover {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .scale-hover:hover {
+    transform: scale(1.05);
+  }
+
+  .scale-hover:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+
+  /* Loading spinner for buttons */
+  .btn-loading {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+  }
+
+  .btn-loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    color: white;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Success animation */
+  .success-checkmark {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #10b981;
+    position: relative;
+    animation: success-pop 0.4s ease-out;
+  }
+
+  .success-checkmark::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: translate(-50%, -60%) rotate(45deg);
+  }
+
+  @keyframes success-pop {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* Error shake animation */
+  .error-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+      transform: translateX(-2px);
+    }
+    20%, 40%, 60%, 80% {
+      transform: translateX(2px);
+    }
+  }
+
+  /* Smooth focus indicators */
+  .focus-ring {
+    transition: all 0.2s ease;
+  }
+
+  .focus-ring:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5);
+  }
+}

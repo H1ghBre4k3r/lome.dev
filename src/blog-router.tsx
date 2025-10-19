@@ -49,16 +49,19 @@ export class WebsiteBlogRouter extends AbstractElement {
       return;
     }
 
-    // If on homepage and hash is #blog, show blog list then scroll
-    if ((path === '/' || path === '') && hash === '#blog') {
-      this.showBlogList();
-      setTimeout(() => {
-        const el = document.getElementById('blog');
-        if (el) {
-          const y = el.getBoundingClientRect().top + window.scrollY - 80; // account for scroll-padding
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        }
-      }, 50);
+    // If on homepage, handle various section hashes
+    if (path === '/' || path === '') {
+      if (hash) {
+        // Scroll to any valid section hash
+        setTimeout(() => {
+          const sectionId = hash.substring(1); // Remove #
+          const el = document.getElementById(sectionId);
+          if (el) {
+            const y = el.getBoundingClientRect().top + window.scrollY - 80; // account for scroll-padding
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
+        }, 50);
+      }
     }
   }
 

@@ -1,7 +1,5 @@
-// Critical CSS - load immediately
-import "./index.css";
-import "./highlight.css";
-import "./glass-morphism.css";
+// Critical CSS - load immediately (new layered architecture)
+import "./css/index.css";
 
 // Critical above-the-fold components - load immediately
 import "./particle-background";
@@ -11,6 +9,7 @@ import "./header";
 import "./terminal-typing";
 import "./interactive-terminal";
 import "./hero";
+import "./konami-code";
 
 // Lazy load below-the-fold components after initial render
 // This reduces initial bundle size and improves Time to Interactive

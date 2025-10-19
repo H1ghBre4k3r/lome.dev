@@ -1,0 +1,116 @@
+@layer molecule {
+  .btn {
+    padding: 0.875rem 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.7);
+  }
+
+  .btn-primary:active {
+    transform: translateY(-1px) scale(0.98);
+    transition: transform 0.1s ease;
+  }
+
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: inherit;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-secondary:active {
+    transform: translateY(-1px) scale(0.98);
+    transition: transform 0.1s ease;
+  }
+
+  @media (prefers-color-scheme: light) {
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(0, 0, 0, 0.15);
+      color: rgba(0, 0, 0, 0.85);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 1);
+      border-color: rgba(102, 126, 234, 0.3);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    }
+  }
+
+  .btn-demo {
+    margin-top: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+
+  /* Enhanced button effects */
+  .btn {
+    /* Add subtle glow effect on hover */
+    position: relative;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
+    border-radius: inherit;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+    filter: blur(3px);
+  }
+
+  .btn:hover::before {
+    opacity: 0.6;
+    animation: glow-pulse 2s ease-in-out infinite;
+  }
+
+  .btn-primary::before {
+    background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
+  }
+
+  .btn-secondary::before {
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.3), rgba(102, 126, 234, 0.3), rgba(255, 255, 255, 0.3));
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      opacity: 0.6;
+      filter: blur(3px);
+    }
+    50% {
+      opacity: 0.8;
+      filter: blur(5px);
+    }
+  }
+}

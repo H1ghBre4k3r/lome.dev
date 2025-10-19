@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./contribution-heatmap.css";
 import { Component } from "./component";
 import { fetchContributions, type ContributionDay, GITHUB_USERNAME } from "./lib/github";
 
@@ -255,12 +254,16 @@ export class ContributionHeatmap extends AbstractElement {
 
   showTooltip(event: Event, day: ContributionDay, formattedDate: string) {
     const target = event.target as HTMLElement;
-    let tooltip = this.querySelector('.heatmap-tooltip') as HTMLElement;
-
-    if (!tooltip) {
-      tooltip = (<div className="heatmap-tooltip"></div>) as HTMLElement;
-      this.appendChild(tooltip);
+    
+    // Remove any existing tooltip first
+    const existingTooltip = this.querySelector('.heatmap-tooltip') as HTMLElement;
+    if (existingTooltip) {
+      existingTooltip.remove();
     }
+
+    // Create new tooltip and append to body (to avoid transform issues)
+    const tooltip = (<div className="heatmap-tooltip"></div>) as HTMLElement;
+    document.body.appendChild(tooltip);
 
     const contributionText = day.count === 0 ? 'No contributions' :
                              day.count === 1 ? '1 contribution' :
@@ -271,21 +274,59 @@ export class ContributionHeatmap extends AbstractElement {
       <div class="tooltip-date">${formattedDate}</div>
     `;
 
-    tooltip.classList.add('visible');
-
-    // Position tooltip
+    // Get target position in viewport
     const rect = target.getBoundingClientRect();
-    const tooltipRect = tooltip.getBoundingClientRect();
+    
+    console.log('Target rect:', rect);
+    console.log('Window dimensions:', window.innerWidth, window.innerHeight);
+    
+    // Calculate tooltip position (centered above the target)
+    const tooltipWidth = 200;
+    const tooltipHeight = 80;
+    const margin = 8;
+    
+    let left = rect.left + rect.width / 2 - tooltipWidth / 2;
+    let top = rect.top - tooltipHeight - margin;
+    
+    // Keep within viewport bounds
+    if (left < 10) left = 10;
+    if (left > window.innerWidth - tooltipWidth - 10) left = window.innerWidth - tooltipWidth - 10;
+    if (top < 10) {
+      // Show below instead of above
+      top = rect.bottom + margin;
+    }
+    
+    console.log('Final calculated position:', { left, top });
 
-    tooltip.style.left = `${rect.left + rect.width / 2 - tooltipRect.width / 2}px`;
-    tooltip.style.top = `${rect.top - tooltipRect.height - 8}px`;
+    // Apply fixed positioning relative to viewport
+    tooltip.style.position = 'fixed';
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top}px`;
+    tooltip.style.zIndex = '9999';
+    tooltip.style.opacity = '1';
+    tooltip.classList.add('visible');
+    
+    // Store reference for cleanup
+    tooltip.setAttribute('data-owner', 'contribution-heatmap');
+    
+    // Verify
+    setTimeout(() => {
+      const actualRect = tooltip.getBoundingClientRect();
+      console.log('Final actual position:', actualRect);
+    }, 50);
+
+    // Set up cleanup
+    const cleanup = () => {
+      tooltip.remove();
+    };
+    
+    target.addEventListener('mouseleave', cleanup, { once: true });
   }
 
   hideTooltip() {
-    const tooltip = this.querySelector('.heatmap-tooltip');
-    if (tooltip) {
-      tooltip.classList.remove('visible');
-    }
+    // Remove any tooltips owned by this component
+    const tooltips = document.querySelectorAll('.heatmap-tooltip[data-owner="contribution-heatmap"]');
+    tooltips.forEach(tooltip => tooltip.remove());
   }
 
   render() {

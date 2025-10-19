@@ -1,0 +1,13 @@
+@layer atom {
+  :root {
+    --content-width: 1200px;
+    --content-max-width: calc(100vw - 40px);
+  }
+
+  @media only screen and (min-width: 1420px) {
+    :root {
+      --content-width: 1400px;
+      --content-max-width: calc(100vw - 20px);
+    }
+  }
+}

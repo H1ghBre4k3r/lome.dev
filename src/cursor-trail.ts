@@ -1,4 +1,3 @@
-import './cursor-trail.css';
 
 interface CursorTrailOptions {
   maxParticles?: number;

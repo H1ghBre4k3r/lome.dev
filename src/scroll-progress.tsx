@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./scroll-progress.css";
 import { Component } from "./component";
 
 interface SectionInfo {

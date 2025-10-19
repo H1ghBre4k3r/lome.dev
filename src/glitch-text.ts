@@ -1,4 +1,3 @@
-import './glitch-text.css';
 
 /**
  * Add glitch text effect to elements

@@ -1,4 +1,3 @@
-import './ripple-effect.css';
 
 export type RippleVariant = 'default' | 'light' | 'accent';
 
@@ -116,7 +115,7 @@ export function initRippleEffects() {
   addRippleEffect('a:not(.github-link):not(.project-link)', document, { variant: 'light' });
 
   // Add to cards
-  addRippleEffect('.project-card, .blog-card, .skill-card');
+  addRippleEffect('.blog-card, .skill-card');
 
   // Add to timeline items
   addRippleEffect('.timeline-item');

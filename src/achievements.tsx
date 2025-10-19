@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./achievements.css";
 import { Component } from "./component";
 
 interface Badge { key: string; title: string; desc: string; icon?: string; }

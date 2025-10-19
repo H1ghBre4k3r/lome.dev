@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./blog.css";
 import { Component } from "./component";
 import { getBlogPosts, formatDate, estimateReadingTime, type BlogPost } from "./lib/blog";
 import { addCardTilt } from "./card-tilt";

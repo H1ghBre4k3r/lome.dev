@@ -15,6 +15,8 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: gradientShift 4s ease infinite;
+  opacity: 0;
+  animation: title-entrance 1s ease-out 0.2s forwards;
 }
 
 @keyframes gradientShift {
@@ -26,12 +28,35 @@
   }
 }
 
+@keyframes title-entrance {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .timeline-intro {
   text-align: center;
   max-width: 600px;
   margin: 1rem auto 3rem;
-  opacity: 0.8;
+  opacity: 0;
   font-size: 1.1rem;
+  animation: entrance-fade 0.8s ease-out 0.4s forwards;
+}
+
+@keyframes entrance-fade {
+  to {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 }
 
 .timeline-filters {
@@ -101,6 +126,26 @@
   align-items: center;
   position: relative;
   overflow: visible;
+  opacity: 0;
+  transform: translateY(50px);
+  animation: timeline-item-entrance 0.8s ease-out forwards;
+}
+
+/* Stagger animations for timeline items */
+.timeline-item:nth-child(1) { animation-delay: 0.6s; }
+.timeline-item:nth-child(2) { animation-delay: 0.8s; }
+.timeline-item:nth-child(3) { animation-delay: 1.0s; }
+.timeline-item:nth-child(4) { animation-delay: 1.2s; }
+.timeline-item:nth-child(5) { animation-delay: 1.4s; }
+.timeline-item:nth-child(6) { animation-delay: 1.6s; }
+.timeline-item:nth-child(7) { animation-delay: 1.8s; }
+.timeline-item:nth-child(8) { animation-delay: 2.0s; }
+
+@keyframes timeline-item-entrance {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .timeline-item:nth-child(even) .timeline-content {
@@ -136,16 +181,44 @@
   justify-content: center;
   z-index: 2;
   box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-marker::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(102, 126, 234, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
 }
 
 .timeline-item:hover .timeline-marker {
-  transform: scale(1.15);
-  box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+  transform: scale(1.2);
+  box-shadow: 0 0 40px rgba(102, 126, 234, 0.6);
+  border-color: rgba(102, 126, 234, 0.8);
+}
+
+.timeline-item:hover .timeline-marker::before {
+  width: 80px;
+  height: 80px;
 }
 
 .marker-icon {
   font-size: 1.5rem;
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-item:hover .marker-icon {
+  transform: rotate(10deg) scale(1.2);
 }
 
 .timeline-content {
@@ -154,14 +227,36 @@
   border-radius: 12px;
   padding: 1.5rem;
   backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(102, 126, 234, 0.1),
+    transparent
+  );
+  transition: left 0.8s ease;
+}
+
+.timeline-content:hover::before {
+  left: 100%;
 }
 
 .timeline-content:hover {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(102, 126, 234, 0.4);
-  transform: translateY(-4px);
-  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 15px 50px rgba(102, 126, 234, 0.25);
 }
 
 .timeline-header {
@@ -276,12 +371,11 @@
 }
 
 .timeline-tags .tag {
-  padding: 0.3rem 0.75rem;
-  background: rgba(102, 126, 234, 0.15);
-  border: 1px solid rgba(102, 126, 234, 0.3);
-  border-radius: 6px;
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.8);
+  /* Inherit base styles from molecule .tag */
+  padding: 0.3rem 0.75rem; /* Timeline specific padding */
+  border-radius: 6px; /* Less rounded for timeline */
+  font-size: 0.85rem; /* Timeline specific font size */
+  color: rgba(255, 255, 255, 0.8); /* Timeline specific color */
 }
 
 /* Expandable content */
@@ -500,6 +594,7 @@
   }
 
   .timeline-tags .tag {
+    /* Timeline-specific light mode overrides */
     background: rgba(102, 126, 234, 0.12);
     border-color: rgba(102, 126, 234, 0.25);
     color: rgba(0, 0, 0, 0.75);

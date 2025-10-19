@@ -1,5 +1,4 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
-import "./code-showcase.css";
 import { Component } from "./component";
 // Use modular imports to reduce bundle size
 import hljs from "highlight.js/lib/core";
