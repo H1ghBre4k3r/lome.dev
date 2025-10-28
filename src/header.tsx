@@ -60,7 +60,8 @@ export class WebsiteHeader extends AbstractElement {
 
   navigateHash(e: Event, hash: string) {
     const path = window.location.pathname;
-    if (path.startsWith('/blog/') && path !== '/blog/') {
+    // If on a blog post page, navigate to home with hash
+    if (path.startsWith('/blog/')) {
       e.preventDefault();
       window.location.href = '/' + hash;
     }
@@ -73,15 +74,9 @@ export class WebsiteHeader extends AbstractElement {
       <header>
         <a className="skip-link" href="#home">Skip to content</a>
         <div className="header-content">
-          <a href="/" className="logo" onClick={(e: Event) => {
-            const path = window.location.pathname;
-            if (path.startsWith('/blog/') && path !== '/blog/') {
-              e.preventDefault();
-              window.history.pushState({}, '', '/');
-              window.dispatchEvent(new PopStateEvent('popstate'));
-            }
-            this.closeMobileMenu();
-          }}>lome.dev</a>
+          <a href="/" className="logo" onClick={() => this.closeMobileMenu()}>
+            lome.dev
+          </a>
 
           {/* Desktop Navigation */}
           <nav className="desktop-nav">

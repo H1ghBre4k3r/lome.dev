@@ -33,29 +33,20 @@ export class BlogRelatedArticles extends AbstractElement {
 
   createArticleCard(post: BlogPost): HTMLElement {
     return (
-      <article
-        className="related-article-card"
-        onClick={(e: Event) => {
-          e.preventDefault();
-          const url = `/blog/${post.slug}`;
-          window.history.pushState({}, '', url);
-          window.dispatchEvent(new PopStateEvent('popstate'));
-          document.querySelector('website-blog-router')?.dispatchEvent(new Event('routechange'));
-          // Scroll to top
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-      >
-        <div className="related-article-meta">
-          <span className="related-date">{formatDate(post.date)}</span>
-          <span className="related-reading">{estimateReadingTime(post.content || post.excerpt || '')}</span>
-        </div>
-        <h3 className="related-article-title">{post.title}</h3>
-        <p className="related-article-excerpt">{post.excerpt}</p>
-        <div className="related-article-tags">
-          {() => post.tags.slice(0, 3).map(tag => <span className="tag">{tag}</span>)}
-        </div>
-        <span className="related-read-more">Read article →</span>
-      </article>
+      <a href={`/blog/${post.slug}`} className="related-article-link">
+        <article className="related-article-card">
+          <div className="related-article-meta">
+            <span className="related-date">{formatDate(post.date)}</span>
+            <span className="related-reading">{estimateReadingTime(post.content || post.excerpt || '')}</span>
+          </div>
+          <h3 className="related-article-title">{post.title}</h3>
+          <p className="related-article-excerpt">{post.excerpt}</p>
+          <div className="related-article-tags">
+            {() => post.tags.slice(0, 3).map(tag => <span className="tag">{tag}</span>)}
+          </div>
+          <span className="related-read-more">Read article →</span>
+        </article>
+      </a>
     ) as HTMLElement;
   }
 

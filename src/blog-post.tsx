@@ -1,5 +1,6 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
 import { Component } from "./component";
+import type { PreventAndRedirectCommands, Route } from "@vaadin/router";
 import {
   estimateReadingTime,
   getBlogPost,
@@ -12,6 +13,14 @@ import {
 import { WebsiteBlogTOC } from "./blog-toc"; // type only
 import { BlogRelatedArticles } from "./blog-related"; // type only
 
+interface RouteLocation {
+  pathname: string;
+  search: string;
+  hash: string;
+  params: { [key: string]: string | undefined };
+  route: Route | null;
+}
+
 @Component("website-blog-post")
 export class WebsiteBlogPost extends AbstractElement {
   private post: BlogPost | null = null;
@@ -21,6 +30,16 @@ export class WebsiteBlogPost extends AbstractElement {
 
   constructor() {
     super();
+  }
+
+  // Vaadin Router lifecycle hook
+  onBeforeEnter(location: RouteLocation, _commands: PreventAndRedirectCommands) {
+    const slug = location.params.slug as string;
+    if (slug) {
+      this.loadPost(slug);
+    }
+    // Scroll to top when entering blog post
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   async loadPost(slug: string): Promise<BlogPost | null> {
@@ -160,7 +179,7 @@ export class WebsiteBlogPost extends AbstractElement {
     // Header via JSX (Atomicity)
     const header = (
       <header className="post-header">
-        <a href="#blog" className="back-link" onClick={(e: Event) => { e.preventDefault(); window.location.hash = 'blog'; }}>← Back to Articles</a>
+        <a href="/#blog" className="back-link">← Back to Articles</a>
         <div className="post-meta">
           <span className="post-date">{formatDate(this.post.date)}</span>
           <span className="post-reading">{estimateReadingTime(this.post.content || '')}</span>
@@ -199,11 +218,7 @@ export class WebsiteBlogPost extends AbstractElement {
       <div className="post-error">
         <h2>Post Not Found</h2>
         <p>Sorry, the blog post you're looking for doesn't exist.</p>
-        <a href="/" className="btn btn-primary" onClick={(e: Event) => {
-          e.preventDefault();
-          window.history.pushState({}, '', '/');
-          window.dispatchEvent(new PopStateEvent('popstate'));
-        }}>Back to Blog</a>
+        <a href="/" className="btn btn-primary">Back to Home</a>
       </div>
     ) as HTMLElement;
 

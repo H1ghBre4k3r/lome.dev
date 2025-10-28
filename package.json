@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@pesca-dev/atomicity": "^0.1.7",
+    "@vaadin/router": "^2.0.0",
     "highlight.js": "^11.11.1",
     "marked": "^16.4.0",
     "marked-highlight": "^2.2.2",

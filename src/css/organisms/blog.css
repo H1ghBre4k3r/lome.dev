@@ -66,6 +66,12 @@
     }
   }
 
+  .blog-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
   .blog-card {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);

@@ -115,26 +115,25 @@ export class WebsiteBlog extends AbstractElement {
 
   createBlogCard(post: BlogPost): HTMLElement {
     const card = (
-      <article className="blog-card" onClick={(e: Event) => {
-        e.preventDefault();
-        const url = `/blog/${post.slug}`;
-        window.history.pushState({}, '', url);
-        window.dispatchEvent(new PopStateEvent('popstate'));
-        document.querySelector('website-blog-router')?.dispatchEvent(new Event('routechange'));
-      }}>
-        <div className="blog-meta">
-          <span className="blog-date">{formatDate(post.date)}</span>
-          <span className="blog-reading">{estimateReadingTime(post.content || post.excerpt || '')}</span>
-          <span className="blog-category">{post.category}</span>
-        </div>
-        <h3 className="blog-title">{post.title}</h3>
-        <p className="blog-excerpt">{post.excerpt}</p>
-        <div className="blog-tags">
-          {() => post.tags.slice(0, 4).map(tag => <span className="tag">{tag}</span>)}
-        </div>
-      </article>
+      <a href={`/blog/${post.slug}`} className="blog-card-link">
+        <article className="blog-card">
+          <div className="blog-meta">
+            <span className="blog-date">{formatDate(post.date)}</span>
+            <span className="blog-reading">{estimateReadingTime(post.content || post.excerpt || '')}</span>
+            <span className="blog-category">{post.category}</span>
+          </div>
+          <h3 className="blog-title">{post.title}</h3>
+          <p className="blog-excerpt">{post.excerpt}</p>
+          <div className="blog-tags">
+            {() => post.tags.slice(0, 4).map(tag => <span className="tag">{tag}</span>)}
+          </div>
+        </article>
+      </a>
     ) as HTMLElement;
-    addCardTilt(card);
+    const article = card.querySelector('.blog-card') as HTMLElement;
+    if (article) {
+      addCardTilt(article);
+    }
     return card;
   }
 
