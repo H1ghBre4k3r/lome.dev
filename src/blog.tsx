@@ -105,11 +105,7 @@ export class WebsiteBlog extends AbstractElement {
         const card = this.createBlogCard(post);
         this.gridElement!.appendChild(card);
       });
-      // Add tilt to all blog cards after render
-      setTimeout(() => {
-        const cards = this.gridElement!.querySelectorAll('.blog-card');
-        cards.forEach(c => addCardTilt(c as HTMLElement));
-      }, 50);
+      // Tilt is already applied in createBlogCard, no need for duplicate application
     }
   }
 
@@ -130,10 +126,8 @@ export class WebsiteBlog extends AbstractElement {
         </article>
       </a>
     ) as HTMLElement;
-    const article = card.querySelector('.blog-card') as HTMLElement;
-    if (article) {
-      addCardTilt(article);
-    }
+    // Apply tilt to the entire card link (not just the inner article)
+    addCardTilt(card);
     return card;
   }
 
