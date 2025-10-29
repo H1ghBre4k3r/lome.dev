@@ -39,7 +39,6 @@ const lazyLoadComponents = async () => {
       import("./blog-post"),
       import("./blog-toc"),
       import("./blog-related"),
-      import("./blog-router"),
     ]);
   });
 

@@ -105,35 +105,28 @@ export class WebsiteBlog extends AbstractElement {
         const card = this.createBlogCard(post);
         this.gridElement!.appendChild(card);
       });
-      // Add tilt to all blog cards after render
-      setTimeout(() => {
-        const cards = this.gridElement!.querySelectorAll('.blog-card');
-        cards.forEach(c => addCardTilt(c as HTMLElement));
-      }, 50);
+      // Tilt is already applied in createBlogCard, no need for duplicate application
     }
   }
 
   createBlogCard(post: BlogPost): HTMLElement {
     const card = (
-      <article className="blog-card" onClick={(e: Event) => {
-        e.preventDefault();
-        const url = `/blog/${post.slug}`;
-        window.history.pushState({}, '', url);
-        window.dispatchEvent(new PopStateEvent('popstate'));
-        document.querySelector('website-blog-router')?.dispatchEvent(new Event('routechange'));
-      }}>
-        <div className="blog-meta">
-          <span className="blog-date">{formatDate(post.date)}</span>
-          <span className="blog-reading">{estimateReadingTime(post.content || post.excerpt || '')}</span>
-          <span className="blog-category">{post.category}</span>
-        </div>
-        <h3 className="blog-title">{post.title}</h3>
-        <p className="blog-excerpt">{post.excerpt}</p>
-        <div className="blog-tags">
-          {() => post.tags.slice(0, 4).map(tag => <span className="tag">{tag}</span>)}
-        </div>
-      </article>
+      <a href={`/blog/${post.slug}`} className="blog-card-link">
+        <article className="blog-card">
+          <div className="blog-meta">
+            <span className="blog-date">{formatDate(post.date)}</span>
+            <span className="blog-reading">{estimateReadingTime(post.content || post.excerpt || '')}</span>
+            <span className="blog-category">{post.category}</span>
+          </div>
+          <h3 className="blog-title">{post.title}</h3>
+          <p className="blog-excerpt">{post.excerpt}</p>
+          <div className="blog-tags">
+            {() => post.tags.slice(0, 4).map(tag => <span className="tag">{tag}</span>)}
+          </div>
+        </article>
+      </a>
     ) as HTMLElement;
+    // Apply tilt to the entire card link (not just the inner article)
     addCardTilt(card);
     return card;
   }

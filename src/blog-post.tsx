@@ -1,5 +1,6 @@
 import { a, AbstractElement } from "@pesca-dev/atomicity";
 import { Component } from "./component";
+import type { PreventAndRedirectCommands, Route } from "@vaadin/router";
 import {
   estimateReadingTime,
   getBlogPost,
@@ -12,15 +13,53 @@ import {
 import { WebsiteBlogTOC } from "./blog-toc"; // type only
 import { BlogRelatedArticles } from "./blog-related"; // type only
 
+interface RouteLocation {
+  pathname: string;
+  search: string;
+  hash: string;
+  params: { [key: string]: string | undefined };
+  route: Route | null;
+}
+
 @Component("website-blog-post")
 export class WebsiteBlogPost extends AbstractElement {
   private post: BlogPost | null = null;
   private contentElement: HTMLElement | null = null;
   private tocEl: WebsiteBlogTOC | null = null;
   private relatedEl: BlogRelatedArticles | null = null;
+  location?: RouteLocation;
 
   constructor() {
     super();
+  }
+
+  // Vaadin Router lifecycle hook - just store the location
+  onBeforeEnter(location: RouteLocation, _commands: PreventAndRedirectCommands) {
+    this.location = location;
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    // Wait for render to complete, then load post
+    setTimeout(() => {
+      let slug: string | undefined;
+
+      if (this.location && this.location.params.slug) {
+        slug = this.location.params.slug as string;
+      } else {
+        // Fallback: try to get slug from URL
+        const pathParts = window.location.pathname.split('/');
+        slug = pathParts[pathParts.length - 1];
+      }
+
+      if (slug && slug !== 'blog') {
+        this.loadPost(slug);
+      }
+    }, 50);
   }
 
   async loadPost(slug: string): Promise<BlogPost | null> {
@@ -160,7 +199,7 @@ export class WebsiteBlogPost extends AbstractElement {
     // Header via JSX (Atomicity)
     const header = (
       <header className="post-header">
-        <a href="#blog" className="back-link" onClick={(e: Event) => { e.preventDefault(); window.location.hash = 'blog'; }}>← Back to Articles</a>
+        <a href="/#blog" className="back-link">← Back to Articles</a>
         <div className="post-meta">
           <span className="post-date">{formatDate(this.post.date)}</span>
           <span className="post-reading">{estimateReadingTime(this.post.content || '')}</span>
@@ -199,11 +238,7 @@ export class WebsiteBlogPost extends AbstractElement {
       <div className="post-error">
         <h2>Post Not Found</h2>
         <p>Sorry, the blog post you're looking for doesn't exist.</p>
-        <a href="/" className="btn btn-primary" onClick={(e: Event) => {
-          e.preventDefault();
-          window.history.pushState({}, '', '/');
-          window.dispatchEvent(new PopStateEvent('popstate'));
-        }}>Back to Blog</a>
+        <a href="/" className="btn btn-primary">Back to Home</a>
       </div>
     ) as HTMLElement;
 
