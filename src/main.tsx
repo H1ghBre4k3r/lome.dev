@@ -22,6 +22,14 @@ export class WebsiteMain extends AbstractElement {
     if (outlet) {
       this.router = new Router(outlet);
       this.router.setRoutes(routes);
+
+      // Listen for route changes to handle hash navigation
+      window.addEventListener('vaadin-router-location-changed', () => {
+        // After route change, check for hash and scroll to it
+        if (window.location.hash && window.location.pathname === '/') {
+          setTimeout(() => this.handleHashNavigation(), 200);
+        }
+      });
     }
 
     // Setup hash navigation for sections on home page
