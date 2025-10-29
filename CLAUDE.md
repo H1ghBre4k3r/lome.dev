@@ -18,6 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Framework & Stack
 - **Frontend Framework**: Custom web components using `@pesca-dev/atomicity` library
+- **Routing**: Vaadin Router for client-side navigation
 - **Build Tool**: Vite with TypeScript
 - **Styling**: Plain CSS with custom fonts (FliegeMono family)
 - **Icons**: Simple Icons library for social/tech icons
@@ -45,11 +46,40 @@ The application uses a **custom component decorator pattern** built on web compo
 - **Font System**: Custom FliegeMono font family served from `public/fonts/`
 - **TypeScript Configuration**: React JSX with custom factory (`jsxFactory: "a"`), decorators enabled
 
+### Routing System
+The application uses **Vaadin Router** for client-side navigation:
+
+1. **Route Configuration** (`src/routes.ts`):
+   - Centralized route definitions
+   - Lazy-loaded components via dynamic imports
+   - Routes: `/` (home), `/blog/:slug` (blog posts), `(.*)` (404)
+
+2. **Router Initialization** (`src/main.tsx`):
+   - Initialized in `connectedCallback()`
+   - Outlet-based rendering: `<div id="outlet"></div>`
+   - Hash navigation support for section scrolling (#about, #blog, etc.)
+
+3. **Component Lifecycle Hooks** (`src/blog-post.tsx`):
+   - `onBeforeEnter(location)`: Called before route is rendered
+   - `connectedCallback()`: Loads content after component is in DOM
+   - Proper timing ensures all elements exist before manipulation
+
+4. **Navigation Patterns**:
+   - Standard anchor tags: `<a href="/blog/post-slug">`
+   - Vaadin Router automatically intercepts and handles navigation
+   - No manual `pushState` or `popstate` events needed
+
 ### File Organization
 ```
 src/
-├── main.tsx          # Root application component
-├── header.tsx        # Header component with personal info
+├── main.tsx          # Root application component with router
+├── routes.ts         # Centralized route configuration
+├── pages/
+│   ├── home.tsx      # Home page wrapper (all sections)
+│   └── not-found.tsx # 404 error page
+├── header.tsx        # Header component with navigation
+├── blog.tsx          # Blog list component
+├── blog-post.tsx     # Blog post viewer with lifecycle hooks
 ├── component.ts      # Component decorator factory
 ├── utils.ts          # Utility functions (SVG handling)
 ├── index.ts          # Component imports/registration
@@ -76,6 +106,23 @@ public/
 - All components extend `AbstractElement` and use the `@Component` decorator for registration
 - The app uses custom fonts loaded from the public directory
 - No traditional React/Vue/Angular - this is a custom web components implementation
+- Routing is handled by Vaadin Router - add new routes in `src/routes.ts`
+
+### Adding New Routes
+
+To add a new route:
+1. Create component in `src/pages/` or appropriate directory
+2. Add route to `src/routes.ts`:
+   ```typescript
+   {
+     path: '/new-page',
+     component: 'website-new-page',
+     action: async () => {
+       await import('./pages/new-page');
+     }
+   }
+   ```
+3. Navigation links automatically work: `<a href="/new-page">Link</a>`
 
 
 ## Atomicity usage quick reference

@@ -27,19 +27,39 @@ export class WebsiteBlogPost extends AbstractElement {
   private contentElement: HTMLElement | null = null;
   private tocEl: WebsiteBlogTOC | null = null;
   private relatedEl: BlogRelatedArticles | null = null;
+  location?: RouteLocation;
 
   constructor() {
     super();
   }
 
-  // Vaadin Router lifecycle hook
+  // Vaadin Router lifecycle hook - just store the location
   onBeforeEnter(location: RouteLocation, _commands: PreventAndRedirectCommands) {
-    const slug = location.params.slug as string;
-    if (slug) {
-      this.loadPost(slug);
-    }
-    // Scroll to top when entering blog post
+    this.location = location;
+
+    // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    // Wait for render to complete, then load post
+    setTimeout(() => {
+      let slug: string | undefined;
+
+      if (this.location && this.location.params.slug) {
+        slug = this.location.params.slug as string;
+      } else {
+        // Fallback: try to get slug from URL
+        const pathParts = window.location.pathname.split('/');
+        slug = pathParts[pathParts.length - 1];
+      }
+
+      if (slug && slug !== 'blog') {
+        this.loadPost(slug);
+      }
+    }, 50);
   }
 
   async loadPost(slug: string): Promise<BlogPost | null> {
