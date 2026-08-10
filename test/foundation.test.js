@@ -35,6 +35,31 @@ test('keeps the curated projects in the approved order', async () => {
   );
 });
 
+test('keeps verified MoneyBoy metadata and the archived Y language state', async () => {
+  const { projects } = await loadProjects();
+  const moneyboy = projects.find(({ slug }) => slug === 'moneyboy');
+  const yLang = projects.find(({ slug }) => slug === 'y-lang-v0');
+
+  assert.deepEqual(
+    {
+      repositoryUrl: moneyboy.repositoryUrl,
+      description: moneyboy.description,
+      language: moneyboy.language,
+      homepageUrl: moneyboy.homepageUrl,
+      status: moneyboy.status,
+    },
+    {
+      repositoryUrl: 'https://github.com/pesca-dev/moneyboy-app',
+      description: 'The mobile app for MoneyBoy - a tool to track spendings between different people.',
+      language: 'TypeScript',
+      homepageUrl: 'https://pesca-dev.github.io/moneyboy-app',
+      status: 'active',
+    },
+  );
+  assert.equal(yLang.status, 'archived');
+  assert.equal(yLang.archived, true);
+});
+
 test('filters draft posts from published content', async () => {
   const { filterPublishedPosts } = await loadContentHelpers();
   const entries = [

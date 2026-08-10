@@ -2,6 +2,9 @@ export interface Project {
   readonly slug: string;
   readonly name: string;
   readonly description: string;
+  readonly repositoryUrl: string;
+  readonly homepageUrl?: string;
+  readonly status: 'active' | 'archived';
   readonly repository: string;
   readonly language: string;
   readonly archived: boolean;
