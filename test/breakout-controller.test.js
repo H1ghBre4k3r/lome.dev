@@ -47,14 +47,21 @@ function createFixture({ reducedMotion = false } = {}) {
   document.hidden = false;
   document.activeElement = null;
   const callbacks = [];
+  const cancelledFrames = new Set();
+  let nextFrameId = 0;
   const view = {
     localStorage: new MapStorage(),
     matchMedia: () => ({ matches: reducedMotion }),
     requestAnimationFrame(callback) {
-      callbacks.push(callback);
-      return callbacks.length;
+      const id = ++nextFrameId;
+      callbacks.push((timestamp) => {
+        if (!cancelledFrames.has(id)) callback(timestamp);
+      });
+      return id;
     },
-    cancelAnimationFrame() {},
+    cancelAnimationFrame(id) {
+      cancelledFrames.add(id);
+    },
   };
   document.defaultView = view;
   const root = new FakeTarget();
@@ -99,14 +106,15 @@ test('mountBreakout renders ready state and fixed canvas dimensions', async () =
   controller.destroy();
 });
 
-test('reduced motion starts without scheduling an animation frame', async () => {
+test('reduced motion keeps the engine ready with an accessible status', async () => {
   const { mountBreakout } = await import('../src/lib/breakout/controller.js');
   const fixture = createFixture({ reducedMotion: true });
   const controller = mountBreakout(fixture.root);
 
   fixture.start.dispatch('click');
 
-  assert.equal(controller.state.status, 'running');
+  assert.equal(controller.state.status, 'ready');
+  assert.equal(fixture.status.textContent, 'motion reduced');
   assert.equal(fixture.callbacks.length, 0);
   controller.destroy();
 });
@@ -141,5 +149,30 @@ test('document visibility loss pauses a running game', async () => {
 
   assert.equal(controller.state.status, 'paused');
   assert.equal(fixture.status.textContent, 'paused');
+  controller.destroy();
+});
+
+test('visibility pause clears held movement before a later resume', async () => {
+  const { mountBreakout } = await import('../src/lib/breakout/controller.js');
+  const fixture = createFixture();
+  const controller = mountBreakout(fixture.root);
+  const initialX = controller.state.paddle.x;
+
+  controller.start();
+  fixture.callbacks.shift()(0);
+  fixture.left.dispatch('pointerdown');
+  fixture.document.hidden = true;
+  fixture.document.dispatch('visibilitychange');
+  fixture.document.hidden = false;
+  controller.start();
+
+  fixture.callbacks.shift()(100); // cancelled frame from before the visibility pause
+  fixture.callbacks.shift()(100); // resumed frame, zero elapsed time
+  fixture.callbacks.shift()(200); // resumed frame with elapsed time
+
+  assert.equal(controller.state.paddle.x, initialX);
+  fixture.left.dispatch('pointerdown');
+  fixture.callbacks.shift()(300);
+  assert.ok(controller.state.paddle.x < initialX);
   controller.destroy();
 });

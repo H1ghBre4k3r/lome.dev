@@ -89,6 +89,7 @@ export function mountBreakout(root) {
   let frameId = null;
   let lastTime = null;
   let destroyed = false;
+  let motionReducedNotice = false;
 
   canvas.width = CANVAS_WIDTH;
   canvas.height = CANVAS_HEIGHT;
@@ -100,7 +101,7 @@ export function mountBreakout(root) {
   }
 
   function render() {
-    if (statusOutput) statusOutput.textContent = state.status;
+    if (statusOutput) statusOutput.textContent = motionReducedNotice ? 'motion reduced' : state.status;
     if (scoreOutput) scoreOutput.textContent = String(state.score);
     if (livesOutput) livesOutput.textContent = String(state.lives);
     if (bestOutput) bestOutput.textContent = String(bestScore);
@@ -148,9 +149,18 @@ export function mountBreakout(root) {
   function action(name) {
     if (name === 'restart') {
       stopLoop();
+      motionReducedNotice = false;
       update(resetGame());
       return;
     }
+    if (name === 'start' && reducedMotion) {
+      stopLoop();
+      motionReducedNotice = true;
+      update({ ...state, status: 'ready' });
+      return;
+    }
+    if (name === 'pause') held.clear();
+    motionReducedNotice = false;
     update(stepGame(state, { [name]: true }, 0));
     if (name === 'pause') stopLoop();
     if (name === 'start') startLoop();
