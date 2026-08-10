@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { filterPublishedPosts, sortPostsNewestFirst } from '../../lib/content.js';
+
+const posts = sortPostsNewestFirst(filterPublishedPosts(await getCollection('blog')));
+---
+
+<BaseLayout title="Writing — lome.dev">
+  <main>
+    <h1>Writing</h1>
+    <ul>
+      {posts.map((post) => (
+        <li>
+          <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+          <time datetime={post.data.publishDate.toISOString()}>{post.data.publishDate.toLocaleDateString('en-GB')}</time>
+        </li>
+      ))}
+    </ul>
+  </main>
+</BaseLayout>

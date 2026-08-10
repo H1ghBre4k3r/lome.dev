@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { filterPublishedPosts } from '../lib/content.js';
+import { projects } from '../data/projects.js';
+
+const posts = filterPublishedPosts(await getCollection('blog'));
+---
+
+<BaseLayout>
+  <main>
+    <h1>Louis / H1ghBre4k3r</h1>
+    <p>I build software from browser interfaces down to Rust systems.</p>
+
+    <section aria-labelledby="projects-heading">
+      <h2 id="projects-heading">Projects</h2>
+      <ol>
+        {projects.map((project) => (
+          <li>
+            <a href={project.repository}>{project.name}</a>
+            {project.archived && <span> (archived)</span>}
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section aria-labelledby="writing-heading">
+      <h2 id="writing-heading">Writing</h2>
+      <ul>
+        {posts.map((post) => (
+          <li><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>
+        ))}
+      </ul>
+    </section>
+  </main>
+</BaseLayout>
