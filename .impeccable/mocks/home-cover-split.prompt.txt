@@ -1,0 +1,13 @@
+Use case: ui-mockup
+Asset type: high-fidelity desktop website first-viewport composition for lome.dev, 16:10 landscape
+Input image: reference portrait of Louis; preserve his recognizable identity and winter portrait, rendered as a locally printed duotone/halftone photograph.
+Primary request: Create a shippable website comp for the personal portfolio “lome.dev” in the approved SHAREWARE FIELD MANUAL visual world. This is a designed website surface, not a poster or scene.
+Structure, in exact reading order:
+1. Thin full-width utility masthead with “LOME.DEV / ISSUE 01”, section links “WORK  PLAY  NOTES”, and “KIEL · DE”.
+2. Dominant asymmetric first viewport on a 12-column editorial grid. Left two-thirds: oversized compressed sans headline “LOUIS / H1GHBRE4K3R” followed by “I BUILD SOFTWARE FROM BROWSER INTERFACES DOWN TO RUST SYSTEMS.” Primary action “INSPECT THE WORK →” treated like a physical ink stamp/tab, secondary GitHub link quieter.
+3. Right third: the supplied real portrait in a hard rectangular frame, visibly duotone and coarse halftone, with factual utility labels “CS STUDENT”, “RUST + WEB”, “GITHUB CAMPUS EXPERT”.
+4. Show the start of the second fold: numbered project index strips for “01 DISRUPTION” and “02 ALGORITHM-VISUALIZATION”, so the world proves it can continue beyond the hero.
+Visual system: warm uncoated paper #DED8C9, charcoal ink #171611, rust orange #B66A20, burgundy #7B1F29, moss #182B26. Computer magazine, shareware manual, registration marks, hard 2–3px rules, small batch numbers, dense but legible labels, tactile printed texture. Compressed industrial display sans similar to Barlow Condensed; hyperlegible sans body; monospace metadata only.
+Composition variant 1: editorial cover split, portrait as the strong right-hand counterweight, headline breaks across three large lines, primary action sits directly under the thesis, project index visibly begins at the bottom edge.
+Constraints: real web navigation and hierarchy; no browser chrome; no terminal window; no neon; no gradients; no glass; no glow; no rounded bento cards; no dark theme; no generic cards; no invented claims, logos, awards, companies, statistics, or contact details; no extra text beyond the supplied factual content; core text must remain semantic in the future build.
+Avoid: poster-only composition, floating scene, vaporwave, cyberpunk, pixel-art game screen dominating the hero, decorative code snippets.

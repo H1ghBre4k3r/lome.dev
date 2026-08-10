@@ -1,0 +1,9 @@
+Use case: stylized-concept
+Asset type: seamless website texture tile for low-opacity overlay
+Primary request: Generate a square, perfectly seamless tile containing only restrained uncoated-paper fibers, tiny ink flecks, and sparse fine grain marks in dark charcoal and soft gray.
+Scene/backdrop: perfectly flat uniform #00ff00 chroma-key background for background removal.
+Style/medium: scanned archival paper-fiber and offset-print grain texture, subtle and natural, not decorative.
+Composition/framing: edge-to-edge tile; pattern must repeat seamlessly on all four edges; even density with no focal point, stains, vignette, clusters, tears, folds, shadows, or directional lighting.
+Color palette: charcoal and neutral gray texture marks only over exact #00ff00.
+Constraints: background must be one uniform #00ff00 with no variation; crisp but very fine isolated fibers and speckles; no text, no symbols, no watermark; do not use green in the texture marks; no cast shadow, reflection, floor, or gradient. Intended to become a transparent low-opacity overlay on #DED8C9 after chroma removal.
+Avoid: parchment, grunge stains, coffee marks, scratches, crumpled paper, large fibers, cloudy noise, obvious repeating motifs.

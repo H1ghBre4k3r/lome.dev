@@ -1,0 +1,12 @@
+{
+  "prompt": "The exact generation prompt is stored in the adjacent home-cover-split.prompt.txt file and embedded in the PNG as impeccable:prompt metadata.",
+  "promptFile": ".impeccable/mocks/home-cover-split.prompt.txt",
+  "approved": true,
+  "approvedAt": "2026-08-10",
+  "approval": "Louis selected Cover Split (A).",
+  "nonLiteral": [
+    "Generated project microcopy is compositional only; use verified repository descriptions in semantic HTML.",
+    "Do not rasterize navigation, headline, labels, actions, or project rows.",
+    "Translate the desktop topology responsively rather than scaling the entire comp."
+  ]
+}

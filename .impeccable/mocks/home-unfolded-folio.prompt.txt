@@ -1,0 +1,13 @@
+Use case: ui-mockup
+Asset type: high-fidelity desktop website first-viewport composition for lome.dev, 16:10 landscape
+Input image: reference portrait of Louis; preserve his recognizable identity and winter portrait, rendered as a locally printed duotone/halftone photograph.
+Primary request: Create a shippable website comp for “lome.dev” in the already approved SHAREWARE FIELD MANUAL visual world. It must be unmistakably a functional website surface, not a poster.
+Structure, in exact reading order:
+1. Left vertical issue rail with “LOME.DEV”, “ISSUE 01”, and “KIEL · DE”; top horizontal navigation with “WORK  PLAY  NOTES  GITHUB”.
+2. Large first viewport organized like an unfolded technical-manual spread. Upper-left quadrant: small identity “LOUIS / H1GHBRE4K3R”, enormous compressed headline “BUILDING THE WEB. EXPLORING THE SYSTEM.”, factual line “Computer Science student focused on web development and Rust.”, and a bold physical-tab action “INSPECT PROJECTS →”.
+3. Upper-right quadrant: supplied real portrait as cropped burgundy duotone halftone, overprinted by three compact factual labels “CS STUDENT”, “RUST + WEB”, “GITHUB CAMPUS EXPERT”.
+4. Lower half: a horizontal numbered project ledger with exact rows “01 DISRUPTION — Discord API wrapper in Rust”, “02 ALGORITHM-VISUALIZATION — Interactive algorithms and data structures”, “03 EVENTER — Event planning for groups”. Allow the next fold’s label “BUNDLED DEMO / BREAKOUT” to peek from the lower-right edge.
+Visual system: warm uncoated paper #DED8C9, charcoal ink #171611, rust orange #B66A20, burgundy #7B1F29, moss #182B26. Computer-magazine editorial layout, shareware manual, offset-registration marks, hard 2–3px rules, batch labels, clipped paper tabs, restrained coarse grain. Compressed industrial display sans; hyperlegible sans body; monospace only for metadata.
+Composition variant 3: unfolded folio with an L-shaped issue rail and horizontal project ledger; portrait partially overlaps the ledger as a print plate; more open breathing room than variant 2 but more structural drama than variant 1.
+Constraints: real navigation and hierarchy; no browser chrome; no terminal; no neon; no gradients; no glass; no glow; no rounded cards; no dark theme; no invented claims, stats, logos, companies, awards, contact details, or game implementation descriptions; use only exact factual content supplied; future build keeps text semantic.
+Avoid: poster-only layout, floating vignette, cyberpunk, decorative source code, pixel-art hero, generic portfolio cards.

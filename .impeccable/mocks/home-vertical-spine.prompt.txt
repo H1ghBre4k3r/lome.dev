@@ -1,0 +1,14 @@
+Use case: ui-mockup
+Asset type: high-fidelity desktop website first-viewport composition for lome.dev, 16:10 landscape
+Input image: reference portrait of Louis; preserve his recognizable identity and winter portrait, rendered as a locally printed duotone/halftone photograph.
+Primary request: Create a shippable website comp for “lome.dev” in the already approved SHAREWARE FIELD MANUAL visual world. This must look like a functional web page, not a poster or photographed scene.
+Structure, in exact reading order:
+1. Thin full-width utility masthead: “LOME.DEV / ISSUE 01”, links “WORK  PLAY  NOTES”, “KIEL · DE”.
+2. Dominant editorial first viewport using a 12-column grid and a strong vertical magazine spine. Left half: compact identity label “LOUIS / H1GHBRE4K3R”, enormous thesis “SOFTWARE, FROM SURFACE TO SYSTEM.”, followed by factual copy “Computer Science student building with Rust and web technologies.” and primary action “INSPECT THE WORK →”.
+3. A narrow central portrait strip using the supplied real portrait as coarse burgundy duotone halftone, tall enough to cut through the grid.
+4. Right half: a tabular “FIELD INDEX” with factual rows “01 DISRUPTION — Discord API wrapper in Rust”, “02 ALGORITHM-VISUALIZATION — Interactive algorithms and data structures”, “03 EVENTER — Event planning for groups”, plus labels “GITHUB CAMPUS EXPERT” and “KIEL · DE”.
+5. At the bottom edge, reveal the heading “BUNDLED DEMO / BREAKOUT” as the next section, without letting the game dominate the hero.
+Visual system: warm uncoated paper #DED8C9, charcoal #171611, rust orange #B66A20, burgundy #7B1F29, moss #182B26. Computer-magazine editorial layout, shareware manual, registration marks, hard 2–3px rules, tabular labels, visible paper grain and ink texture. Compressed industrial display sans; readable sans body; monospace metadata only.
+Composition variant 2: vertical-spine topology; portrait is a narrow central seam, with thesis left and project field index right. More information-dense than variant 1, but still unmistakably readable and web-native.
+Constraints: real navigation and hierarchy; no browser chrome; no terminal; no neon; no gradients; no glass; no glow; no rounded cards; no dark theme; no invented claims, stats, logos, companies, awards, or contact details; use only the exact factual project descriptions supplied; core text will be semantic HTML in the build.
+Avoid: poster-only layout, decorative code, pixel-art hero, cyberpunk, generic SaaS dashboard.
