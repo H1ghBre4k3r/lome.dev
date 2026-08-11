@@ -1,6 +1,6 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
-import { filterPublishedPosts, sortPostsNewestFirst } from '../lib/content.js';
+import { filterPublishedPosts, normalizeTags, sortPostsNewestFirst } from '../lib/content.js';
 
 export async function GET(context) {
   const posts = sortPostsNewestFirst(filterPublishedPosts(await getCollection('blog')));
@@ -14,6 +14,7 @@ export async function GET(context) {
       description: post.data.description,
       pubDate: post.data.publishDate,
       link: `/blog/${post.id}/`,
+      categories: normalizeTags(post.data.tags),
     })),
   });
 }

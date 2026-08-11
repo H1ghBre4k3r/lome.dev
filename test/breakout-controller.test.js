@@ -5,6 +5,14 @@ class FakeTarget {
   constructor(dataset = {}) {
     this.dataset = dataset;
     this.listeners = new Map();
+    this._textContent = '';
+    this.textWrites = 0;
+  }
+
+  get textContent() { return this._textContent; }
+  set textContent(value) {
+    this._textContent = value;
+    this.textWrites += 1;
   }
 
   addEventListener(type, listener) {
@@ -174,5 +182,19 @@ test('visibility pause clears held movement before a later resume', async () => 
   fixture.left.dispatch('pointerdown');
   fixture.callbacks.shift()(300);
   assert.ok(controller.state.paddle.x < initialX);
+  controller.destroy();
+});
+
+test('unchanged accessible status is not rewritten on animation frames', async () => {
+  const { mountBreakout } = await import('../src/lib/breakout/controller.js');
+  const fixture = createFixture();
+  const controller = mountBreakout(fixture.root);
+
+  fixture.start.dispatch('click');
+  const writesAfterStart = fixture.status.textWrites;
+  fixture.callbacks.shift()(0);
+  fixture.callbacks.shift()(100);
+
+  assert.equal(fixture.status.textWrites, writesAfterStart);
   controller.destroy();
 });

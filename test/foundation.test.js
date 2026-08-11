@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 async function loadProjects() {
@@ -60,6 +60,25 @@ test('keeps verified MoneyBoy metadata and the archived Y language state', async
   assert.equal(yLang.archived, true);
 });
 
+test('does not advertise the unavailable Eventer deployment as a live demo', async () => {
+  const { projects } = await loadProjects();
+  const eventer = projects.find(({ slug }) => slug === 'eventer');
+
+  assert.equal(eventer.homepageUrl, undefined);
+  assert.equal(eventer.demo, undefined);
+});
+
+test('launch handoff verifies domain ownership before repository binding', () => {
+  const launch = readFileSync(new URL('../docs/launch.md', import.meta.url), 'utf8');
+  const accountVerification = launch.indexOf('Profile settings → Pages');
+  const repositoryBinding = launch.indexOf('Repository settings → Pages → Custom domain');
+
+  assert.ok(accountVerification >= 0, 'missing account-level domain verification step');
+  assert.ok(repositoryBinding > accountVerification, 'verify the domain before binding it to the repository');
+  assert.match(launch, /TXT record/);
+  assert.match(launch, /keep (?:that|the) TXT record/i);
+});
+
 test('filters draft posts from published content', async () => {
   const { filterPublishedPosts } = await loadContentHelpers();
   const entries = [
@@ -81,6 +100,42 @@ test('normalizes tags to unique lower-case kebab-case values', async () => {
     normalizeTags(['Rust', 'web development', 'rust', 'Web_Development']),
     ['rust', 'web-development'],
   );
+});
+
+test('sorts synthetic posts newest first', async () => {
+  const { sortPostsNewestFirst } = await loadContentHelpers();
+  const posts = [
+    { id: 'older', data: { publishDate: new Date('2026-08-01') } },
+    { id: 'newer', data: { publishDate: new Date('2026-08-11') } },
+  ];
+
+  assert.deepEqual(sortPostsNewestFirst(posts).map(({ id }) => id), ['newer', 'older']);
+});
+
+test('filters synthetic tag posts, sorts them, and canonicalizes duplicate tags', async () => {
+  const { getPostsForTag } = await loadContentHelpers();
+  const posts = [
+    {
+      id: 'older-rust',
+      data: { publishDate: new Date('2026-08-01'), tags: ['Rust', 'rust', 'Web Development'] },
+    },
+    {
+      id: 'draft-rust',
+      data: { draft: true, publishDate: new Date('2026-08-12'), tags: ['rust'] },
+    },
+    {
+      id: 'newer-rust',
+      data: { publishDate: new Date('2026-08-11'), tags: ['rust', 'Rust'] },
+    },
+    {
+      id: 'web-only',
+      data: { publishDate: new Date('2026-08-10'), tags: ['web'] },
+    },
+  ];
+
+  const matches = getPostsForTag(posts, 'RUST');
+  assert.deepEqual(matches.map(({ id }) => id), ['newer-rust', 'older-rust']);
+  assert.deepEqual(matches.map(({ data }) => data.tags), [['rust'], ['rust', 'web-development']]);
 });
 
 test('builds the expected static route artifacts', () => {

@@ -1,21 +1,40 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { filterPublishedPosts, sortPostsNewestFirst } from '../../lib/content.js';
+import { filterPublishedPosts, getPublishedTags, normalizeTags, sortPostsNewestFirst } from '../../lib/content.js';
 
-const posts = sortPostsNewestFirst(filterPublishedPosts(await getCollection('blog')));
+const published = filterPublishedPosts(await getCollection('blog'));
+const posts = sortPostsNewestFirst(published);
+const tags = getPublishedTags(published);
 ---
 
 <BaseLayout title="Writing — lome.dev">
-  <main>
-    <h1>Writing</h1>
-    <ul>
+  <main id="main-content" class="blog-index">
+    <header class="reading-header">
+      <h1>Writing</h1>
+      <p>Notes on making software for the web and with Rust.</p>
+    </header>
+    <section aria-labelledby="published-notes-title">
+      <h2 id="published-notes-title" class="sr-only">Published notes</h2>
+      <ol class="post-list">
       {posts.map((post) => (
-        <li>
+        <li class="post-list-item">
           <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+          <p>{post.data.description}</p>
           <time datetime={post.data.publishDate.toISOString()}>{post.data.publishDate.toLocaleDateString('en-GB')}</time>
+          <ul class="tag-list" aria-label={`Tags for ${post.data.title}`}>
+            {normalizeTags(post.data.tags).map((tag) => <li><a href={`/blog/tags/${tag}/`}>{tag}</a></li>)}
+          </ul>
         </li>
       ))}
-    </ul>
+      </ol>
+    </section>
+    <nav class="tag-directory" aria-labelledby="tag-directory-title">
+      <h2 id="tag-directory-title">Browse by tag</h2>
+      <ul class="tag-list">
+        {tags.map((tag) => <li><a href={`/blog/tags/${tag}/`}>{tag}</a></li>)}
+      </ul>
+    </nav>
+    <nav class="reading-nav" aria-label="Blog navigation"><a href="/">← Back to home</a><a href="/rss.xml">Subscribe via RSS</a></nav>
   </main>
 </BaseLayout>

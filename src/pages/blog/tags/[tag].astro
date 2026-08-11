@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getPostsForTag, getPublishedTags } from '../../../lib/content.js';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return getPublishedTags(posts).map((tag) => ({
+    params: { tag },
+    props: { posts: getPostsForTag(posts, tag), tag },
+  }));
+}
+
+const { posts, tag } = Astro.props;
+---
+
+<BaseLayout title={`Tag: ${tag} — lome.dev`} description={`Published writing tagged ${tag}.`}>
+  <main id="main-content" class="blog-index">
+    <header class="reading-header">
+      <h1>#{tag}</h1>
+      <p>Published notes carrying this tag.</p>
+    </header>
+    <ol class="post-list">
+      {posts.map((post) => (
+        <li class="post-list-item">
+          <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+          <p>{post.data.description}</p>
+          <time datetime={post.data.publishDate.toISOString()}>{post.data.publishDate.toLocaleDateString('en-GB')}</time>
+        </li>
+      ))}
+    </ol>
+    <nav class="reading-nav" aria-label="Tag footer"><a href="/blog/">← All tags and notes</a><a href="/">Home</a></nav>
+  </main>
+</BaseLayout>

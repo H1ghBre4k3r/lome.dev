@@ -1,36 +1,222 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { filterPublishedPosts } from '../lib/content.js';
+import { filterPublishedPosts, sortPostsNewestFirst } from '../lib/content.js';
 import { projects } from '../data/projects.js';
 
-const posts = filterPublishedPosts(await getCollection('blog'));
+const posts = sortPostsNewestFirst(filterPublishedPosts(await getCollection('blog')));
+const latestPost = posts[0];
+const projectIcons: Record<string, string> = {
+  disruption: 'globe',
+  'algorithm-visualization': 'nodes',
+  eventer: 'calendar',
+  dependory: 'plug',
+  moneyboy: 'coins',
+  'y-lang-v0': 'code',
+};
 ---
 
-<BaseLayout>
-  <main>
-    <h1>Louis / H1ghBre4k3r</h1>
-    <p>I build software from browser interfaces down to Rust systems.</p>
+<BaseLayout
+  title="Louis / H1ghBre4k3r — lome.dev"
+  description="Louis / H1ghBre4k3r — Computer Science student building for the web and with Rust."
+>
+  <svg class="icon-sprite" aria-hidden="true">
+    <symbol id="icon-crosshair" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 1v6m0 10v6M1 12h6m10 0h6"/></symbol>
+    <symbol id="icon-github" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M12 .7a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.4-1.3-5.4-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C16.2 4.8 17.2 5 17.2 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.4 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .7Z"/></symbol>
+    <symbol id="icon-graduate" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5L2 9Zm4 2v6l6 3 6-3v-6m4-2v7"/></symbol>
+    <symbol id="icon-cube" viewBox="0 0 24 24"><path d="m12 2 8 4.5v11L12 22l-8-4.5v-11L12 2Zm0 9 8-4.5M12 11 4 6.5M12 11v11"/></symbol>
+    <symbol id="icon-badge" viewBox="0 0 24 24"><path d="m12 2 8 3v6c0 5-3.2 8.8-8 11-4.8-2.2-8-6-8-11V5l8-3Z"/><path d="m12 7 1.3 2.7 3 .4-2.2 2.1.5 3-2.6-1.4-2.6 1.4.5-3-2.2-2.1 3-.4L12 7Z"/></symbol>
+    <symbol id="icon-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 4 6 4 9s-1 6-4 9c-3-3-4-6-4-9s1-6 4-9Z"/></symbol>
+    <symbol id="icon-nodes" viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="6"/><rect x="15" y="3" width="6" height="6"/><rect x="9" y="15" width="6" height="6"/><path d="M9 6h6M6 9l5 6m7-6-5 6"/></symbol>
+    <symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16"/><path d="M7 2v6m10-6v6M3 10h18m-14 4h3m4 0h3m-10 4h3"/></symbol>
+    <symbol id="icon-plug" viewBox="0 0 24 24"><path d="M8 3v5m8-5v5M6 8h12v3a6 6 0 0 1-6 6v4m-4 0h8"/></symbol>
+    <symbol id="icon-coins" viewBox="0 0 24 24"><ellipse cx="9" cy="6" rx="6" ry="3"/><path d="M3 6v5c0 1.7 2.7 3 6 3s6-1.3 6-3V6M3 11v5c0 1.7 2.7 3 6 3 1.1 0 2.1-.1 3-.4"/><path d="M13 12c.7-.2 1.7-.3 2.7-.3 3 0 5.3 1.2 5.3 2.8v4c0 1.5-2.3 2.8-5.3 2.8-1.5 0-2.8-.3-3.7-.8v-6c0-1 .4-1.9 1-2.5Z"/></symbol>
+    <symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 5-6 7 6 7m8-14 6 7-6 7M14 3l-4 18"/></symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M3 12h17m-6-6 6 6-6 6"/></symbol>
+    <symbol id="icon-external" viewBox="0 0 24 24"><path d="M14 3h7v7m0-7L10 14"/><path d="M19 13v8H3V5h8"/></symbol>
+  </svg>
 
-    <section aria-labelledby="projects-heading">
-      <h2 id="projects-heading">Projects</h2>
-      <ol>
-        {projects.map((project) => (
-          <li>
-            <a href={project.repository}>{project.name}</a>
-            {project.archived && <span> (archived)</span>}
+  <header class="masthead" aria-label="Site utility navigation">
+    <svg class="glyph utility-mark utility-mark-start" aria-hidden="true"><use href="#icon-crosshair" /></svg>
+    <span class="utility-label">lome.dev / issue 01</span>
+    <nav aria-label="Primary">
+      <a href="#work">Work</a>
+      <a href="#play">Play</a>
+      <a href="/blog/">Notes</a>
+    </nav>
+    <span class="utility-label utility-right">Kiel · DE</span>
+    <svg class="glyph utility-mark utility-mark-end" aria-hidden="true"><use href="#icon-crosshair" /></svg>
+  </header>
+
+  <main id="main-content">
+    <section class="cover" aria-labelledby="cover-title">
+      <div class="cover-copy">
+        <h1 id="cover-title" class="cover-title">
+          <span>Louis /</span>
+          <span>H1ghBre4k3r</span>
+        </h1>
+
+        <div>
+          <p class="cover-thesis">I build software from browser interfaces down to Rust systems.</p>
+          <div class="cover-actions">
+            <a class="primary-tab" href="#work">
+              Inspect the work
+              <svg class="tab-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 12h17M14 6l6 6-6 6" />
+              </svg>
+            </a>
+            <a class="quiet-link" href="https://github.com/H1ghBre4k3r">
+              <svg class="glyph quiet-link-icon" aria-hidden="true"><use href="#icon-github" /></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+
+        <div class="cover-register" aria-label="Issue registration">
+          <span>Batch 001</span>
+          <span>SFM-2025-01</span>
+          <span>Printed locally</span>
+        </div>
+      </div>
+
+      <div class="portrait-side">
+        <figure class="portrait-plate">
+          <div class="portrait-image">
+            <img
+              src="/images/louis-halftone.webp"
+              alt="Louis wearing a winter hat and scarf"
+              width="1254"
+              height="1254"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <ul class="proof-list">
+              <li>
+                <svg class="glyph proof-icon" aria-hidden="true"><use href="#icon-graduate" /></svg>
+                <strong>CS student</strong>
+              </li>
+              <li>
+                <svg class="glyph proof-icon" aria-hidden="true"><use href="#icon-cube" /></svg>
+                <strong>Rust + web</strong>
+              </li>
+              <li>
+                <svg class="glyph proof-icon" aria-hidden="true"><use href="#icon-badge" /></svg>
+                <strong>GitHub Campus Expert</strong>
+              </li>
+            </ul>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="work-section" id="work" aria-labelledby="work-title">
+      <h2 id="work-title" class="sr-only">Project dossiers</h2>
+      <ol class="dossiers">
+        {projects.map((project, index) => (
+          <li class:list={['dossier', project.archived && 'is-archived']}>
+            <span class="dossier-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <div class="dossier-name">
+              <span class="dossier-mark" aria-hidden="true">
+                <svg class="glyph"><use href={`#icon-${projectIcons[project.slug]}`} /></svg>
+              </span>
+              <div>
+                <h3 class="dossier-title">{project.name}</h3>
+                <span class="dossier-meta">
+                  {project.status === 'archived' ? 'Archived' : 'Active'} / {project.language}
+                </span>
+              </div>
+            </div>
+            <span class="dossier-route" aria-hidden="true"><svg class="glyph"><use href="#icon-arrow" /></svg></span>
+            <p class="dossier-description">{project.description}</p>
+            <div class="dossier-links">
+              <a href={project.repositoryUrl}>View project <svg class="glyph" aria-hidden="true"><use href="#icon-external" /></svg></a>
+              {project.homepageUrl && <a href={project.homepageUrl}>Live demo <svg class="glyph" aria-hidden="true"><use href="#icon-external" /></svg></a>}
+            </div>
           </li>
         ))}
       </ol>
     </section>
 
-    <section aria-labelledby="writing-heading">
-      <h2 id="writing-heading">Writing</h2>
-      <ul>
-        {posts.map((post) => (
-          <li><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>
-        ))}
-      </ul>
+    <section class="page-frame breakout-wrap" id="play" aria-labelledby="play-title">
+      <div class="breakout-panel" data-breakout>
+        <div class="breakout-copy">
+          <div>
+            <h2 id="play-title" class="breakout-title">Bundled demo: Breakout</h2>
+            <p>A small hand-built game bundled with the manual. Start a board, keep the paddle moving, and leave a local best score.</p>
+          </div>
+          <ul class="breakout-stats" aria-label="Game settings">
+            <li>Board<strong>10 × 5</strong></li>
+            <li>Lives<strong>3</strong></li>
+            <li>Input<strong>Keys / touch</strong></li>
+          </ul>
+        </div>
+
+        <div class="breakout-stage">
+          <canvas
+            class="breakout-canvas"
+            data-breakout-canvas
+            width="640"
+            height="420"
+            tabindex="0"
+            role="img"
+            aria-label="Breakout game board. Use the left and right arrow keys or A and D to move the paddle."
+          ></canvas>
+          <div class="breakout-status">
+            <span>Status: <strong data-breakout-status aria-live="polite">ready</strong></span>
+            <span>Score: <strong data-breakout-score>0</strong></span>
+            <span>Lives: <strong data-breakout-lives>3</strong></span>
+            <span>Best: <strong data-breakout-best>0</strong></span>
+          </div>
+          <div class="breakout-controls" aria-label="Game actions">
+            <button type="button" data-breakout-action="start">Start</button>
+            <button type="button" data-breakout-action="pause">Pause</button>
+            <button type="button" data-breakout-action="restart">Restart</button>
+          </div>
+          <div class="breakout-move" aria-label="Touch controls">
+            <button type="button" data-breakout-move="left">Move left</button>
+            <button type="button" data-breakout-move="right">Move right</button>
+          </div>
+          <p class="game-fallback" data-breakout-fallback>JavaScript is required to play this bundled demo.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-frame closing-grid" id="notes" aria-labelledby="notes-title">
+      <article class="biography">
+        <h2 id="notes-title" class="close-title">Field notes</h2>
+        <p>I’m Louis, also known as H1ghBre4k3r. I’m a Computer Science student focused on web development and Rust, and a GitHub Campus Expert.</p>
+        <p>This is a home for software I build and notes I write while learning. The work is the evidence; the notes keep the trail visible.</p>
+      </article>
+
+      {latestPost && (
+        <article class="latest-note" aria-labelledby="latest-note-title">
+          <time datetime={latestPost.data.publishDate.toISOString()}>{latestPost.data.publishDate.toLocaleDateString('en-GB')}</time>
+          <h3 id="latest-note-title">{latestPost.data.title}</h3>
+          <p>{latestPost.data.description}</p>
+          <a href={`/blog/${latestPost.id}/`}>Read the note</a>
+        </article>
+      )}
     </section>
   </main>
+
+  <footer class="site-footer">
+    <nav aria-label="Footer">
+      <a href="https://github.com/H1ghBre4k3r">GitHub</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+    <p>lome.dev / issue 01 / Kiel, DE</p>
+  </footer>
+
+  <script>
+    import { mountBreakout } from '../lib/breakout/controller.js';
+
+    const root = document.querySelector('[data-breakout]');
+    if (root) {
+      mountBreakout(root);
+      const fallback = root.querySelector('[data-breakout-fallback]');
+      if (fallback) fallback.setAttribute('hidden', '');
+    }
+  </script>
 </BaseLayout>
