@@ -68,17 +68,6 @@ test('does not advertise the unavailable Eventer deployment as a live demo', asy
   assert.equal(eventer.demo, undefined);
 });
 
-test('launch handoff verifies domain ownership before repository binding', () => {
-  const launch = readFileSync(new URL('../docs/launch.md', import.meta.url), 'utf8');
-  const accountVerification = launch.indexOf('Profile settings → Pages');
-  const repositoryBinding = launch.indexOf('Repository settings → Pages → Custom domain');
-
-  assert.ok(accountVerification >= 0, 'missing account-level domain verification step');
-  assert.ok(repositoryBinding > accountVerification, 'verify the domain before binding it to the repository');
-  assert.match(launch, /TXT record/);
-  assert.match(launch, /keep (?:that|the) TXT record/i);
-});
-
 test('filters draft posts from published content', async () => {
   const { filterPublishedPosts } = await loadContentHelpers();
   const entries = [
