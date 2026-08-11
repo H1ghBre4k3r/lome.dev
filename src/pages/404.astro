@@ -2,9 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Not found — lome.dev">
-  <main>
+<BaseLayout title="Not found — lome.dev" canonical={false} noindex>
+  <main id="main-content" class="not-found">
     <h1>Page not found</h1>
-    <p><a href="/">Return to lome.dev</a></p>
+    <p>This page slipped out of the filing system. The rest of lome.dev is still in order.</p>
+    <a class="primary-tab" href="/">Return to lome.dev</a>
   </main>
 </BaseLayout>

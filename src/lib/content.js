@@ -50,3 +50,35 @@ export function sortPostsNewestFirst(entries) {
     (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
   );
 }
+
+/**
+ * Return the unique published tag directory in alphabetical order.
+ * @template {{ data: { draft?: boolean, tags?: readonly string[] } }} T
+ * @param {readonly T[]} entries
+ * @returns {string[]}
+ */
+export function getPublishedTags(entries) {
+  return normalizeTags(
+    filterPublishedPosts(entries).flatMap((entry) => entry.data.tags ?? []),
+  );
+}
+
+/**
+ * Return published posts matching one canonical tag, newest first.
+ * @template {{ data: { draft?: boolean, tags?: readonly string[], publishDate: Date } }} T
+ * @param {readonly T[]} entries
+ * @param {string} tag
+ * @returns {T[]}
+ */
+export function getPostsForTag(entries, tag) {
+  const canonicalTag = normalizeTag(tag);
+
+  return sortPostsNewestFirst(
+    filterPublishedPosts(entries).filter((entry) =>
+      (entry.data.tags ?? []).some((entryTag) => normalizeTag(entryTag) === canonicalTag),
+    ),
+  ).map((entry) => ({
+    ...entry,
+    data: { ...entry.data, tags: normalizeTags(entry.data.tags ?? []) },
+  }));
+}

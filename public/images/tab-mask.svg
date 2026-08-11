@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 120">
+  <mask id="tab">
+    <path fill="#fff" d="M0 5 545 2l9 7-4 9 13 8-7 10 12 9-8 10 10 9-12 10 8 9-13 8 5 10-11 7L0 116Z"/>
+    <g fill="#000">
+      <circle cx="17" cy="9" r="3"/><circle cx="31" cy="112" r="2"/><circle cx="67" cy="7" r="2"/>
+      <circle cx="101" cy="114" r="3"/><circle cx="146" cy="10" r="2"/><circle cx="188" cy="111" r="2"/>
+      <circle cx="232" cy="8" r="3"/><circle cx="276" cy="113" r="2"/><circle cx="321" cy="7" r="2"/>
+      <circle cx="369" cy="112" r="3"/><circle cx="414" cy="9" r="2"/><circle cx="457" cy="113" r="2"/>
+      <circle cx="501" cy="7" r="3"/><circle cx="538" cy="106" r="3"/>
+      <path d="m78 31 38-3 1 4-37 3zm118 61 51-2v4l-49 3zm172-57 32-2 1 4-31 3zm104 42 46-2v4l-45 3z"/>
+    </g>
+  </mask>
+  <rect width="600" height="120" fill="#fff" mask="url(#tab)"/>
+</svg>

@@ -100,11 +100,15 @@ export function mountBreakout(root) {
     listeners.push(() => target.removeEventListener?.(type, listener, options));
   }
 
+  function setText(output, value) {
+    if (output && output.textContent !== value) output.textContent = value;
+  }
+
   function render() {
-    if (statusOutput) statusOutput.textContent = motionReducedNotice ? 'motion reduced' : state.status;
-    if (scoreOutput) scoreOutput.textContent = String(state.score);
-    if (livesOutput) livesOutput.textContent = String(state.lives);
-    if (bestOutput) bestOutput.textContent = String(bestScore);
+    setText(statusOutput, motionReducedNotice ? 'motion reduced' : state.status);
+    setText(scoreOutput, String(state.score));
+    setText(livesOutput, String(state.lives));
+    setText(bestOutput, String(bestScore));
     drawGame(context, state);
   }
 

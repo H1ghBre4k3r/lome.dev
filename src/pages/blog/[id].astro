@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { filterPublishedPosts } from '../../lib/content.js';
+import { filterPublishedPosts, normalizeTags } from '../../lib/content.js';
 
 export async function getStaticPaths() {
   const posts = filterPublishedPosts(await getCollection('blog'));
@@ -14,15 +14,34 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const tags = normalizeTags(post.data.tags);
 ---
 
-<BaseLayout title={`${post.data.title} — lome.dev`} description={post.data.description}>
-  <main>
-    <article>
+<BaseLayout
+  title={`${post.data.title} — lome.dev`}
+  description={post.data.description}
+  type="article"
+  publishedTime={post.data.publishDate}
+  modifiedTime={post.data.updatedDate}
+  tags={tags}
+  bodyClass="reading-page"
+>
+  <main id="main-content" class="blog-article">
+    <article class="reading-layout">
+      <nav class="reading-nav" aria-label="Article navigation"><a href="/">Home</a><a href="/blog/">Blog</a></nav>
+      <header class="reading-header">
       <h1>{post.data.title}</h1>
       <p>{post.data.description}</p>
-      <time datetime={post.data.publishDate.toISOString()}>{post.data.publishDate.toLocaleDateString('en-GB')}</time>
-      <Content />
+      <div class="article-meta">
+        <time datetime={post.data.publishDate.toISOString()}>Published {post.data.publishDate.toLocaleDateString('en-GB')}</time>
+        {post.data.updatedDate && <time datetime={post.data.updatedDate.toISOString()}>Updated {post.data.updatedDate.toLocaleDateString('en-GB')}</time>}
+      </div>
+      <ul class="tag-list" aria-label="Article tags">
+        {tags.map((tag) => <li><a href={`/blog/tags/${tag}/`}>{tag}</a></li>)}
+      </ul>
+      </header>
+      <div class="prose"><Content /></div>
+      <nav class="reading-nav" aria-label="Article footer"><a href="/blog/">← All notes</a><a href="/">Home</a></nav>
     </article>
   </main>
 </BaseLayout>

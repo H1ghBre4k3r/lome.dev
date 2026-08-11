@@ -1,8 +1,21 @@
 ---
+import '../styles/global.css';
+
 const {
   title = 'lome.dev',
   description = 'Louis / H1ghBre4k3r — web development, Rust, and writing.',
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  tags = [],
+  bodyClass,
+  canonical: canonicalEnabled = true,
+  noindex = false,
 } = Astro.props;
+
+const site = Astro.site ?? new URL('https://lome.dev');
+const canonicalUrl = new URL(Astro.url.pathname, site);
+const image = new URL('/images/louis-github-avatar.webp', site);
 ---
 
 <!doctype html>
@@ -11,9 +24,34 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#DED8C9" />
+    {canonicalEnabled && <link rel="canonical" href={canonicalUrl.href} />}
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl.href} />
+    <meta property="og:site_name" content="lome.dev" />
+    <meta property="og:image" content={image.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image.href} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {type === 'article' && publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    {type === 'article' && modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
+    {type === 'article' && tags.map((tag: string) => <meta property="article:tag" content={tag} />)}
+    <link rel="alternate" type="application/rss+xml" title="lome.dev writing" href="/rss.xml" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
   </head>
-  <body>
+  <body class={bodyClass}>
+    <!-- THESIS: A portfolio reads like a shareware field manual: work is evidence, not a grid of generic developer cards.
+    OWN-WORLD: Warm paper #DED8C9, charcoal #171611, rust #B66A20, burgundy #7B1F29, and moss #182B26; hard rules, compressed mastheads, clipped tabs, a halftone portrait, and ruled dossier rows.
+    STORY: Louis is a Computer Science student building for the web and with Rust, and a GitHub Campus Expert; visitors inspect six projects, play a bundled demo, read notes, then continue to GitHub.
+    FIRST VIEWPORT: A utility masthead tops a 12-column cover split: identity, thesis, and actions fill the left two-thirds; portrait and proof cells counterweight the right; project rows enter at the fold; the primary tab sits beneath the thesis.
+    FORM: Cover Split, first of three approved comps, seed 44af1320.
+    FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md -->
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <slot />
   </body>
 </html>
