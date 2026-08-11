@@ -30,7 +30,7 @@ jobs:
 
   deploy:
     needs: build
-    if: ${{ github.ref_name == 'main' }}
+    if: ${{ github.ref_name == 'main' }} && false
     runs-on: ubuntu-latest
     environment:
       name: github-pages
